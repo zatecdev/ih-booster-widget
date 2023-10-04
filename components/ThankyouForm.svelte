@@ -5,7 +5,7 @@
 
     let certificateUrl;
 
-    const API_END_POINT = process.env.API_URL
+    const { API_END_POINT } = __myapp;
 
     onMount(() => {
         getCertificate();

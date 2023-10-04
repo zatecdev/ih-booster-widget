@@ -2,13 +2,8 @@
     import PaymentForm from "./PaymentForm.svelte";
     import ThankyouForm from "./ThankyouForm.svelte";
     import UserDetailsForm from "./UserDetailsForm.svelte";
-    import Spinner from './ui/Spinner.svelte';
-    import { userForm, contributionValue, processingPayment, successPayment } from '../store/store.js';
 
-    export let stripePublicKey;
-    export let apiEndPoint;
     export let activeStep;
-
     export let handleStepProgress;
 
     const processPayment = () => {
@@ -20,7 +15,7 @@
     {#if activeStep == "Your Info"}
         <UserDetailsForm />
     {:else if activeStep == "Payment"}
-        <PaymentForm {handleStepProgress} stripePublicKey={stripePublicKey} apiEndPoint={apiEndPoint} />
+        <PaymentForm {handleStepProgress} />
     {:else}
         <ThankyouForm />
     {/if}

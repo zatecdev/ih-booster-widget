@@ -5521,7 +5521,7 @@
 		return {
 			c() {
 				p = element("p");
-				p.textContent = `Error: ${/*error*/ ctx[10].message}`;
+				p.textContent = `Error: ${/*error*/ ctx[13].message}`;
 			},
 			m(target, anchor) {
 				insert(target, p, anchor);
@@ -5537,7 +5537,7 @@
 		};
 	}
 
-	// (110:4) {:then data}
+	// (97:4) {:then data}
 	function create_then_block(ctx) {
 		let current_block_type_index;
 		let if_block;
@@ -5547,7 +5547,7 @@
 		const if_blocks = [];
 
 		function select_block_type(ctx, dirty) {
-			if (/*stripe*/ ctx[2] && clientSecret) return 0;
+			if (/*stripe*/ ctx[2] && /*clientSecret*/ ctx[4]) return 0;
 			return 1;
 		}
 
@@ -5610,7 +5610,7 @@
 		};
 	}
 
-	// (121:8) {:else}
+	// (108:8) {:else}
 	function create_else_block$2(ctx) {
 		let spinner;
 		let current;
@@ -5645,7 +5645,7 @@
 		};
 	}
 
-	// (111:8) {#if stripe && clientSecret}
+	// (98:8) {#if stripe && clientSecret}
 	function create_if_block$3(ctx) {
 		let elements_1;
 		let updating_elements;
@@ -5658,12 +5658,12 @@
 		let dispose;
 
 		function elements_1_elements_binding(value) {
-			/*elements_1_elements_binding*/ ctx[8](value);
+			/*elements_1_elements_binding*/ ctx[7](value);
 		}
 
 		let elements_1_props = {
 			stripe: /*stripe*/ ctx[2],
-			clientSecret,
+			clientSecret: /*clientSecret*/ ctx[4],
 			$$slots: { default: [create_default_slot] },
 			$$scope: { ctx }
 		};
@@ -5682,7 +5682,7 @@
 				button = element("button");
 				t1 = text("PAY");
 				attr(button, "class", "bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-fulld mt-4");
-				button.disabled = button_disabled_value = /*isProcessing*/ ctx[4] == true;
+				button.disabled = button_disabled_value = /*isProcessing*/ ctx[5] == true;
 			},
 			m(target, anchor) {
 				mount_component(elements_1, target, anchor);
@@ -5699,8 +5699,9 @@
 			p(ctx, dirty) {
 				const elements_1_changes = {};
 				if (dirty & /*stripe*/ 4) elements_1_changes.stripe = /*stripe*/ ctx[2];
+				if (dirty & /*clientSecret*/ 16) elements_1_changes.clientSecret = /*clientSecret*/ ctx[4];
 
-				if (dirty & /*$$scope*/ 2048) {
+				if (dirty & /*$$scope*/ 16384) {
 					elements_1_changes.$$scope = { dirty, ctx };
 				}
 
@@ -5712,7 +5713,7 @@
 
 				elements_1.$set(elements_1_changes);
 
-				if (!current || dirty & /*isProcessing*/ 16 && button_disabled_value !== (button_disabled_value = /*isProcessing*/ ctx[4] == true)) {
+				if (!current || dirty & /*isProcessing*/ 32 && button_disabled_value !== (button_disabled_value = /*isProcessing*/ ctx[5] == true)) {
 					button.disabled = button_disabled_value;
 				}
 			},
@@ -5738,7 +5739,7 @@
 		};
 	}
 
-	// (112:12) <Elements {stripe} {clientSecret} bind:elements>
+	// (99:12) <Elements {stripe} {clientSecret} bind:elements>
 	function create_default_slot(ctx) {
 		let paymentelement;
 		let current;
@@ -5767,7 +5768,7 @@
 		};
 	}
 
-	// (108:32)           <Spinner caption="Processing order, please wait..." />      {:then data}
+	// (95:32)           <Spinner caption="Processing order, please wait..." />      {:then data}
 	function create_pending_block(ctx) {
 		let spinner;
 		let current;
@@ -5814,8 +5815,8 @@
 			pending: create_pending_block,
 			then: create_then_block,
 			catch: create_catch_block,
-			value: 9,
-			error: 10,
+			value: 12,
+			error: 13,
 			blocks: [,,,]
 		};
 
@@ -5863,40 +5864,58 @@
 		};
 	}
 
-	let clientSecret = null;
-
 	function instance$6($$self, $$props, $$invalidate) {
+		let $userForm;
+		let $contributionValue;
+		component_subscribe($$self, userForm, $$value => $$invalidate(8, $userForm = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(9, $contributionValue = $$value));
 		let { handleStepProgress } = $$props;
-		let { stripePublicKey } = $$props;
-		let { apiEndPoint } = $$props;
-
-		// const PUBLIC_STRIPE_KEY = "pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6"
-		// const SECRET_STRIPE_KEY = "sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe"
-		// let API_END_POINT         = null
-		// let PUBLIC_STRIPE_KEY     = null
-		// let SECRET_STRIPE_KEY     = null
+		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6","STRIPE_SECRET_KEY":"sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe","API_END_POINT":"https://growmytree.test"};
 		let stripe = null;
 
 		// Stripe Elements instance
 		let elements;
 
+		let clientSecret = null;
 		let isProcessing = false;
 
 		onMount(async () => {
-			$$invalidate(2, stripe = await loadStripe(stripePublicKey));
-		}); // API_END_POINT         = process.env.API_URL
-		// PUBLIC_STRIPE_KEY     = process.env.PUBLIC_STRIPE_KEY
-		// SECRET_STRIPE_KEY     = process.env.SECRET_STRIPE_KEY
+			$$invalidate(2, stripe = await loadStripe(STRIPE_PUBLIC_KEY));
+		});
 
 		const getPaymentIntent = async () => {
-			console.log(apiEndPoint);
-		}; //If once off, create customer and proceed as it is an pass some customer info if applicable 
-		//If monthly processed like this:
-		//1. Create customer
-		//2. Create subscription [map subscription with numbers of trees] and return payment intent (from subscription)
+			//If once off, create customer and proceed as it is an pass some customer info if applicable 
+			//If monthly processed like this:
+			//1. Create customer
+			//2. Create subscription [map subscription with numbers of trees] and return payment intent (from subscription)
+			//3. processed with payment. If success continue, if status requires_payment_method, represent form, else error
+			let numberOfTrees = $contributionValue;
+
+			let paymentFrequency = $userForm.contributionFrequency; //once or monthly
+			let userDetails = $userForm;
+
+			const axiosConfig = {
+				headers: { 'Content-Type': 'application/json' }
+			};
+
+			await axios$1.post(
+				API_END_POINT + '/api/create-payment-intent',
+				{
+					quantity: numberOfTrees,
+					frequency: paymentFrequency,
+					customer: userDetails
+				},
+				axiosConfig
+			).then(function (response) {
+				$$invalidate(4, clientSecret = response.data.client_secret);
+				processingPayment.set(true); //to disable next buttons or so
+			}).catch(function (error) {
+				console.log(error);
+			});
+		};
 
 		const processPayment = async () => {
-			$$invalidate(4, isProcessing = true);
+			$$invalidate(5, isProcessing = true);
 
 			const result = await stripe.confirmPayment({
 				elements,
@@ -5935,9 +5954,7 @@
 		}
 
 		$$self.$$set = $$props => {
-			if ('handleStepProgress' in $$props) $$invalidate(5, handleStepProgress = $$props.handleStepProgress);
-			if ('stripePublicKey' in $$props) $$invalidate(6, stripePublicKey = $$props.stripePublicKey);
-			if ('apiEndPoint' in $$props) $$invalidate(7, apiEndPoint = $$props.apiEndPoint);
+			if ('handleStepProgress' in $$props) $$invalidate(6, handleStepProgress = $$props.handleStepProgress);
 		};
 
 		return [
@@ -5945,10 +5962,9 @@
 			processPayment,
 			stripe,
 			elements,
+			clientSecret,
 			isProcessing,
 			handleStepProgress,
-			stripePublicKey,
-			apiEndPoint,
 			elements_1_elements_binding
 		];
 	}
@@ -5958,9 +5974,7 @@
 			super();
 
 			init(this, options, instance$6, create_fragment$6, safe_not_equal, {
-				handleStepProgress: 5,
-				stripePublicKey: 6,
-				apiEndPoint: 7,
+				handleStepProgress: 6,
 				getPaymentIntent: 0,
 				processPayment: 1
 			});
@@ -6053,7 +6067,7 @@
 		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(2, $contributionValue = $$value));
 		let certificateUrl;
-		const API_END_POINT = process.env.API_URL;
+		const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6","STRIPE_SECRET_KEY":"sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe","API_END_POINT":"https://growmytree.test"};
 
 		onMount(() => {
 			getCertificate();
@@ -7286,16 +7300,14 @@
 		};
 	}
 
-	// (22:38) 
+	// (17:38) 
 	function create_if_block_1$1(ctx) {
 		let paymentform;
 		let current;
 
 		paymentform = new PaymentForm({
 				props: {
-					handleStepProgress: /*handleStepProgress*/ ctx[3],
-					stripePublicKey: /*stripePublicKey*/ ctx[0],
-					apiEndPoint: /*apiEndPoint*/ ctx[1]
+					handleStepProgress: /*handleStepProgress*/ ctx[1]
 				}
 			});
 
@@ -7309,9 +7321,7 @@
 			},
 			p(ctx, dirty) {
 				const paymentform_changes = {};
-				if (dirty & /*handleStepProgress*/ 8) paymentform_changes.handleStepProgress = /*handleStepProgress*/ ctx[3];
-				if (dirty & /*stripePublicKey*/ 1) paymentform_changes.stripePublicKey = /*stripePublicKey*/ ctx[0];
-				if (dirty & /*apiEndPoint*/ 2) paymentform_changes.apiEndPoint = /*apiEndPoint*/ ctx[1];
+				if (dirty & /*handleStepProgress*/ 2) paymentform_changes.handleStepProgress = /*handleStepProgress*/ ctx[1];
 				paymentform.$set(paymentform_changes);
 			},
 			i(local) {
@@ -7329,7 +7339,7 @@
 		};
 	}
 
-	// (20:4) {#if activeStep == "Your Info"}
+	// (15:4) {#if activeStep == "Your Info"}
 	function create_if_block$1(ctx) {
 		let userdetailsform;
 		let current;
@@ -7370,8 +7380,8 @@
 		const if_blocks = [];
 
 		function select_block_type(ctx, dirty) {
-			if (/*activeStep*/ ctx[2] == "Your Info") return 0;
-			if (/*activeStep*/ ctx[2] == "Payment") return 1;
+			if (/*activeStep*/ ctx[0] == "Your Info") return 0;
+			if (/*activeStep*/ ctx[0] == "Payment") return 1;
 			return 2;
 		}
 
@@ -7390,7 +7400,7 @@
 				current = true;
 
 				if (!mounted) {
-					dispose = listen(form, "submit", prevent_default(/*processPayment*/ ctx[4]));
+					dispose = listen(form, "submit", prevent_default(/*processPayment*/ ctx[2]));
 					mounted = true;
 				}
 			},
@@ -7443,8 +7453,6 @@
 	}
 
 	function instance$1($$self, $$props, $$invalidate) {
-		let { stripePublicKey } = $$props;
-		let { apiEndPoint } = $$props;
 		let { activeStep } = $$props;
 		let { handleStepProgress } = $$props;
 
@@ -7453,25 +7461,17 @@
 		};
 
 		$$self.$$set = $$props => {
-			if ('stripePublicKey' in $$props) $$invalidate(0, stripePublicKey = $$props.stripePublicKey);
-			if ('apiEndPoint' in $$props) $$invalidate(1, apiEndPoint = $$props.apiEndPoint);
-			if ('activeStep' in $$props) $$invalidate(2, activeStep = $$props.activeStep);
-			if ('handleStepProgress' in $$props) $$invalidate(3, handleStepProgress = $$props.handleStepProgress);
+			if ('activeStep' in $$props) $$invalidate(0, activeStep = $$props.activeStep);
+			if ('handleStepProgress' in $$props) $$invalidate(1, handleStepProgress = $$props.handleStepProgress);
 		};
 
-		return [stripePublicKey, apiEndPoint, activeStep, handleStepProgress, processPayment];
+		return [activeStep, handleStepProgress, processPayment];
 	}
 
 	class CheckoutForm extends SvelteComponent {
 		constructor(options) {
 			super();
-
-			init(this, options, instance$1, create_fragment$1, safe_not_equal, {
-				stripePublicKey: 0,
-				apiEndPoint: 1,
-				activeStep: 2,
-				handleStepProgress: 3
-			});
+			init(this, options, instance$1, create_fragment$1, safe_not_equal, { activeStep: 0, handleStepProgress: 1 });
 		}
 	}
 
@@ -7493,7 +7493,7 @@
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
-		let if_block = /*steps*/ ctx[7][/*currentActive*/ ctx[0] - 1] == "Your Info" && create_if_block_1(ctx);
+		let if_block = /*steps*/ ctx[5][/*currentActive*/ ctx[0] - 1] == "Your Info" && create_if_block_1(ctx);
 
 		return {
 			c() {
@@ -7509,7 +7509,7 @@
 				if (if_block) if_block.m(div0, null);
 			},
 			p(ctx, dirty) {
-				if (/*steps*/ ctx[7][/*currentActive*/ ctx[0] - 1] == "Your Info") {
+				if (/*steps*/ ctx[5][/*currentActive*/ ctx[0] - 1] == "Your Info") {
 					if (if_block) {
 						if_block.p(ctx, dirty);
 					} else {
@@ -7532,7 +7532,7 @@
 		};
 	}
 
-	// (73:32) {#if steps[currentActive-1] == "Your Info"}
+	// (62:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t;
@@ -7545,19 +7545,19 @@
 				button = element("button");
 				t = text("Next");
 				attr(button, "class", "bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full");
-				button.disabled = button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[7].length;
+				button.disabled = button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[5].length;
 			},
 			m(target, anchor) {
 				insert(target, button, anchor);
 				append(button, t);
 
 				if (!mounted) {
-					dispose = listen(button, "click", /*click_handler*/ ctx[11]);
+					dispose = listen(button, "click", /*click_handler*/ ctx[9]);
 					mounted = true;
 				}
 			},
 			p(ctx, dirty) {
-				if (dirty & /*currentActive*/ 1 && button_disabled_value !== (button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[7].length)) {
+				if (dirty & /*currentActive*/ 1 && button_disabled_value !== (button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[5].length)) {
 					button.disabled = button_disabled_value;
 				}
 			},
@@ -7598,10 +7598,10 @@
 		tailwind = new Tailwind({});
 
 		function progressbar_currentActive_binding(value) {
-			/*progressbar_currentActive_binding*/ ctx[9](value);
+			/*progressbar_currentActive_binding*/ ctx[7](value);
 		}
 
-		let progressbar_props = { steps: /*steps*/ ctx[7] };
+		let progressbar_props = { steps: /*steps*/ ctx[5] };
 
 		if (/*currentActive*/ ctx[0] !== void 0) {
 			progressbar_props.currentActive = /*currentActive*/ ctx[0];
@@ -7609,18 +7609,16 @@
 
 		progressbar = new ProgressBar({ props: progressbar_props });
 		binding_callbacks.push(() => bind$1(progressbar, 'currentActive', progressbar_currentActive_binding));
-		/*progressbar_binding*/ ctx[10](progressbar);
+		/*progressbar_binding*/ ctx[8](progressbar);
 
 		checkoutform = new CheckoutForm({
 				props: {
-					handleStepProgress: /*handleProgress*/ ctx[8],
-					activeStep: /*steps*/ ctx[7][/*currentActive*/ ctx[0] - 1],
-					apiEndpoint: /*apiEndPoint*/ ctx[2],
-					stripePublicKey: /*stripePublicKey*/ ctx[3]
+					handleStepProgress: /*handleProgress*/ ctx[6],
+					activeStep: /*steps*/ ctx[5][/*currentActive*/ ctx[0] - 1]
 				}
 			});
 
-		let if_block = /*$processingPayment*/ ctx[4] == false && create_if_block(ctx);
+		let if_block = /*$processingPayment*/ ctx[2] == false && create_if_block(ctx);
 
 		return {
 			c() {
@@ -7649,12 +7647,12 @@
 				t7 = space();
 				if (if_block) if_block.c();
 				attr(img, "class", "w-96");
-				if (!src_url_equal(img.src, img_src_value = /*logo*/ ctx[6])) attr(img, "src", img_src_value);
+				if (!src_url_equal(img.src, img_src_value = /*logo*/ ctx[4])) attr(img, "src", img_src_value);
 				attr(img, "alt", "ImpactHero Logo");
 				attr(div0, "class", "");
 				attr(div1, "class", "text-gray-900 text-left px-16");
 				attr(div2, "class", "w-full md:w-1/2 relative z-1 bg-white pt-16 rounded-l-2xl overflow-hidden h-[550px]");
-				set_style(div2, "background-image", "url('" + /*bgImageUrl*/ ctx[5] + "') ");
+				set_style(div2, "background-image", "url('" + /*bgImageUrl*/ ctx[3] + "') ");
 				attr(div3, "class", "block mb-2");
 				attr(div4, "class", "block");
 				attr(div5, "class", "w-full md:w-1/2 relative z-0 bg-white rounded-r-2xl overflow-hidden py-8 h-[550px]");
@@ -7697,12 +7695,10 @@
 
 				progressbar.$set(progressbar_changes);
 				const checkoutform_changes = {};
-				if (dirty & /*currentActive*/ 1) checkoutform_changes.activeStep = /*steps*/ ctx[7][/*currentActive*/ ctx[0] - 1];
-				if (dirty & /*apiEndPoint*/ 4) checkoutform_changes.apiEndpoint = /*apiEndPoint*/ ctx[2];
-				if (dirty & /*stripePublicKey*/ 8) checkoutform_changes.stripePublicKey = /*stripePublicKey*/ ctx[3];
+				if (dirty & /*currentActive*/ 1) checkoutform_changes.activeStep = /*steps*/ ctx[5][/*currentActive*/ ctx[0] - 1];
 				checkoutform.$set(checkoutform_changes);
 
-				if (/*$processingPayment*/ ctx[4] == false) {
+				if (/*$processingPayment*/ ctx[2] == false) {
 					if (if_block) {
 						if_block.p(ctx, dirty);
 					} else {
@@ -7735,7 +7731,7 @@
 				}
 
 				destroy_component(tailwind, detaching);
-				/*progressbar_binding*/ ctx[10](null);
+				/*progressbar_binding*/ ctx[8](null);
 				destroy_component(progressbar);
 				destroy_component(checkoutform);
 				if (if_block) if_block.d();
@@ -7745,7 +7741,7 @@
 
 	function instance($$self, $$props, $$invalidate) {
 		let $processingPayment;
-		component_subscribe($$self, processingPayment, $$value => $$invalidate(4, $processingPayment = $$value));
+		component_subscribe($$self, processingPayment, $$value => $$invalidate(2, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		const logo = new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 
@@ -7756,15 +7752,6 @@
 		const handleProgress = stepIncrement => {
 			progressBar.handleProgress(stepIncrement);
 		};
-
-		let apiEndPoint = null;
-		let stripePublicKey = null;
-
-		onMount(() => {
-			console.log('new config ' + __app.env);
-			$$invalidate(2, apiEndPoint = process.env.API_END_POINT);
-			$$invalidate(3, stripePublicKey = process.env.STRIPE_PUBLIC_KEY);
-		});
 
 		function progressbar_currentActive_binding(value) {
 			currentActive = value;
@@ -7783,8 +7770,6 @@
 		return [
 			currentActive,
 			progressBar,
-			apiEndPoint,
-			stripePublicKey,
 			$processingPayment,
 			bgImageUrl,
 			logo,

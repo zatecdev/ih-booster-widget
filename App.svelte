@@ -13,15 +13,6 @@
     const handleProgress = (stepIncrement) => {
         progressBar.handleProgress(stepIncrement)
     }
-
-    let apiEndPoint = null;
-    let stripePublicKey = null;
-
-    onMount(() => {
-        console.log('new config ' + __app.env )
-        apiEndPoint = process.env.API_END_POINT
-        stripePublicKey = process.env.STRIPE_PUBLIC_KEY
-    })
         
 </script>
 
@@ -58,8 +49,6 @@
                         <CheckoutForm 
                             handleStepProgress={handleProgress} 
                             activeStep={steps[currentActive-1]}
-                            apiEndpoint={apiEndPoint}
-                            stripePublicKey={stripePublicKey}
                         />
                     </div>
                 

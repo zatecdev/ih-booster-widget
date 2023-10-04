@@ -3,6 +3,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import sveltePreprocess from 'svelte-preprocess';
 import dotenv from "dotenv";
 import replace from '@rollup/plugin-replace';
+import { config } from "dotenv";
 
 dotenv.config()
 
@@ -22,14 +23,11 @@ export default {
         }),
         resolve({ browser: true, dedupe: ['svelte'] }),
         replace({
-            __app: JSON.stringify({
-              env: {
-                STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
-                STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-                API_END_POINT: process.env.API_END_POINT,
-                ...dotenv.config().parsed
-              } 
-            })
-        })
+            values: {
+                __myapp: JSON.stringify({
+                    ...config().parsed
+                })
+            },
+        }),
     ]
 }

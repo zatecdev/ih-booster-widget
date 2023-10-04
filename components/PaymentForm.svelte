@@ -8,15 +8,8 @@
     import Spinner from './ui/Spinner.svelte';
 
     export let handleStepProgress;
-    export let stripePublicKey; 
-    export let apiEndPoint;
 
-    // const PUBLIC_STRIPE_KEY = "pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6"
-    // const SECRET_STRIPE_KEY = "sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe"
-
-    // let API_END_POINT         = null
-    // let PUBLIC_STRIPE_KEY     = null
-    // let SECRET_STRIPE_KEY     = null
+    const { STRIPE_PUBLIC_KEY, API_END_POINT } = __myapp;
 
     let stripe = null
 
@@ -26,16 +19,10 @@
     let isProcessing = false;
 
     onMount(async () => {
-        stripe = await loadStripe(stripePublicKey)
-
-        // API_END_POINT         = process.env.API_URL
-        // PUBLIC_STRIPE_KEY     = process.env.PUBLIC_STRIPE_KEY
-        // SECRET_STRIPE_KEY     = process.env.SECRET_STRIPE_KEY
+        stripe = await loadStripe(STRIPE_PUBLIC_KEY)
     })
 
     export const getPaymentIntent = async () => {
-
-        console.log(apiEndPoint);
 
         //If once off, create customer and proceed as it is an pass some customer info if applicable 
 
@@ -44,28 +31,28 @@
         //2. Create subscription [map subscription with numbers of trees] and return payment intent (from subscription)
         //3. processed with payment. If success continue, if status requires_payment_method, represent form, else error
 
-        // let numberOfTrees       = $contributionValue;
-        // let paymentFrequency    = $userForm.contributionFrequency; //once or monthly
-        // let userDetails         = $userForm;
+        let numberOfTrees       = $contributionValue;
+        let paymentFrequency    = $userForm.contributionFrequency; //once or monthly
+        let userDetails         = $userForm;
 
-        // const axiosConfig = { 
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     } 
-        // }
+        const axiosConfig = { 
+            headers: {
+                'Content-Type': 'application/json',
+            } 
+        }
 
-        // await axios.post( API_END_POINT + '/api/create-payment-intent', {
-        //         quantity: numberOfTrees,
-        //         frequency: paymentFrequency,
-        //         customer: userDetails
-        //     }, axiosConfig)
-        //     .then(function (response) {
-        //         clientSecret = response.data.client_secret;
-        //         processingPayment.set( true ); //to disable next buttons or so
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
+        await axios.post( API_END_POINT + '/api/create-payment-intent', {
+                quantity: numberOfTrees,
+                frequency: paymentFrequency,
+                customer: userDetails
+            }, axiosConfig)
+            .then(function (response) {
+                clientSecret = response.data.client_secret;
+                processingPayment.set( true ); //to disable next buttons or so
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     export const processPayment = async () => {
