@@ -26,7 +26,7 @@
             <img class="w-96" src={logo} alt="ImpactHero Logo" />
         </div> -->
 
-        <div class="antialiased max-w-6xl mx-auto bg-[#F5F2F0] px-8">
+        <div class="antialiased max-w-6xl mx-auto px-8">
             <div class="relative block md:flex items-center p-8">
                 <div class="w-full md:w-1/2 relative z-1 bg-white pt-16 rounded-l-2xl overflow-hidden h-[550px]" style="background-image: url('{bgImageUrl}') ;">
                     <div class="text-gray-900 text-left px-16">

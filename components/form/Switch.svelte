@@ -83,7 +83,7 @@
 	}
     /* Inner Design Option */
     .s--inner button {
-        font-weight: 600;
+        font-weight: 500;
         padding: 0.5em;
         background-color: #fff;
         /* border: 1px solid var(--gray); */
