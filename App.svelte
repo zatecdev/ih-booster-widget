@@ -22,9 +22,9 @@
 <div class="h-screen flex items-center justify-center">
     <div class="grid h-auto place-items-center">
 
-        <div class="">
+        <!-- <div class="">
             <img class="w-96" src={logo} alt="ImpactHero Logo" />
-        </div>
+        </div> -->
 
         <div class="antialiased max-w-6xl mx-auto bg-[#F5F2F0] px-8">
             <div class="relative block md:flex items-center p-8">

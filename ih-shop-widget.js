@@ -63,23 +63,6 @@
 		return a != a ? b == b : a !== b || (a && typeof a === 'object') || typeof a === 'function';
 	}
 
-	let src_url_equal_anchor;
-
-	/**
-	 * @param {string} element_src
-	 * @param {string} url
-	 * @returns {boolean}
-	 */
-	function src_url_equal(element_src, url) {
-		if (element_src === url) return true;
-		if (!src_url_equal_anchor) {
-			src_url_equal_anchor = document.createElement('a');
-		}
-		// This is actually faster than doing URL(..).href
-		src_url_equal_anchor.href = url;
-		return element_src === src_url_equal_anchor.href;
-	}
-
 	/** @returns {boolean} */
 	function is_empty(obj) {
 		return Object.keys(obj).length === 0;
@@ -7493,7 +7476,7 @@
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
-		let if_block = /*steps*/ ctx[5][/*currentActive*/ ctx[0] - 1] == "Your Info" && create_if_block_1(ctx);
+		let if_block = /*steps*/ ctx[4][/*currentActive*/ ctx[0] - 1] == "Your Info" && create_if_block_1(ctx);
 
 		return {
 			c() {
@@ -7509,7 +7492,7 @@
 				if (if_block) if_block.m(div0, null);
 			},
 			p(ctx, dirty) {
-				if (/*steps*/ ctx[5][/*currentActive*/ ctx[0] - 1] == "Your Info") {
+				if (/*steps*/ ctx[4][/*currentActive*/ ctx[0] - 1] == "Your Info") {
 					if (if_block) {
 						if_block.p(ctx, dirty);
 					} else {
@@ -7545,19 +7528,19 @@
 				button = element("button");
 				t = text("Next");
 				attr(button, "class", "bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full");
-				button.disabled = button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[5].length;
+				button.disabled = button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[4].length;
 			},
 			m(target, anchor) {
 				insert(target, button, anchor);
 				append(button, t);
 
 				if (!mounted) {
-					dispose = listen(button, "click", /*click_handler*/ ctx[9]);
+					dispose = listen(button, "click", /*click_handler*/ ctx[8]);
 					mounted = true;
 				}
 			},
 			p(ctx, dirty) {
-				if (dirty & /*currentActive*/ 1 && button_disabled_value !== (button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[5].length)) {
+				if (dirty & /*currentActive*/ 1 && button_disabled_value !== (button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[4].length)) {
 					button.disabled = button_disabled_value;
 				}
 			},
@@ -7575,33 +7558,29 @@
 	function create_fragment(ctx) {
 		let tailwind;
 		let t0;
-		let div9;
 		let div8;
-		let div0;
-		let img;
-		let img_src_value;
-		let t1;
 		let div7;
 		let div6;
-		let div2;
-		let div1;
-		let t5;
 		let div5;
-		let div3;
+		let div1;
+		let div0;
+		let t4;
+		let div4;
+		let div2;
 		let progressbar;
 		let updating_currentActive;
-		let t6;
-		let div4;
+		let t5;
+		let div3;
 		let checkoutform;
-		let t7;
+		let t6;
 		let current;
 		tailwind = new Tailwind({});
 
 		function progressbar_currentActive_binding(value) {
-			/*progressbar_currentActive_binding*/ ctx[7](value);
+			/*progressbar_currentActive_binding*/ ctx[6](value);
 		}
 
-		let progressbar_props = { steps: /*steps*/ ctx[5] };
+		let progressbar_props = { steps: /*steps*/ ctx[4] };
 
 		if (/*currentActive*/ ctx[0] !== void 0) {
 			progressbar_props.currentActive = /*currentActive*/ ctx[0];
@@ -7609,12 +7588,12 @@
 
 		progressbar = new ProgressBar({ props: progressbar_props });
 		binding_callbacks.push(() => bind$1(progressbar, 'currentActive', progressbar_currentActive_binding));
-		/*progressbar_binding*/ ctx[8](progressbar);
+		/*progressbar_binding*/ ctx[7](progressbar);
 
 		checkoutform = new CheckoutForm({
 				props: {
-					handleStepProgress: /*handleProgress*/ ctx[6],
-					activeStep: /*steps*/ ctx[5][/*currentActive*/ ctx[0] - 1]
+					handleStepProgress: /*handleProgress*/ ctx[5],
+					activeStep: /*steps*/ ctx[4][/*currentActive*/ ctx[0] - 1]
 				}
 			});
 
@@ -7624,64 +7603,54 @@
 			c() {
 				create_component(tailwind.$$.fragment);
 				t0 = space();
-				div9 = element("div");
 				div8 = element("div");
-				div0 = element("div");
-				img = element("img");
-				t1 = space();
 				div7 = element("div");
 				div6 = element("div");
-				div2 = element("div");
+				div5 = element("div");
 				div1 = element("div");
+				div0 = element("div");
 
-				div1.innerHTML = `<h1 class="text-4xl font-medium mb-4">Plant more trees</h1> <p class="text-sm font-semibold">Now it&#39;s your turn! Planing trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster
+				div0.innerHTML = `<h1 class="text-4xl font-medium mb-4">Plant more trees</h1> <p class="text-sm font-semibold">Now it&#39;s your turn! Planing trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster
                             biodiversity. Join us in this vital mission for a greener, harmonious future!</p>`;
 
-				t5 = space();
-				div5 = element("div");
-				div3 = element("div");
-				create_component(progressbar.$$.fragment);
-				t6 = space();
+				t4 = space();
 				div4 = element("div");
+				div2 = element("div");
+				create_component(progressbar.$$.fragment);
+				t5 = space();
+				div3 = element("div");
 				create_component(checkoutform.$$.fragment);
-				t7 = space();
+				t6 = space();
 				if (if_block) if_block.c();
-				attr(img, "class", "w-96");
-				if (!src_url_equal(img.src, img_src_value = /*logo*/ ctx[4])) attr(img, "src", img_src_value);
-				attr(img, "alt", "ImpactHero Logo");
-				attr(div0, "class", "");
-				attr(div1, "class", "text-gray-900 text-left px-16");
-				attr(div2, "class", "w-full md:w-1/2 relative z-1 bg-white pt-16 rounded-l-2xl overflow-hidden h-[550px]");
-				set_style(div2, "background-image", "url('" + /*bgImageUrl*/ ctx[3] + "') ");
-				attr(div3, "class", "block mb-2");
-				attr(div4, "class", "block");
-				attr(div5, "class", "w-full md:w-1/2 relative z-0 bg-white rounded-r-2xl overflow-hidden py-8 h-[550px]");
-				attr(div6, "class", "relative block md:flex items-center p-8");
-				attr(div7, "class", "antialiased max-w-6xl mx-auto bg-[#F5F2F0] px-8");
-				attr(div8, "class", "grid h-auto place-items-center");
-				attr(div9, "class", "h-screen flex items-center justify-center");
+				attr(div0, "class", "text-gray-900 text-left px-16");
+				attr(div1, "class", "w-full md:w-1/2 relative z-1 bg-white pt-16 rounded-l-2xl overflow-hidden h-[550px]");
+				set_style(div1, "background-image", "url('" + /*bgImageUrl*/ ctx[3] + "') ");
+				attr(div2, "class", "block mb-2");
+				attr(div3, "class", "block");
+				attr(div4, "class", "w-full md:w-1/2 relative z-0 bg-white rounded-r-2xl overflow-hidden py-8 h-[550px]");
+				attr(div5, "class", "relative block md:flex items-center p-8");
+				attr(div6, "class", "antialiased max-w-6xl mx-auto bg-[#F5F2F0] px-8");
+				attr(div7, "class", "grid h-auto place-items-center");
+				attr(div8, "class", "h-screen flex items-center justify-center");
 			},
 			m(target, anchor) {
 				mount_component(tailwind, target, anchor);
 				insert(target, t0, anchor);
-				insert(target, div9, anchor);
-				append(div9, div8);
-				append(div8, div0);
-				append(div0, img);
-				append(div8, t1);
+				insert(target, div8, anchor);
 				append(div8, div7);
 				append(div7, div6);
-				append(div6, div2);
-				append(div2, div1);
-				append(div6, t5);
 				append(div6, div5);
-				append(div5, div3);
-				mount_component(progressbar, div3, null);
-				append(div5, t6);
+				append(div5, div1);
+				append(div1, div0);
+				append(div5, t4);
 				append(div5, div4);
-				mount_component(checkoutform, div4, null);
-				append(div5, t7);
-				if (if_block) if_block.m(div5, null);
+				append(div4, div2);
+				mount_component(progressbar, div2, null);
+				append(div4, t5);
+				append(div4, div3);
+				mount_component(checkoutform, div3, null);
+				append(div4, t6);
+				if (if_block) if_block.m(div4, null);
 				current = true;
 			},
 			p(ctx, [dirty]) {
@@ -7695,7 +7664,7 @@
 
 				progressbar.$set(progressbar_changes);
 				const checkoutform_changes = {};
-				if (dirty & /*currentActive*/ 1) checkoutform_changes.activeStep = /*steps*/ ctx[5][/*currentActive*/ ctx[0] - 1];
+				if (dirty & /*currentActive*/ 1) checkoutform_changes.activeStep = /*steps*/ ctx[4][/*currentActive*/ ctx[0] - 1];
 				checkoutform.$set(checkoutform_changes);
 
 				if (/*$processingPayment*/ ctx[2] == false) {
@@ -7704,7 +7673,7 @@
 					} else {
 						if_block = create_if_block(ctx);
 						if_block.c();
-						if_block.m(div5, null);
+						if_block.m(div4, null);
 					}
 				} else if (if_block) {
 					if_block.d(1);
@@ -7727,11 +7696,11 @@
 			d(detaching) {
 				if (detaching) {
 					detach(t0);
-					detach(div9);
+					detach(div8);
 				}
 
 				destroy_component(tailwind, detaching);
-				/*progressbar_binding*/ ctx[8](null);
+				/*progressbar_binding*/ ctx[7](null);
 				destroy_component(progressbar);
 				destroy_component(checkoutform);
 				if (if_block) if_block.d();
@@ -7743,7 +7712,7 @@
 		let $processingPayment;
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(2, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
-		const logo = new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
+		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 
 		let steps = ['Your Info', 'Payment', 'Certificate'],
 			currentActive = 1,
@@ -7772,7 +7741,6 @@
 			progressBar,
 			$processingPayment,
 			bgImageUrl,
-			logo,
 			steps,
 			handleProgress,
 			progressbar_currentActive_binding,
