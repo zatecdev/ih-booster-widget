@@ -20,7 +20,7 @@
 <Tailwind />
 
 <div class="h-screen flex items-center justify-center">
-    <div class="grid h-auto place-items-center">
+    <div class="h-auto place-items-center">
 
         <!-- <div class="">
             <img class="w-96" src={logo} alt="ImpactHero Logo" />

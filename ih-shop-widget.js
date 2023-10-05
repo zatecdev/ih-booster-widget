@@ -7630,7 +7630,7 @@
 				attr(div4, "class", "w-full md:w-1/2 relative z-0 bg-white rounded-r-2xl overflow-hidden py-8 h-[550px]");
 				attr(div5, "class", "relative block md:flex items-center p-8");
 				attr(div6, "class", "antialiased max-w-6xl mx-auto bg-[#F5F2F0] px-8");
-				attr(div7, "class", "grid h-auto place-items-center");
+				attr(div7, "class", "h-auto place-items-center");
 				attr(div8, "class", "h-screen flex items-center justify-center");
 			},
 			m(target, anchor) {
