@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "axios": "^1.5.0",
-    "rollup-plugin-dotenv": "^0.5.0"
+    "rollup-plugin-dotenv": "^0.5.0",
+    "svelte-multiselect": "^10.2.0"
   }
 }

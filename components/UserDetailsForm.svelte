@@ -1,13 +1,19 @@
 <script>
     import RangeSlider from 'svelte-range-slider-pips'
+    import MultiSelect from 'svelte-multiselect'
+
     import { userForm, contributionValue, totalPrice } from '../store/store.js';
 
     import InputField from "./form/InputField.svelte";
     import Switch from "./form/Switch.svelte";
 
+    import { countries } from '../data/countries.js';
+
     let values = [1,4,11,22];
 
     let group = 1;
+
+    let selectedCountry;
 
     const updateContributionValue = ( event ) => {
         console.log(event.detail.value)
@@ -29,7 +35,7 @@
 
 <div class="block mb-4 w-full px-1 py-2">
     <p class="text-center font-bold mb-2">How many trees would you like to plant?</p>
-    <div class="flex items-center justify-end">
+    <div class="flex items-start justify-end">
         <div class="w-5/6">
             <!-- <RangeSlider min={1} step={3} max={22} bind:values on:stop={(e) => { updateContributionValue( e ) }}/> -->
 
@@ -64,7 +70,7 @@
             </div>
         </div>
         <div class="W-1/6 flex items-center" style="min-width: 65px;">
-            <span style="background-color: #5F753D;" class="text-sm bg-teal-900 text-white rounded-md px-1 py-1">
+            <span class="text-sm bg-[#5F753D] text-white rounded-md px-1 py-2">
                 € {$totalPrice}
             </span>
         </div>
@@ -85,4 +91,16 @@
     </div>
     <InputField label={'Postal Code'} bind:value={$userForm.postalCode} />
 </div>
-<InputField label={'Country'} bind:value={$userForm.country} />
+<!-- <InputField label={'Country'} bind:value={$userForm.country} /> -->
+
+
+<MultiSelect
+    on:change={(e) => { $userForm.country = e.detail.option } }
+    bind:selectedCountry
+    id="countries"
+    options={countries}
+    required={1}
+    minSelect={1}
+    maxSelect={1}
+    selected={[`Germany`]}
+/>

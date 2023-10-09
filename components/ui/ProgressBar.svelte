@@ -76,7 +76,7 @@
 		position: relative;
 		margin-bottom: 30px;
 		max-width: 100%;
-		width: 85%;
+		width: 75%;
 		margin: 0 auto !important;
 	}
 

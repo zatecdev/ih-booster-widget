@@ -81,11 +81,14 @@
 
         /* --gray: #ccc; */
 	}
+
     /* Inner Design Option */
     .s--inner button {
         font-weight: 500;
-        padding: 0.5em;
-        background-color: #fff;
+        padding: 0.3em;
+        background: var(--cream);
+        border-radius: 50px;
+        /* background-color: #fff; */
         /* border: 1px solid var(--gray); */
     }
     [role='switch'][aria-checked='true'] :first-child,

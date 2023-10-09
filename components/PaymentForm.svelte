@@ -93,7 +93,7 @@
 
 <div class="text-center mt-4">
     {#await getPaymentIntent() }
-        <Spinner caption="Processing order, please wait..." />
+        <Spinner caption="Please wait..." />
     {:then data}
         {#if stripe && clientSecret}
             <Elements {stripe} {clientSecret} bind:elements>

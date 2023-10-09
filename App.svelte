@@ -22,18 +22,14 @@
 <div class="h-screen flex items-center justify-center">
     <div class="h-auto place-items-center">
 
-        <!-- <div class="">
-            <img class="w-96" src={logo} alt="ImpactHero Logo" />
-        </div> -->
-
         <div class="antialiased max-w-6xl mx-auto px-8">
             <div class="relative block md:flex items-center p-8">
-                <div class="w-full md:w-1/2 relative z-1 bg-white pt-16 rounded-l-2xl overflow-hidden h-[550px]" style="background-image: url('{bgImageUrl}') ;">
-                    <div class="text-gray-900 text-left px-16">
+                <div class="w-full md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden h-[550px]" style="background-image: url('{bgImageUrl}') ;">
+                    <div class="text-gray-900 text-left px-8 w-5/6">
                         <h1 class="text-4xl font-medium mb-4">Plant more trees</h1>
-                        <p class="text-sm font-semibold">
-                            Now it's your turn! Planing trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster
-                            biodiversity. Join us in this vital mission for a greener, harmonious future!
+                        <p class="text-base font-semibold">
+                            Now it's your turn! Planting trees is a direct path to environmental and social sustainability. 
+                            They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!
                         </p>
                     </div>
                 </div>
