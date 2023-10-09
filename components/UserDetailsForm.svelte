@@ -1,4 +1,5 @@
 <script>
+    import { t, locale, locales } from '../store/i18n';
     import RangeSlider from 'svelte-range-slider-pips'
     import MultiSelect from 'svelte-multiselect'
 
@@ -34,7 +35,7 @@
 </div>
 
 <div class="block mb-4 w-full px-1 py-2">
-    <p class="text-center font-bold mb-2">How many trees would you like to plant?</p>
+    <p class="text-center font-bold mb-2">{ $t("form.how_many_trees") } </p>
     <div class="flex items-start justify-end">
         <div class="w-5/6">
             <!-- <RangeSlider min={1} step={3} max={22} bind:values on:stop={(e) => { updateContributionValue( e ) }}/> -->
@@ -79,17 +80,17 @@
 
 <div class="flex justify-between">
     <div class="mr-2">
-        <InputField label={'First Name'} bind:value={$userForm.firstName} />
+        <InputField label={ $t("form.firstName") } bind:value={$userForm.firstName} />
     </div>
-    <InputField label={'Last Name'} bind:value={$userForm.lastName} />
+    <InputField label={ $t("form.lastName") } bind:value={$userForm.lastName} />
 </div>
-<InputField label={'Email'} bind:value={$userForm.email} />
-<InputField label={'Address'} bind:value={$userForm.address} />
+<InputField label={ $t("form.email") }  bind:value={$userForm.email} />
+<InputField label={ $t("form.address") }  bind:value={$userForm.address} />
 <div class="flex justify-between">
     <div class="mr-2">
-        <InputField label={'City'} bind:value={$userForm.city} />
+        <InputField label={ $t("form.city") }  bind:value={$userForm.city} />
     </div>
-    <InputField label={'Postal Code'} bind:value={$userForm.postalCode} />
+    <InputField label={ $t("form.postalCode") }  bind:value={$userForm.postalCode} />
 </div>
 <!-- <InputField label={'Country'} bind:value={$userForm.country} /> -->
 

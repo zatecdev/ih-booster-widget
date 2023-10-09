@@ -2,6 +2,7 @@
     import axios from 'axios';
     import { onMount } from 'svelte';
     import { userForm, contributionValue, processingPayment, successPayment } from '../store/store.js';
+    import { t, locale, locales } from '../store/i18n';
 
     let certificateUrl;
 
@@ -45,14 +46,14 @@
 
 
 <div class="bg-white px-8 pt-6 pb-8 mb-4 text-center">
-    <h1 class="mt-4 text-teal-900 font-semibold">Thank you {$userForm.firstName} {$userForm.lastName}!</h1>
-    <p class="text-sm text-bold mt-4 mb-8">Your personalised certificate is ont its way to your email.</p>
+    <h1 class="mt-4 text-teal-900 font-semibold">{ $t("certificate.thankyou") } {$userForm.firstName} {$userForm.lastName}!</h1>
+    <p class="text-sm text-bold mt-4 mb-8">{ $t("certificate.message") }</p>
     <!-- <button class="bg-teal-800 hover:bg-teal-900 text-white font-bold py-2 px-4 border border-green-800 rounded">/button> -->
 
     <a class="mt-4 mt-4 bg-teal-800 hover:bg-teal-900 text-white font-bold py-2 px-4 border border-green-800 rounded mb-8" 
         href={certificateUrl}
         target="_blank"
     >
-        Download Certificate
+        { $t("certificate.download") }
     </a>
 </div>

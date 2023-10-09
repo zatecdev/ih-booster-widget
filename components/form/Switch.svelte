@@ -3,7 +3,7 @@
     // Inclusive Components by Heydon Pickering https://inclusive-components.design/toggle-button/
     // On Designing and Building Toggle Switches by Sara Soueidan https://www.sarasoueidan.com/blog/toggle-switch-design/
     // and this example by Scott O'hara https://codepen.io/scottohara/pen/zLZwNv 
-
+    import { t } from "../../store/i18n";
 
     export let label;
     export let design = 'inner label'
@@ -27,8 +27,7 @@
         value = checked === true ? 'Once' : 'Monthly'
     }
 	
-	  const slugify = (str = "") =>
-    str.toLowerCase().replace(/ /g, "-").replace(/\./g, "");
+	const slugify = (str = "") => str.toLowerCase().replace(/ /g, "-").replace(/\./g, "");
 
 </script>
 
@@ -40,8 +39,8 @@
         aria-checked={checked}
         aria-labelledby={`switch-${uniqueID}`}
         on:click|preventDefault={handleClick}>
-            <span>Plant Once</span>
-            <span>Plant Monthly</span>
+            <span>{ $t("form.plantOnce") }</span>
+            <span>{ $t("form.plantMonthly") }</span>
     </button>
 </div>
 {:else if design == 'slider'}

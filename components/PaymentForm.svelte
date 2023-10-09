@@ -4,6 +4,7 @@
     import { Elements, PaymentElement } from 'svelte-stripe'
     import { onMount } from 'svelte'
     import { userForm, contributionValue, processingPayment, successPayment } from '../store/store.js';
+    import { t, locale, locales } from '../store/i18n';
 
     import Spinner from './ui/Spinner.svelte';
 
@@ -73,7 +74,7 @@
             successPayment.set( true ); //update payment success
 
             Swal.fire({
-                title: 'Thank you for your impact purchase!',
+                title: $t("payment.thankyou"),
                 width: 600,
                 padding: '3em',
                 color: '#000',
@@ -93,7 +94,7 @@
 
 <div class="text-center mt-4">
     {#await getPaymentIntent() }
-        <Spinner caption="Please wait..." />
+        <Spinner caption={ $t("payment.pleaseWait") } />
     {:then data}
         {#if stripe && clientSecret}
             <Elements {stripe} {clientSecret} bind:elements>
@@ -104,9 +105,9 @@
                 class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-fulld mt-4" 
                 disabled={isProcessing == true}
                 on:click={processPayment}
-            >PAY</button>
+            >{ $t("payment.pay") }</button>
         {:else}
-            <Spinner caption="Processing your payment, please wait..." />
+            <Spinner caption={ $t("payment.processingPayment") } />
         {/if}
     {:catch error}
         <p>Error: {error.message}</p>

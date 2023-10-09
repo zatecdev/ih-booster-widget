@@ -1,5 +1,6 @@
 <script>
     import { processingPayment } from './store/store';
+    import { t, locale, locales } from './store/i18n';
     import ProgressBar from './components/ui/ProgressBar.svelte';
     import CheckoutForm from './components/CheckoutForm.svelte';
     import Tailwind from './Tailwind.svelte';
@@ -9,6 +10,8 @@
     const logo = new URL('./images/logo.png', import.meta.url).href
 
     let steps = ['Your Info', 'Payment', 'Certificate'], currentActive = 1, progressBar;
+
+    // let steps = [ $t('form.step.info'), $t('form.step.payment'), $t('form.step.certificate') ], currentActive = 1, progressBar;
 
     const handleProgress = (stepIncrement) => {
         progressBar.handleProgress(stepIncrement)
@@ -21,15 +24,21 @@
 
 <div class="h-screen flex items-center justify-center">
     <div class="h-auto place-items-center">
+        <p>
+            <select bind:value={$locale}>
+              {#each locales as l}
+                <option value={l}>{l}</option>
+              {/each}
+            </select>
+        </p>
 
         <div class="antialiased max-w-6xl mx-auto px-8">
             <div class="relative block md:flex items-center p-8">
                 <div class="w-full md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden h-[550px]" style="background-image: url('{bgImageUrl}') ;">
                     <div class="text-gray-900 text-left px-8 w-5/6">
-                        <h1 class="text-4xl font-medium mb-4">Plant more trees</h1>
+                        <h1 class="text-4xl font-medium mb-4">{ $t("homepage.header") }</h1>
                         <p class="text-base font-semibold">
-                            Now it's your turn! Planting trees is a direct path to environmental and social sustainability. 
-                            They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!
+                            { $t("homepage.message") }
                         </p>
                     </div>
                 </div>
@@ -56,7 +65,7 @@
                                 {/if} -->
 
                                 {#if steps[currentActive-1] == "Your Info"}
-                                    <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full" on:click={() => handleProgress(+1)} disabled={currentActive == steps.length}>Next</button>
+                                    <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full" on:click={() => handleProgress(+1)} disabled={currentActive == steps.length}>{ $t("homepage.next") }</button>
                                 {/if}
                             </div>
                         </div>
