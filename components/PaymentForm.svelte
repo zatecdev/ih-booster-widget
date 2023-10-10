@@ -35,6 +35,7 @@
         let numberOfTrees       = $contributionValue;
         let paymentFrequency    = $userForm.contributionFrequency; //once or monthly
         let userDetails         = $userForm;
+        let userLocale          = $locale;
 
         const axiosConfig = { 
             headers: {
@@ -45,7 +46,8 @@
         await axios.post( API_END_POINT + '/api/create-payment-intent', {
                 quantity: numberOfTrees,
                 frequency: paymentFrequency,
-                customer: userDetails
+                customer: userDetails,
+                locale: userLocale,
             }, axiosConfig)
             .then(function (response) {
                 clientSecret = response.data.client_secret;
