@@ -63,6 +63,23 @@
 		return a != a ? b == b : a !== b || (a && typeof a === 'object') || typeof a === 'function';
 	}
 
+	let src_url_equal_anchor;
+
+	/**
+	 * @param {string} element_src
+	 * @param {string} url
+	 * @returns {boolean}
+	 */
+	function src_url_equal(element_src, url) {
+		if (element_src === url) return true;
+		if (!src_url_equal_anchor) {
+			src_url_equal_anchor = document.createElement('a');
+		}
+		// This is actually faster than doing URL(..).href
+		src_url_equal_anchor.href = url;
+		return element_src === src_url_equal_anchor.href;
+	}
+
 	/** @returns {boolean} */
 	function is_empty(obj) {
 		return Object.keys(obj).length === 0;
@@ -11549,7 +11566,7 @@
 		};
 	}
 
-	// (58:32) {#if steps[currentActive-1] == "Your Info"}
+	// (62:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t;
@@ -11590,23 +11607,26 @@
 	}
 
 	function create_fragment(ctx) {
-		let tailwind;
+		let script;
+		let script_src_value;
 		let t0;
+		let tailwind;
+		let t1;
 		let div8;
 		let div7;
 		let div6;
 		let div5;
 		let div1;
 		let div0;
-		let t4;
+		let t5;
 		let div4;
 		let div2;
 		let progressbar;
 		let updating_currentActive;
-		let t5;
+		let t6;
 		let div3;
 		let checkoutform;
-		let t6;
+		let t7;
 		let current;
 		tailwind = new Tailwind({});
 
@@ -11635,8 +11655,11 @@
 
 		return {
 			c() {
-				create_component(tailwind.$$.fragment);
+				script = element("script");
+				script.innerHTML = ``;
 				t0 = space();
+				create_component(tailwind.$$.fragment);
+				t1 = space();
 				div8 = element("div");
 				div7 = element("div");
 				div6 = element("div");
@@ -11647,15 +11670,16 @@
 				div0.innerHTML = `<h1 class="text-4xl font-medium mb-4">Plant more trees</h1> <p class="text-base font-semibold">Now it&#39;s your turn! Planting trees is a direct path to environmental and social sustainability. 
                             They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!</p>`;
 
-				t4 = space();
+				t5 = space();
 				div4 = element("div");
 				div2 = element("div");
 				create_component(progressbar.$$.fragment);
-				t5 = space();
+				t6 = space();
 				div3 = element("div");
 				create_component(checkoutform.$$.fragment);
-				t6 = space();
+				t7 = space();
 				if (if_block) if_block.c();
+				if (!src_url_equal(script.src, script_src_value = "https://cdn.jsdelivr.net/npm/sweetalert2@11")) attr(script, "src", script_src_value);
 				attr(div0, "class", "text-gray-900 text-left px-8 w-5/6");
 				attr(div1, "class", "w-full md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden h-[550px]");
 				set_style(div1, "background-image", "url('" + /*bgImageUrl*/ ctx[3] + "') ");
@@ -11668,22 +11692,24 @@
 				attr(div8, "class", "h-screen flex items-center justify-center");
 			},
 			m(target, anchor) {
-				mount_component(tailwind, target, anchor);
+				append(document.head, script);
 				insert(target, t0, anchor);
+				mount_component(tailwind, target, anchor);
+				insert(target, t1, anchor);
 				insert(target, div8, anchor);
 				append(div8, div7);
 				append(div7, div6);
 				append(div6, div5);
 				append(div5, div1);
 				append(div1, div0);
-				append(div5, t4);
+				append(div5, t5);
 				append(div5, div4);
 				append(div4, div2);
 				mount_component(progressbar, div2, null);
-				append(div4, t5);
+				append(div4, t6);
 				append(div4, div3);
 				mount_component(checkoutform, div3, null);
-				append(div4, t6);
+				append(div4, t7);
 				if (if_block) if_block.m(div4, null);
 				current = true;
 			},
@@ -11730,9 +11756,11 @@
 			d(detaching) {
 				if (detaching) {
 					detach(t0);
+					detach(t1);
 					detach(div8);
 				}
 
+				detach(script);
 				destroy_component(tailwind, detaching);
 				/*progressbar_binding*/ ctx[7](null);
 				destroy_component(progressbar);
