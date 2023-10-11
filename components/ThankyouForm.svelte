@@ -50,7 +50,7 @@
     <p class="text-sm text-bold mt-4 mb-8">{ $t("certificate.message") }</p>
     <!-- <button class="bg-teal-800 hover:bg-teal-900 text-white font-bold py-2 px-4 border border-green-800 rounded">/button> -->
 
-    <a class="mt-4 mt-4 bg-teal-800 hover:bg-teal-900 text-white font-bold py-2 px-4 border border-green-800 rounded mb-8" 
+    <a class="mt-4 mt-4 bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full" 
         href={certificateUrl}
         target="_blank"
     >

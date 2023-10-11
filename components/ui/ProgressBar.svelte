@@ -1,7 +1,11 @@
 <script>
+	import { t, locale, locales } from '../../store/i18n';
+
 	export let steps = [], currentActive = 1;
 	let circles, progress;
-	
+
+	let progressSteps = [{id: 1, caption: $t('form.step.info') }, {id: 2, caption: $t('form.step.payment') }, {id: 3, caption: $t('form.step.certificate') } ]
+
 	export const handleProgress = (stepIncrement) => {
 		circles = document.querySelectorAll('.step-tab');
 		if(stepIncrement == 1){
@@ -41,7 +45,7 @@
 <div class="progress-container" bind:this={circles}>
 	<div class="progress" bind:this={progress} style="visibility: hidden;"></div>
 	{#each steps as step, i}
-	    <div class="step-tab {i == currentActive - 1 ? 'step-tab-active' : ''}" data-title={step} >{step}</div>
+	    <div class="step-tab {i == currentActive - 1 ? 'step-tab-active' : ''}" data-title={ progressSteps[i].caption } >{ progressSteps[i].caption }</div>
 	{/each}
 </div>
 

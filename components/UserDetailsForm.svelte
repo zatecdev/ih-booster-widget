@@ -93,15 +93,3 @@
     <InputField label={ $t("form.postalCode") }  bind:value={$userForm.postalCode} />
 </div>
 <!-- <InputField label={'Country'} bind:value={$userForm.country} /> -->
-
-
-<MultiSelect
-    on:change={(e) => { $userForm.country = e.detail.option } }
-    bind:selectedCountry
-    id="countries"
-    options={countries}
-    required={1}
-    minSelect={1}
-    maxSelect={1}
-    selected={[`Germany`]}
-/>

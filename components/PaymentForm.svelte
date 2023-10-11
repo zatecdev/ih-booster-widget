@@ -102,16 +102,37 @@
             <Elements {stripe} {clientSecret} bind:elements>
                 <PaymentElement />
             </Elements>
-        
-            <button 
-                class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-fulld mt-4" 
-                disabled={isProcessing == true}
-                on:click={processPayment}
-            >{ $t("payment.pay") }</button>
+
+            <div class="flex text-center justify-center mx-auto no-scrollbar mt-8">
+                <div class="step-button">
+                    <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" on:click={() => handleStepProgress(-1)}>{ $t("homepage.back") }</button>
+                </div>
+                        
+                <div class="step-button">
+                    <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" 
+                        disabled={isProcessing == true}
+                        on:click={processPayment}>{ $t("payment.pay") }
+                    </button>
+                </div>
+            </div>
+
+            <!-- <div class="inline-flex space-x-2.5">
+                <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-20 px-4 border rounded-full" on:click={() => handleStepProgress(-1)}>{ $t("homepage.back") }</button>
+
+                <button 
+                    class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full"
+                    disabled={isProcessing == true}
+                    on:click={processPayment}
+                >{ $t("payment.pay") }</button>
+
+            </div> -->
+
         {:else}
             <Spinner caption={ $t("payment.processingPayment") } />
         {/if}
     {:catch error}
         <p>Error: {error.message}</p>
     {/await}
+
+
 </div>
