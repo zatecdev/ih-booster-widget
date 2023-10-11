@@ -19,6 +19,10 @@
         
 </script>
 
+<svelte:head>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</svelte:head>
+
 <!-- Don't remove, add tailwind base config -->
 <Tailwind />
 

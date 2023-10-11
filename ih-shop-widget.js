@@ -63,6 +63,23 @@
 		return a != a ? b == b : a !== b || (a && typeof a === 'object') || typeof a === 'function';
 	}
 
+	let src_url_equal_anchor;
+
+	/**
+	 * @param {string} element_src
+	 * @param {string} url
+	 * @returns {boolean}
+	 */
+	function src_url_equal(element_src, url) {
+		if (element_src === url) return true;
+		if (!src_url_equal_anchor) {
+			src_url_equal_anchor = document.createElement('a');
+		}
+		// This is actually faster than doing URL(..).href
+		src_url_equal_anchor.href = url;
+		return element_src === src_url_equal_anchor.href;
+	}
+
 	/** @returns {boolean} */
 	function is_empty(obj) {
 		return Object.keys(obj).length === 0;
@@ -6289,16 +6306,11 @@
 		};
 	}
 
-	// (96:32)           <Spinner caption={ $t("payment.pleaseWait") }
+	// (95:32)           <Spinner caption="Please wait..." />      {:then data}
 	function create_pending_block(ctx) {
 		let spinner;
 		let current;
-
-		spinner = new Spinner({
-				props: {
-					caption: /*$t*/ ctx[6]("payment.pleaseWait")
-				}
-			});
+		spinner = new Spinner({ props: { caption: "Please wait..." } });
 
 		return {
 			c() {
@@ -6397,7 +6409,7 @@
 		component_subscribe($$self, userForm, $$value => $$invalidate(9, $userForm = $$value));
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(10, $contributionValue = $$value));
 		let { handleStepProgress } = $$props;
-		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6","STRIPE_SECRET_KEY":"sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe","API_END_POINT":"https://growmytree.test"};
+		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 		let stripe = null;
 
 		// Stripe Elements instance
@@ -6608,7 +6620,7 @@
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(3, $contributionValue = $$value));
 		component_subscribe($$self, t, $$value => $$invalidate(2, $t = $$value));
 		let certificateUrl;
-		const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6","STRIPE_SECRET_KEY":"sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe","API_END_POINT":"https://growmytree.test"};
+		const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 
 		onMount(() => {
 			getCertificate();
@@ -11745,7 +11757,7 @@
 		};
 	}
 
-	// (67:32) {#if steps[currentActive-1] == "Your Info"}
+	// (62:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1_value = /*$t*/ ctx[3]("homepage.next") + "";
@@ -11789,8 +11801,11 @@
 	}
 
 	function create_fragment(ctx) {
-		let tailwind;
+		let script;
+		let script_src_value;
 		let t0;
+		let tailwind;
+		let t1;
 		let div8;
 		let div7;
 		let p0;
@@ -11800,13 +11815,6 @@
 		let div5;
 		let div1;
 		let div0;
-		let h1;
-		let t2_value = /*$t*/ ctx[3]("homepage.header") + "";
-		let t2;
-		let t3;
-		let p1;
-		let t4_value = /*$t*/ ctx[3]("homepage.message") + "";
-		let t4;
 		let t5;
 		let div4;
 		let div2;
@@ -11852,8 +11860,11 @@
 
 		return {
 			c() {
-				create_component(tailwind.$$.fragment);
+				script = element("script");
+				script.innerHTML = ``;
 				t0 = space();
+				create_component(tailwind.$$.fragment);
+				t1 = space();
 				div8 = element("div");
 				div7 = element("div");
 				p0 = element("p");
@@ -11868,11 +11879,10 @@
 				div5 = element("div");
 				div1 = element("div");
 				div0 = element("div");
-				h1 = element("h1");
-				t2 = text(t2_value);
-				t3 = space();
-				p1 = element("p");
-				t4 = text(t4_value);
+
+				div0.innerHTML = `<h1 class="text-4xl font-medium mb-4">Plant more trees</h1> <p class="text-base font-semibold">Now it&#39;s your turn! Planting trees is a direct path to environmental and social sustainability. 
+                            They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!</p>`;
+
 				t5 = space();
 				div4 = element("div");
 				div2 = element("div");
@@ -11882,9 +11892,7 @@
 				create_component(checkoutform.$$.fragment);
 				t7 = space();
 				if (if_block) if_block.c();
-				if (/*$locale*/ ctx[2] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[8].call(select));
-				attr(h1, "class", "text-4xl font-medium mb-4");
-				attr(p1, "class", "text-base font-semibold");
+				if (!src_url_equal(script.src, script_src_value = "https://cdn.jsdelivr.net/npm/sweetalert2@11")) attr(script, "src", script_src_value);
 				attr(div0, "class", "text-gray-900 text-left px-8 w-5/6");
 				attr(div1, "class", "w-full md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden h-[550px]");
 				set_style(div1, "background-image", "url('" + /*bgImageUrl*/ ctx[5] + "') ");
@@ -11897,8 +11905,10 @@
 				attr(div8, "class", "h-screen flex items-center justify-center");
 			},
 			m(target, anchor) {
-				mount_component(tailwind, target, anchor);
+				append(document.head, script);
 				insert(target, t0, anchor);
+				mount_component(tailwind, target, anchor);
+				insert(target, t1, anchor);
 				insert(target, div8, anchor);
 				append(div8, div7);
 				append(div7, p0);
@@ -11916,11 +11926,6 @@
 				append(div6, div5);
 				append(div5, div1);
 				append(div1, div0);
-				append(div0, h1);
-				append(h1, t2);
-				append(div0, t3);
-				append(div0, p1);
-				append(p1, t4);
 				append(div5, t5);
 				append(div5, div4);
 				append(div4, div2);
@@ -11986,9 +11991,11 @@
 			d(detaching) {
 				if (detaching) {
 					detach(t0);
+					detach(t1);
 					detach(div8);
 				}
 
+				detach(script);
 				destroy_component(tailwind, detaching);
 				destroy_each(each_blocks, detaching);
 				/*progressbar_binding*/ ctx[10](null);
