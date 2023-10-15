@@ -101,20 +101,25 @@
         {#if stripe && clientSecret}
             <Elements {stripe} {clientSecret} bind:elements>
                 <PaymentElement />
-            </Elements>
 
-            <div class="flex text-center justify-center mx-auto no-scrollbar mt-8">
-                <div class="step-button">
-                    <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" on:click={() => handleStepProgress(-1)}>{ $t("homepage.back") }</button>
-                </div>
-                        
-                <div class="step-button">
-                    <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" 
-                        disabled={isProcessing == true}
-                        on:click={processPayment}>{ $t("payment.pay") }
+                <div class="flex text-center justify-between mx-auto no-scrollbar mt-8">
+                    <!-- <div class="step-button">
+                        <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" on:click={() => handleStepProgress(-1)}>{ $t("homepage.back") }</button>
+                    </div> -->
+
+                    <button class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" on:click={() => handleStepProgress(-1)}>
+                        { $t("homepage.back") }
                     </button>
+                            
+                    <div class="step-button">
+                        <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" 
+                            disabled={isProcessing == true}
+                            on:click={processPayment}>{ $t("payment.pay") }
+                        </button>
+                    </div>
                 </div>
-            </div>
+
+            </Elements>
 
             <!-- <div class="inline-flex space-x-2.5">
                 <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-20 px-4 border rounded-full" on:click={() => handleStepProgress(-1)}>{ $t("homepage.back") }</button>

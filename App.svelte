@@ -50,7 +50,9 @@
                 <!-- container 2 -->
                 <div class="w-full md:w-1/2 relative z-0 bg-white rounded-r-2xl overflow-hidden py-8 h-[550px]">
                     <div class="block mb-2">
-                        <ProgressBar {steps} bind:currentActive bind:this={progressBar} />
+                        {#key $locale}
+                            <ProgressBar {steps} bind:currentActive bind:this={progressBar} />
+                        {/key}
                     </div>
                 
                     <!-- payment form here -->
@@ -62,7 +64,7 @@
                     </div>
                 
                     {#if $processingPayment == false }
-                        <div class="block text-center">
+                        <div class="block text-right px-8 pt-2 pb-2">
                             <div class="step-button">
                                 <!-- {#if steps[currentActive-1] != "Your Info"}
                                     <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-20 px-4 border rounded-full" on:click={() => handleProgress(-1)} disabled={currentActive == 1}>Prev</button>
