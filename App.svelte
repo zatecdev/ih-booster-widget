@@ -1,5 +1,5 @@
 <script>
-    import { processingPayment } from './store/store';
+    import { processingPayment, userForm } from './store/store';
     import { t, locale, locales } from './store/i18n';
     import ProgressBar from './components/ui/ProgressBar.svelte';
     import CheckoutForm from './components/CheckoutForm.svelte';
@@ -11,9 +11,32 @@
 
     let steps = ['Your Info', 'Payment', 'Certificate'], currentActive = 1, progressBar;
 
-    // let steps = [ $t('form.step.info'), $t('form.step.payment'), $t('form.step.certificate') ], currentActive = 1, progressBar;
-
     const handleProgress = (stepIncrement) => {
+        //Basic form validation
+        if ( $userForm.firstName == "" || $userForm.lastName == "" || $userForm.email == "" ) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: $t("form.fieldsValidation")
+            })
+
+            return false;
+        }
+
+        //Email validation
+        //let emailValidationRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        let emailValidationRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+        if ( !$userForm.email.match(emailValidationRegex)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: $t("form.emailValidation")
+            })
+
+            return false;
+        }
+
         progressBar.handleProgress(stepIncrement)
     }
         

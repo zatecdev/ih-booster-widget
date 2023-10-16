@@ -21,6 +21,9 @@ export default {
         "form.postalCode": "Postal Code",
         "form.country": "Country",
 
+        "form.fieldsValidation" : "Please make sure the first name, last name and email fields are not empty.",
+        "form.emailValidation" : "Please enter a valid email address",
+
         "payment.thankyou": "Thank you for your impact purchase!",
         "payment.pleaseWait": "Please wait...",
         "payment.processingPayment": "Processing your payment, please wait...",
@@ -52,6 +55,9 @@ export default {
         "form.city": "Stadt",
         "form.postalCode": "Postleitzahl",
         "form.country": "Land",
+
+        "form.fieldsValidation" : "Bitte stellen Sie sicher, dass die Felder „Vorname“, „Nachname“ und „E-Mail“ nicht leer sind.",
+        "form.emailValidation" : "Bitte geben Sie eine gültige E-Mail-Adresse ein",
 
         "payment.thankyou": "Vielen Dank für Ihren Impact-Kauf!",
         "payment.pleaseWait": "Bitte warten...",

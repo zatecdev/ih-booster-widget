@@ -3,7 +3,7 @@
     import { loadStripe } from '@stripe/stripe-js'
     import { Elements, PaymentElement } from 'svelte-stripe'
     import { onMount } from 'svelte'
-    import { userForm, contributionValue, processingPayment, successPayment } from '../store/store.js';
+    import { userForm, contributionValue, processingPayment, successPayment, stripeClientSecret, stripePaymentIntentId } from '../store/store.js';
     import { t, locale, locales } from '../store/i18n';
 
     import Spinner from './ui/Spinner.svelte';
@@ -18,6 +18,7 @@
     let elements
     let clientSecret = null;
     let isProcessing = false;
+    let hasError = false;
 
     onMount(async () => {
         stripe = await loadStripe(STRIPE_PUBLIC_KEY)
@@ -32,10 +33,11 @@
         //2. Create subscription [map subscription with numbers of trees] and return payment intent (from subscription)
         //3. processed with payment. If success continue, if status requires_payment_method, represent form, else error
 
-        let numberOfTrees       = $contributionValue;
-        let paymentFrequency    = $userForm.contributionFrequency; //once or monthly
-        let userDetails         = $userForm;
-        let userLocale          = $locale;
+        let numberOfTrees           = $contributionValue;
+        let paymentFrequency        = $userForm.contributionFrequency; //once or monthly
+        let userDetails             = $userForm;
+        let userLocale              = $locale;
+        let paymentIntentId         = $stripePaymentIntentId
 
         const axiosConfig = { 
             headers: {
@@ -48,13 +50,26 @@
                 frequency: paymentFrequency,
                 customer: userDetails,
                 locale: userLocale,
+                paymentIntentId: paymentIntentId
             }, axiosConfig)
             .then(function (response) {
-                clientSecret = response.data.client_secret;
-                processingPayment.set( true ); //to disable next buttons or so
+                if ( response.data.client_secret ) {
+                    clientSecret = response.data.client_secret; //set it to the store so that back navigation will work or so
+                    stripeClientSecret.set( response.data.client_secret )
+                    stripePaymentIntentId.set( response.data.id )
+                    // processingPayment.set( true ); //to disable next buttons or so
+                }
             })
             .catch(function (error) {
-                console.log(error);
+                hasError = true;
+                console.log(error.response.data);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.response.data.message
+                })
+
+                return false;
             });
     }
 
@@ -96,13 +111,15 @@
 
 <div class="text-center mt-4">
     {#await getPaymentIntent() }
-        <Spinner caption={ $t("payment.pleaseWait") } />
+        {#if hasError == false}
+            <Spinner caption={ $t("payment.pleaseWait") } />
+        {/if}
     {:then data}
         {#if stripe && clientSecret}
             <Elements {stripe} {clientSecret} bind:elements>
                 <PaymentElement />
 
-                <div class="flex text-center justify-between mx-auto no-scrollbar mt-8">
+                <div class="flex text-center justify-between mx-auto no-scrollbar mt-4">
                     <!-- <div class="step-button">
                         <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" on:click={() => handleStepProgress(-1)}>{ $t("homepage.back") }</button>
                     </div> -->

@@ -1578,6 +1578,8 @@
 	const contributionValue = writable(1); //Number of strees [default 1]
 	const processingPayment = writable(false);
 	const successPayment = writable(false);
+	const stripeClientSecret = writable("");
+	const stripePaymentIntentId = writable("");
 
 	const userForm = writable({
 	    contributionFrequency: 'Once', //Once or Monthly [default Once]
@@ -1619,6 +1621,9 @@
 	        "form.postalCode": "Postal Code",
 	        "form.country": "Country",
 
+	        "form.fieldsValidation" : "Please make sure the first name, last name and email fields are not empty.",
+	        "form.emailValidation" : "Please enter a valid email address",
+
 	        "payment.thankyou": "Thank you for your impact purchase!",
 	        "payment.pleaseWait": "Please wait...",
 	        "payment.processingPayment": "Processing your payment, please wait...",
@@ -1650,6 +1655,9 @@
 	        "form.city": "Stadt",
 	        "form.postalCode": "Postleitzahl",
 	        "form.country": "Land",
+
+	        "form.fieldsValidation" : "Bitte stellen Sie sicher, dass die Felder „Vorname“, „Nachname“ und „E-Mail“ nicht leer sind.",
+	        "form.emailValidation" : "Bitte geben Sie eine gültige E-Mail-Adresse ein",
 
 	        "payment.thankyou": "Vielen Dank für Ihren Impact-Kauf!",
 	        "payment.pleaseWait": "Bitte warten...",
@@ -5639,7 +5647,7 @@
 		return {
 			c() {
 				p = element("p");
-				p.textContent = `Error: ${/*error*/ ctx[16].message}`;
+				p.textContent = `Error: ${/*error*/ ctx[18].message}`;
 			},
 			m(target, anchor) {
 				insert(target, p, anchor);
@@ -5655,13 +5663,13 @@
 		};
 	}
 
-	// (100:4) {:then data}
+	// (117:4) {:then data}
 	function create_then_block(ctx) {
 		let current_block_type_index;
 		let if_block;
 		let if_block_anchor;
 		let current;
-		const if_block_creators = [create_if_block$3, create_else_block$2];
+		const if_block_creators = [create_if_block_1$3, create_else_block$2];
 		const if_blocks = [];
 
 		function select_block_type(ctx, dirty) {
@@ -5728,14 +5736,14 @@
 		};
 	}
 
-	// (135:8) {:else}
+	// (152:8) {:else}
 	function create_else_block$2(ctx) {
 		let spinner;
 		let current;
 
 		spinner = new Spinner({
 				props: {
-					caption: /*$t*/ ctx[7]("payment.processingPayment")
+					caption: /*$t*/ ctx[8]("payment.processingPayment")
 				}
 			});
 
@@ -5749,7 +5757,7 @@
 			},
 			p(ctx, dirty) {
 				const spinner_changes = {};
-				if (dirty & /*$t*/ 128) spinner_changes.caption = /*$t*/ ctx[7]("payment.processingPayment");
+				if (dirty & /*$t*/ 256) spinner_changes.caption = /*$t*/ ctx[8]("payment.processingPayment");
 				spinner.$set(spinner_changes);
 			},
 			i(local) {
@@ -5767,14 +5775,14 @@
 		};
 	}
 
-	// (101:8) {#if stripe && clientSecret}
-	function create_if_block$3(ctx) {
+	// (118:8) {#if stripe && clientSecret}
+	function create_if_block_1$3(ctx) {
 		let elements_1;
 		let updating_elements;
 		let current;
 
 		function elements_1_elements_binding(value) {
-			/*elements_1_elements_binding*/ ctx[9](value);
+			/*elements_1_elements_binding*/ ctx[10](value);
 		}
 
 		let elements_1_props = {
@@ -5804,7 +5812,7 @@
 				if (dirty & /*stripe*/ 8) elements_1_changes.stripe = /*stripe*/ ctx[3];
 				if (dirty & /*clientSecret*/ 32) elements_1_changes.clientSecret = /*clientSecret*/ ctx[5];
 
-				if (dirty & /*$$scope, isProcessing, $t, handleStepProgress*/ 131265) {
+				if (dirty & /*$$scope, isProcessing, $t, handleStepProgress*/ 524609) {
 					elements_1_changes.$$scope = { dirty, ctx };
 				}
 
@@ -5831,18 +5839,18 @@
 		};
 	}
 
-	// (102:12) <Elements {stripe} {clientSecret} bind:elements>
+	// (119:12) <Elements {stripe} {clientSecret} bind:elements>
 	function create_default_slot(ctx) {
 		let paymentelement;
 		let t0;
 		let div1;
 		let button0;
-		let t1_value = /*$t*/ ctx[7]("homepage.back") + "";
+		let t1_value = /*$t*/ ctx[8]("homepage.back") + "";
 		let t1;
 		let t2;
 		let div0;
 		let button1;
-		let t3_value = /*$t*/ ctx[7]("payment.pay") + "";
+		let t3_value = /*$t*/ ctx[8]("payment.pay") + "";
 		let t3;
 		let button1_disabled_value;
 		let current;
@@ -5865,7 +5873,7 @@
 				attr(button1, "class", "bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full");
 				button1.disabled = button1_disabled_value = /*isProcessing*/ ctx[6] == true;
 				attr(div0, "class", "step-button");
-				attr(div1, "class", "flex text-center justify-between mx-auto no-scrollbar mt-8");
+				attr(div1, "class", "flex text-center justify-between mx-auto no-scrollbar mt-4");
 			},
 			m(target, anchor) {
 				mount_component(paymentelement, target, anchor);
@@ -5881,7 +5889,7 @@
 
 				if (!mounted) {
 					dispose = [
-						listen(button0, "click", /*click_handler*/ ctx[8]),
+						listen(button0, "click", /*click_handler*/ ctx[9]),
 						listen(button1, "click", /*processPayment*/ ctx[2])
 					];
 
@@ -5889,8 +5897,8 @@
 				}
 			},
 			p(ctx, dirty) {
-				if ((!current || dirty & /*$t*/ 128) && t1_value !== (t1_value = /*$t*/ ctx[7]("homepage.back") + "")) set_data(t1, t1_value);
-				if ((!current || dirty & /*$t*/ 128) && t3_value !== (t3_value = /*$t*/ ctx[7]("payment.pay") + "")) set_data(t3, t3_value);
+				if ((!current || dirty & /*$t*/ 256) && t1_value !== (t1_value = /*$t*/ ctx[8]("homepage.back") + "")) set_data(t1, t1_value);
+				if ((!current || dirty & /*$t*/ 256) && t3_value !== (t3_value = /*$t*/ ctx[8]("payment.pay") + "")) set_data(t3, t3_value);
 
 				if (!current || dirty & /*isProcessing*/ 64 && button1_disabled_value !== (button1_disabled_value = /*isProcessing*/ ctx[6] == true)) {
 					button1.disabled = button1_disabled_value;
@@ -5918,14 +5926,73 @@
 		};
 	}
 
-	// (98:32)           <Spinner caption={ $t("payment.pleaseWait") }
+	// (113:32)           {#if hasError == false}
 	function create_pending_block(ctx) {
+		let if_block_anchor;
+		let current;
+		let if_block = /*hasError*/ ctx[7] == false && create_if_block$3(ctx);
+
+		return {
+			c() {
+				if (if_block) if_block.c();
+				if_block_anchor = empty();
+			},
+			m(target, anchor) {
+				if (if_block) if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+				current = true;
+			},
+			p(ctx, dirty) {
+				if (/*hasError*/ ctx[7] == false) {
+					if (if_block) {
+						if_block.p(ctx, dirty);
+
+						if (dirty & /*hasError*/ 128) {
+							transition_in(if_block, 1);
+						}
+					} else {
+						if_block = create_if_block$3(ctx);
+						if_block.c();
+						transition_in(if_block, 1);
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					group_outros();
+
+					transition_out(if_block, 1, 1, () => {
+						if_block = null;
+					});
+
+					check_outros();
+				}
+			},
+			i(local) {
+				if (current) return;
+				transition_in(if_block);
+				current = true;
+			},
+			o(local) {
+				transition_out(if_block);
+				current = false;
+			},
+			d(detaching) {
+				if (detaching) {
+					detach(if_block_anchor);
+				}
+
+				if (if_block) if_block.d(detaching);
+			}
+		};
+	}
+
+	// (114:8) {#if hasError == false}
+	function create_if_block$3(ctx) {
 		let spinner;
 		let current;
 
 		spinner = new Spinner({
 				props: {
-					caption: /*$t*/ ctx[7]("payment.pleaseWait")
+					caption: /*$t*/ ctx[8]("payment.pleaseWait")
 				}
 			});
 
@@ -5939,7 +6006,7 @@
 			},
 			p(ctx, dirty) {
 				const spinner_changes = {};
-				if (dirty & /*$t*/ 128) spinner_changes.caption = /*$t*/ ctx[7]("payment.pleaseWait");
+				if (dirty & /*$t*/ 256) spinner_changes.caption = /*$t*/ ctx[8]("payment.pleaseWait");
 				spinner.$set(spinner_changes);
 			},
 			i(local) {
@@ -5969,8 +6036,8 @@
 			pending: create_pending_block,
 			then: create_then_block,
 			catch: create_catch_block,
-			value: 15,
-			error: 16,
+			value: 17,
+			error: 18,
 			blocks: [,,,]
 		};
 
@@ -6020,13 +6087,15 @@
 
 	function instance$6($$self, $$props, $$invalidate) {
 		let $t;
+		let $stripePaymentIntentId;
 		let $locale;
 		let $userForm;
 		let $contributionValue;
-		component_subscribe($$self, t, $$value => $$invalidate(7, $t = $$value));
-		component_subscribe($$self, locale, $$value => $$invalidate(10, $locale = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(11, $userForm = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(12, $contributionValue = $$value));
+		component_subscribe($$self, t, $$value => $$invalidate(8, $t = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(11, $stripePaymentIntentId = $$value));
+		component_subscribe($$self, locale, $$value => $$invalidate(12, $locale = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(13, $userForm = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(14, $contributionValue = $$value));
 		let { handleStepProgress } = $$props;
 		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6","STRIPE_SECRET_KEY":"sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe","API_END_POINT":"https://growmytree.test"};
 		let stripe = null;
@@ -6036,6 +6105,7 @@
 
 		let clientSecret = null;
 		let isProcessing = false;
+		let hasError = false;
 
 		onMount(async () => {
 			$$invalidate(3, stripe = await loadStripe(STRIPE_PUBLIC_KEY));
@@ -6052,6 +6122,7 @@
 			let paymentFrequency = $userForm.contributionFrequency; //once or monthly
 			let userDetails = $userForm;
 			let userLocale = $locale;
+			let paymentIntentId = $stripePaymentIntentId;
 
 			const axiosConfig = {
 				headers: { 'Content-Type': 'application/json' }
@@ -6063,14 +6134,27 @@
 					quantity: numberOfTrees,
 					frequency: paymentFrequency,
 					customer: userDetails,
-					locale: userLocale
+					locale: userLocale,
+					paymentIntentId
 				},
 				axiosConfig
 			).then(function (response) {
-				$$invalidate(5, clientSecret = response.data.client_secret);
-				processingPayment.set(true); //to disable next buttons or so
+				if (response.data.client_secret) {
+					$$invalidate(5, clientSecret = response.data.client_secret); //set it to the store so that back navigation will work or so
+					stripeClientSecret.set(response.data.client_secret);
+					stripePaymentIntentId.set(response.data.id);
+				} // processingPayment.set( true ); //to disable next buttons or so
 			}).catch(function (error) {
-				console.log(error);
+				$$invalidate(7, hasError = true);
+				console.log(error.response.data);
+
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: error.response.data.message
+				});
+
+				return false;
 			});
 		};
 
@@ -6127,6 +6211,7 @@
 			elements,
 			clientSecret,
 			isProcessing,
+			hasError,
 			$t,
 			click_handler,
 			elements_1_elements_binding
@@ -7678,19 +7763,19 @@
 
 	function get_each_context(ctx, list, i) {
 		const child_ctx = ctx.slice();
-		child_ctx[13] = list[i];
+		child_ctx[14] = list[i];
 		return child_ctx;
 	}
 
-	// (33:14) {#each locales as l}
+	// (56:14) {#each locales as l}
 	function create_each_block(ctx) {
 		let option;
 
 		return {
 			c() {
 				option = element("option");
-				option.textContent = `${/*l*/ ctx[13]}`;
-				option.__value = /*l*/ ctx[13];
+				option.textContent = `${/*l*/ ctx[14]}`;
+				option.__value = /*l*/ ctx[14];
 				set_input_value(option, option.__value);
 			},
 			m(target, anchor) {
@@ -7705,7 +7790,7 @@
 		};
 	}
 
-	// (53:24) {#key $locale}
+	// (76:24) {#key $locale}
 	function create_key_block(ctx) {
 		let progressbar;
 		let updating_currentActive;
@@ -7760,7 +7845,7 @@
 		};
 	}
 
-	// (66:20) {#if $processingPayment == false }
+	// (89:20) {#if $processingPayment == false }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -7803,10 +7888,10 @@
 		};
 	}
 
-	// (73:32) {#if steps[currentActive-1] == "Your Info"}
+	// (96:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
-		let t_1_value = /*$t*/ ctx[3]("homepage.next") + "";
+		let t_1_value = /*$t*/ ctx[2]("homepage.next") + "";
 		let t_1;
 		let button_disabled_value;
 		let mounted;
@@ -7829,7 +7914,7 @@
 				}
 			},
 			p(ctx, dirty) {
-				if (dirty & /*$t*/ 8 && t_1_value !== (t_1_value = /*$t*/ ctx[3]("homepage.next") + "")) set_data(t_1, t_1_value);
+				if (dirty & /*$t*/ 4 && t_1_value !== (t_1_value = /*$t*/ ctx[2]("homepage.next") + "")) set_data(t_1, t_1_value);
 
 				if (dirty & /*currentActive*/ 1 && button_disabled_value !== (button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[6].length)) {
 					button.disabled = button_disabled_value;
@@ -7862,16 +7947,16 @@
 		let div1;
 		let div0;
 		let h1;
-		let t3_value = /*$t*/ ctx[3]("homepage.header") + "";
+		let t3_value = /*$t*/ ctx[2]("homepage.header") + "";
 		let t3;
 		let t4;
 		let p1;
-		let t5_value = /*$t*/ ctx[3]("homepage.message") + "";
+		let t5_value = /*$t*/ ctx[2]("homepage.message") + "";
 		let t5;
 		let t6;
 		let div4;
 		let div2;
-		let previous_key = /*$locale*/ ctx[2];
+		let previous_key = /*$locale*/ ctx[3];
 		let t7;
 		let div3;
 		let checkoutform;
@@ -7934,7 +8019,7 @@
 				t8 = space();
 				if (if_block) if_block.c();
 				if (!src_url_equal(script.src, script_src_value = "https://cdn.jsdelivr.net/npm/sweetalert2@11")) attr(script, "src", script_src_value);
-				if (/*$locale*/ ctx[2] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[8].call(select));
+				if (/*$locale*/ ctx[3] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[8].call(select));
 				attr(h1, "class", "text-4xl font-medium mb-4");
 				attr(p1, "class", "text-base font-semibold");
 				attr(div0, "class", "text-gray-900 text-left px-8 w-5/6");
@@ -7964,7 +8049,7 @@
 					}
 				}
 
-				select_option(select, /*$locale*/ ctx[2], true);
+				select_option(select, /*$locale*/ ctx[3], true);
 				append(div7, t2);
 				append(div7, div6);
 				append(div6, div5);
@@ -7992,14 +8077,14 @@
 				}
 			},
 			p(ctx, [dirty]) {
-				if (dirty & /*$locale*/ 4) {
-					select_option(select, /*$locale*/ ctx[2]);
+				if (dirty & /*$locale*/ 8) {
+					select_option(select, /*$locale*/ ctx[3]);
 				}
 
-				if ((!current || dirty & /*$t*/ 8) && t3_value !== (t3_value = /*$t*/ ctx[3]("homepage.header") + "")) set_data(t3, t3_value);
-				if ((!current || dirty & /*$t*/ 8) && t5_value !== (t5_value = /*$t*/ ctx[3]("homepage.message") + "")) set_data(t5, t5_value);
+				if ((!current || dirty & /*$t*/ 4) && t3_value !== (t3_value = /*$t*/ ctx[2]("homepage.header") + "")) set_data(t3, t3_value);
+				if ((!current || dirty & /*$t*/ 4) && t5_value !== (t5_value = /*$t*/ ctx[2]("homepage.message") + "")) set_data(t5, t5_value);
 
-				if (dirty & /*$locale*/ 4 && safe_not_equal(previous_key, previous_key = /*$locale*/ ctx[2])) {
+				if (dirty & /*$locale*/ 8 && safe_not_equal(previous_key, previous_key = /*$locale*/ ctx[3])) {
 					group_outros();
 					transition_out(key_block, 1, 1, noop$1);
 					check_outros();
@@ -8061,11 +8146,13 @@
 	}
 
 	function instance($$self, $$props, $$invalidate) {
-		let $locale;
 		let $t;
+		let $userForm;
+		let $locale;
 		let $processingPayment;
-		component_subscribe($$self, locale, $$value => $$invalidate(2, $locale = $$value));
-		component_subscribe($$self, t, $$value => $$invalidate(3, $t = $$value));
+		component_subscribe($$self, t, $$value => $$invalidate(2, $t = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(12, $userForm = $$value));
+		component_subscribe($$self, locale, $$value => $$invalidate(3, $locale = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(4, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8074,8 +8161,32 @@
 			currentActive = 1,
 			progressBar;
 
-		// let steps = [ $t('form.step.info'), $t('form.step.payment'), $t('form.step.certificate') ], currentActive = 1, progressBar;
 		const handleProgress = stepIncrement => {
+			//Basic form validation
+			if ($userForm.firstName == "" || $userForm.lastName == "" || $userForm.email == "") {
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: $t("form.fieldsValidation")
+				});
+
+				return false;
+			}
+
+			//Email validation
+			//let emailValidationRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+			let emailValidationRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+			if (!$userForm.email.match(emailValidationRegex)) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: $t("form.emailValidation")
+				});
+
+				return false;
+			}
+
 			progressBar.handleProgress(stepIncrement);
 		};
 
@@ -8101,8 +8212,8 @@
 		return [
 			currentActive,
 			progressBar,
-			$locale,
 			$t,
+			$locale,
 			$processingPayment,
 			bgImageUrl,
 			steps,
