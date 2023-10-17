@@ -277,6 +277,14 @@
         box-shadow: 0 0px 8px var(--accent-color);
         border-radius: 1.5em;
     }
-   
+
+    /* Extra small devices (phones, 600px and down) */
+    @media only screen and (max-width: 600px) {
+        .s--inner button span {
+            border-radius: 50px;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+    }
 
 </style>

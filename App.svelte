@@ -1,5 +1,5 @@
 <script>
-    import { processingPayment, userForm } from './store/store';
+    import { processingPayment, userForm, formErrors } from './store/store';
     import { t, locale, locales } from './store/i18n';
     import ProgressBar from './components/ui/ProgressBar.svelte';
     import CheckoutForm from './components/CheckoutForm.svelte';
@@ -12,27 +12,29 @@
     let steps = ['Your Info', 'Payment', 'Certificate'], currentActive = 1, progressBar;
 
     const handleProgress = (stepIncrement) => {
-        //Basic form validation
-        if ( $userForm.firstName == "" || $userForm.lastName == "" || $userForm.email == "" ) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: $t("form.fieldsValidation")
-            })
-
-            return false;
-        }
-
-        //Email validation
+        
+        //Form validationn (basic)
         //let emailValidationRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         let emailValidationRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-        if ( !$userForm.email.match(emailValidationRegex)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: $t("form.emailValidation")
-            })
+        if ( $userForm.firstName == "" || $userForm.lastName == "" || $userForm.email == "" || !$userForm.email.match(emailValidationRegex) ) {
+            if ($userForm.firstName == "") {
+                $formErrors.firstName = $t("form.firstNameValidation")
+            } else {
+                $formErrors.firstName = ""
+            }
+
+            if ($userForm.lastName == "") {
+                $formErrors.lastName = $t("form.lastNameValidation")
+            } else {
+                $formErrors.lastName = ""
+            }
+
+            if ( $userForm.email == "" || !$userForm.email.match(emailValidationRegex)) {
+                $formErrors.email = $t("form.emailValidation")
+            } else {
+                $formErrors.email = ""
+            }
 
             return false;
         }

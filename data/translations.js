@@ -22,6 +22,8 @@ export default {
         "form.country": "Country",
 
         "form.fieldsValidation" : "Please make sure the first name, last name and email fields are not empty.",
+        "form.firstNameValidation": "First name field is required.",
+        "form.lastNameValidation": "Last name field is required.",
         "form.emailValidation" : "Please enter a valid email address",
 
         "payment.thankyou": "Thank you for your impact purchase!",
@@ -57,6 +59,8 @@ export default {
         "form.country": "Land",
 
         "form.fieldsValidation" : "Bitte stellen Sie sicher, dass die Felder „Vorname“, „Nachname“ und „E-Mail“ nicht leer sind.",
+        "form.firstNameValidation": "Vorname muss ausgefüllt sein.",
+        "form.lastNameValidation": "Nachname muss ausgefüllt sein.",
         "form.emailValidation" : "Bitte geben Sie eine gültige E-Mail-Adresse ein",
 
         "payment.thankyou": "Vielen Dank für Ihren Impact-Kauf!",

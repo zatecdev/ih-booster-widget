@@ -27,7 +27,6 @@
     export const getPaymentIntent = async () => {
 
         //If once off, create customer and proceed as it is an pass some customer info if applicable 
-
         //If monthly processed like this:
         //1. Create customer
         //2. Create subscription [map subscription with numbers of trees] and return payment intent (from subscription)
@@ -74,12 +73,23 @@
     }
 
     export const processPayment = async () => {
-        isProcessing = true; 
+        isProcessing = true;
         const result = await stripe.confirmPayment({
             elements,
             // specify redirect: 'if_required' or a `return_url`
             redirect: 'if_required'
         })
+
+        if (result.error) {
+            isProcessing = false; 
+            Swal.fire({
+                icon: 'error',
+                title: 'Oh no, we have an error processing your payment',
+                text: result.error.message
+            })
+
+            return false;
+        }
 
         if ( result.paymentIntent.status == "succeeded") {
             //if okay then we redirect to page or update a variable [see clientSecret]

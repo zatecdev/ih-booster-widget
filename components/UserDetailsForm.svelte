@@ -3,7 +3,7 @@
     import RangeSlider from 'svelte-range-slider-pips'
     import MultiSelect from 'svelte-multiselect'
 
-    import { userForm, contributionValue, totalPrice } from '../store/store.js';
+    import { userForm, contributionValue, totalPrice, formErrors } from '../store/store.js';
 
     import InputField from "./form/InputField.svelte";
     import Switch from "./form/Switch.svelte";
@@ -78,18 +78,32 @@
     </div>
 </div>
 
-<div class="flex justify-between">
-    <div class="mr-2">
+<div class="flex flex-col md:flex-row justify-between">
+    <div class="w-full md:w-1/2 md:mr-2">
         <InputField label={ $t("form.firstName") } bind:value={$userForm.firstName} />
+        {#if $formErrors.firstName != ""}
+            <span class="text-red-500 text-sm">{$formErrors.firstName}</span>
+        {/if}
     </div>
-    <InputField label={ $t("form.lastName") } bind:value={$userForm.lastName} />
+    <div class="w-full md:w-1/2">
+        <InputField label={ $t("form.lastName") } bind:value={$userForm.lastName} />
+        {#if $formErrors.lastName != ""}
+            <span class="text-red-500 text-sm">{$formErrors.lastName}</span>
+        {/if}
+    </div>
 </div>
 <InputField label={ $t("form.email") }  bind:value={$userForm.email} />
+{#if $formErrors.email != ""}
+    <span class="text-red-500 text-sm">{$formErrors.email}</span>
+{/if}
+
 <InputField label={ $t("form.address") }  bind:value={$userForm.address} />
-<div class="flex justify-between">
-    <div class="mr-2">
+<div class="flex flex-col md:flex-row justify-between">
+    <div class="w-full md:w-1/2 md:mr-2">
+        <InputField label={ $t("form.postalCode") }  bind:value={$userForm.postalCode} />
+    </div>
+    <div class="w-full md:w-1/2">
         <InputField label={ $t("form.city") }  bind:value={$userForm.city} />
     </div>
-    <InputField label={ $t("form.postalCode") }  bind:value={$userForm.postalCode} />
 </div>
 <!-- <InputField label={'Country'} bind:value={$userForm.country} /> -->
