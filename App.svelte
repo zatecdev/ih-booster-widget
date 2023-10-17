@@ -63,7 +63,7 @@
 
         <div class="antialiased max-w-6xl mx-auto px-8">
             <div class="relative block md:flex items-center p-8">
-                <div class="w-full md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden h-[550px]" style="background-image: url('{bgImageUrl}') ;">
+                <div class="hidden md:block md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden md:h-[550px]" style="background-image: url('{bgImageUrl}') ;">
                     <div class="text-gray-900 text-left px-8 w-5/6">
                         <h1 class="text-4xl font-medium mb-4">{ $t("homepage.header") }</h1>
                         <p class="text-base font-semibold">
@@ -71,9 +71,19 @@
                         </p>
                     </div>
                 </div>
+
+                <!-- mobile header -->
+                <div class="block md:hidden bg-white pt-8 rounded-t-2xl mb-4">
+                    <div class="text-gray-900 text-left px-8 w-5/6">
+                        <h1 class="text-2xl font-medium mb-4">{ $t("homepage.header") }</h1>
+                        <p class="text-sm font-semibold">
+                            { $t("homepage.message") }
+                        </p>
+                    </div>
+                </div>
         
                 <!-- container 2 -->
-                <div class="w-full md:w-1/2 relative z-0 bg-white rounded-r-2xl overflow-hidden py-8 h-[550px]">
+                <div class="w-full md:w-1/2 relative z-0 bg-white rounded-b-2xl md:rounded-r-2xl overflow-hidden py-8 h-full md:h-[550px] overflow-auto">
                     <div class="block mb-2">
                         {#key $locale}
                             <ProgressBar {steps} bind:currentActive bind:this={progressBar} />
