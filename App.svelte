@@ -15,7 +15,7 @@
 
     onMount(() => {
 		currentLanguage = Weglot.getCurrentLang();
-        console.log('on initialiaze, language is ' + currentLanguage)
+        $locale = currentLanguage;
 	});
 
     const handleProgress = (stepIncrement) => {
@@ -67,7 +67,7 @@
 <!-- Don't remove, add tailwind base config -->
 <Tailwind />
 
-<div class="h-full block md:flex items-center justify-center">
+<div id="widget-container" class="h-full block md:flex items-center justify-center">
     <div class="h-auto place-items-center">
         <!-- <p>
             <select bind:value={$locale}>
