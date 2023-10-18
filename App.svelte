@@ -11,7 +11,7 @@
 
     let steps = ['Your Info', 'Payment', 'Certificate'], currentActive = 1, progressBar;
 
-    let currentLanguage = "";
+    let currentLanguage = ""; //default
 
     onMount(() => {
 		currentLanguage = Weglot.getCurrentLang();
@@ -51,8 +51,10 @@
 
     const getCurrentLanguage = () => {
         currentLanguage = Weglot.getCurrentLang();
-        // $locale = currentLanguage;
-        console.log(currentLanguage)
+        console.log('Webflow language is ' + currentLanguage)
+
+        $locale = currentLanguage;
+        console.log('Locale Language is ' + currentLanguage)
     }
 
     Weglot.on("languageChanged", getCurrentLanguage);
@@ -69,13 +71,13 @@
 
 <div class="h-full block md:flex items-center justify-center">
     <div class="h-auto place-items-center">
-        <p>
+        <!-- <p>
             <select bind:value={$locale}>
               {#each locales as l}
                 <option value={l}>{l}</option>
               {/each}
             </select>
-        </p>
+        </p> -->
 
         <div class="antialiased max-w-full md:max-w-6xl mx-auto px-2 md:px-8">
             <div class="relative block md:flex items-center p-2 md:p-8">

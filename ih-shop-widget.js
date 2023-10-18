@@ -420,26 +420,6 @@
 	}
 
 	/**
-	 * @returns {void} */
-	function select_option(select, value, mounting) {
-		for (let i = 0; i < select.options.length; i += 1) {
-			const option = select.options[i];
-			if (option.__value === value) {
-				option.selected = true;
-				return;
-			}
-		}
-		if (!mounting || value !== undefined) {
-			select.selectedIndex = -1; // no option should be selected
-		}
-	}
-
-	function select_value(select) {
-		const selected_option = select.querySelector(':checked');
-		return selected_option && selected_option.__value;
-	}
-
-	/**
 	 * @template T
 	 * @param {string} type
 	 * @param {T} [detail]
@@ -1685,7 +1665,6 @@
 	};
 
 	const locale = writable("de");
-	const locales = Object.keys(translations);
 
 	function translate(locale, key, vars) {
 	  // Let's throw some errors if we're trying to use keys/locales that don't exist.
@@ -1717,7 +1696,7 @@
 		append_styles(target, "svelte-i62685", ".step-tab.svelte-i62685{color:#C5C2C0;border-bottom:2px solid #F2EFED;width:30%;font-size:13px;font-weight:600}.step-tab-active.svelte-i62685{color:#5F753D !important;border-bottom:2px solid #5F753D !important}.progress-container.svelte-i62685{display:flex;justify-content:space-between;position:relative;margin-bottom:30px;max-width:100%;width:75%;margin:0 auto !important}.progress-container.svelte-i62685::before{content:'';position:absolute;top:50%;left:0;transform:translateY(-50%);height:4px;width:100%;z-index:-1}.progress.svelte-i62685{background-color:#5F753D;position:absolute;top:50%;left:0;transform:translateY(-50%);height:4px;width:0%;transition:0.4s ease}");
 	}
 
-	function get_each_context$2(ctx, list, i) {
+	function get_each_context$1(ctx, list, i) {
 		const child_ctx = ctx.slice();
 		child_ctx[10] = list[i];
 		child_ctx[12] = i;
@@ -1725,7 +1704,7 @@
 	}
 
 	// (47:1) {#each steps as step, i}
-	function create_each_block$2(ctx) {
+	function create_each_block$1(ctx) {
 		let div;
 		let t_1_value = /*progressSteps*/ ctx[4][/*i*/ ctx[12]].caption + "";
 		let t_1;
@@ -1769,7 +1748,7 @@
 		let each_blocks = [];
 
 		for (let i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+			each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
 		}
 
 		return {
@@ -1806,12 +1785,12 @@
 					let i;
 
 					for (i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$2(ctx, each_value, i);
+						const child_ctx = get_each_context$1(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(child_ctx, dirty);
 						} else {
-							each_blocks[i] = create_each_block$2(child_ctx);
+							each_blocks[i] = create_each_block$1(child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(div1, null);
 						}
@@ -6510,7 +6489,7 @@
 		append_styles(target, "svelte-1qjf8v8", ":root{--accent-color:#5F753D;--gray:#ccc;--cream:#F5F2F0}.s--inner.svelte-1qjf8v8 button.svelte-1qjf8v8.svelte-1qjf8v8{font-weight:500;padding:0.3em;background:var(--cream);border-radius:50px}[role='switch'][aria-checked='true'].svelte-1qjf8v8 .svelte-1qjf8v8.svelte-1qjf8v8:first-child,[role='switch'][aria-checked='false'].svelte-1qjf8v8 .svelte-1qjf8v8.svelte-1qjf8v8:last-child{display:none;color:#fff}.s--inner.svelte-1qjf8v8 button span.svelte-1qjf8v8.svelte-1qjf8v8{-webkit-user-select:none;-moz-user-select:none;user-select:none;pointer-events:none;padding:0.45em;border-radius:50px;padding-left:60px;padding-right:60px;background:var(--cream);color:var(--accent-color)}.s--slider.svelte-1qjf8v8.svelte-1qjf8v8.svelte-1qjf8v8{display:flex;align-items:center}.s--slider.svelte-1qjf8v8 button.svelte-1qjf8v8.svelte-1qjf8v8{width:3em;height:1.6em;position:relative;margin:0 0 0 0.5em;background:var(--gray);border:none}.s--slider.svelte-1qjf8v8 button.svelte-1qjf8v8.svelte-1qjf8v8::before{content:'';position:absolute;width:1.3em;height:1.3em;background:#fff;top:0.13em;right:1.5em;transition:transform 0.3s}.s--slider.svelte-1qjf8v8 button[aria-checked='true'].svelte-1qjf8v8.svelte-1qjf8v8{background-color:var(--accent-color)}.s--slider.svelte-1qjf8v8 button[aria-checked='true'].svelte-1qjf8v8.svelte-1qjf8v8::before{transform:translateX(1.3em);transition:transform 0.3s}.s--slider.svelte-1qjf8v8 button.svelte-1qjf8v8.svelte-1qjf8v8:focus{box-shadow:0 0px 0px 1px var(--accent-color)}.s--multi.svelte-1qjf8v8 .group-container.svelte-1qjf8v8.svelte-1qjf8v8{border:none;padding:0;white-space:nowrap}.s--multi.svelte-1qjf8v8 label.svelte-1qjf8v8.svelte-1qjf8v8{display:inline-block;line-height:1.6;position:relative;z-index:2}.s--multi.svelte-1qjf8v8 input.svelte-1qjf8v8.svelte-1qjf8v8{opacity:0;position:absolute}.s--multi.svelte-1qjf8v8 label.svelte-1qjf8v8.svelte-1qjf8v8:first-of-type{padding-right:5em}.s--multi.svelte-1qjf8v8 label.svelte-1qjf8v8.svelte-1qjf8v8:last-child{margin-left:-5em;padding-left:5em}.s--multi.svelte-1qjf8v8:focus-within label.svelte-1qjf8v8.svelte-1qjf8v8:first-of-type:after{box-shadow:0 0px 8px var(--accent-color);border-radius:1.5em}.s--multi.svelte-1qjf8v8 label.svelte-1qjf8v8.svelte-1qjf8v8:first-of-type:before,.s--multi.svelte-1qjf8v8 label.svelte-1qjf8v8.svelte-1qjf8v8:first-of-type:after{content:\"\";height:1.25em;overflow:hidden;pointer-events:none;position:absolute;vertical-align:middle}.s--multi.svelte-1qjf8v8 label.svelte-1qjf8v8.svelte-1qjf8v8:first-of-type:before{border-radius:100%;z-index:2;position:absolute;width:1.2em;height:1.2em;background:#fff;top:0.2em;right:1.2em;transition:transform 0.3s}.s--multi.svelte-1qjf8v8 label.svelte-1qjf8v8.svelte-1qjf8v8:first-of-type:after{background:var(--accent-color);border-radius:1em;margin:0 1em;transition:background .2s ease-in-out;width:3em;height:1.6em}.s--multi.svelte-1qjf8v8 input.svelte-1qjf8v8:first-of-type:checked~label.svelte-1qjf8v8:first-of-type:after{background:var(--gray)}.s--multi.svelte-1qjf8v8 input.svelte-1qjf8v8:first-of-type:checked~label.svelte-1qjf8v8:first-of-type:before{transform:translateX(-1.4em)}.s--multi.svelte-1qjf8v8 input.svelte-1qjf8v8:last-of-type:checked~label.svelte-1qjf8v8:last-of-type{z-index:1}.s--multi.svelte-1qjf8v8 input.svelte-1qjf8v8.svelte-1qjf8v8:focus{box-shadow:0 0px 8px var(--accent-color);border-radius:1.5em}[role='switch'][aria-checked='true'].svelte-1qjf8v8 .svelte-1qjf8v8.svelte-1qjf8v8:first-child,[role='switch'][aria-checked='false'].svelte-1qjf8v8 .svelte-1qjf8v8.svelte-1qjf8v8:last-child{border-radius:50px;background:var(--accent-color);display:inline-block}.s--slider.svelte-1qjf8v8 button.svelte-1qjf8v8.svelte-1qjf8v8{border-radius:1.5em}.s--slider.svelte-1qjf8v8 button.svelte-1qjf8v8.svelte-1qjf8v8::before{border-radius:100%}.s--slider.svelte-1qjf8v8 button.svelte-1qjf8v8.svelte-1qjf8v8:focus{box-shadow:0 0px 8px var(--accent-color);border-radius:1.5em}@media only screen and (max-width: 1051px){.s--inner.svelte-1qjf8v8 button span.svelte-1qjf8v8.svelte-1qjf8v8{border-radius:50px;padding-left:55px;padding-right:55px}}@media screen and (min-width:768px) and (max-width:1050px){.s--inner.svelte-1qjf8v8 button span.svelte-1qjf8v8.svelte-1qjf8v8{border-radius:50px;padding-left:20px;padding-right:20px}}@media screen and (min-width:479px) and (max-width:767px){.s--inner.svelte-1qjf8v8 button span.svelte-1qjf8v8.svelte-1qjf8v8{border-radius:50px;padding-left:20px;padding-right:20px}}@media screen and (min-width:401px) and (max-width:478px){.s--inner.svelte-1qjf8v8 button span.svelte-1qjf8v8.svelte-1qjf8v8{border-radius:50px;padding-left:25px;padding-right:25px}}@media only screen and (max-width: 400px){.s--inner.svelte-1qjf8v8 button span.svelte-1qjf8v8.svelte-1qjf8v8{border-radius:50px;padding-left:10px;padding-right:10px}}");
 	}
 
-	function get_each_context$1(ctx, list, i) {
+	function get_each_context(ctx, list, i) {
 		const child_ctx = ctx.slice();
 		child_ctx[12] = list[i];
 		return child_ctx;
@@ -6527,7 +6506,7 @@
 		let each_blocks = [];
 
 		for (let i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+			each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
 		}
 
 		return {
@@ -6572,12 +6551,12 @@
 					let i;
 
 					for (i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$1(ctx, each_value, i);
+						const child_ctx = get_each_context(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(child_ctx, dirty);
 						} else {
-							each_blocks[i] = create_each_block$1(child_ctx);
+							each_blocks[i] = create_each_block(child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(div1, null);
 						}
@@ -6740,7 +6719,7 @@
 	}
 
 	// (64:8) {#each options as option}
-	function create_each_block$1(ctx) {
+	function create_each_block(ctx) {
 		let input;
 		let input_id_value;
 		let input_value_value;
@@ -7942,43 +7921,13 @@
 
 	/* App.svelte generated by Svelte v4.2.1 */
 
-	function get_each_context(ctx, list, i) {
-		const child_ctx = ctx.slice();
-		child_ctx[17] = list[i];
-		return child_ctx;
-	}
-
-	// (74:14) {#each locales as l}
-	function create_each_block(ctx) {
-		let option;
-
-		return {
-			c() {
-				option = element("option");
-				option.textContent = `${/*l*/ ctx[17]}`;
-				option.__value = /*l*/ ctx[17];
-				set_input_value(option, option.__value);
-			},
-			m(target, anchor) {
-				insert(target, option, anchor);
-			},
-			p: noop$1,
-			d(detaching) {
-				if (detaching) {
-					detach(option);
-				}
-			}
-		};
-	}
-
-	// (105:24) {#key $locale}
 	function create_key_block(ctx) {
 		let progressbar;
 		let updating_currentActive;
 		let current;
 
 		function progressbar_currentActive_binding(value) {
-			/*progressbar_currentActive_binding*/ ctx[9](value);
+			/*progressbar_currentActive_binding*/ ctx[8](value);
 		}
 
 		let progressbar_props = { steps: /*steps*/ ctx[6] };
@@ -7989,7 +7938,7 @@
 
 		progressbar = new ProgressBar({ props: progressbar_props });
 		binding_callbacks.push(() => bind$1(progressbar, 'currentActive', progressbar_currentActive_binding));
-		/*progressbar_binding*/ ctx[10](progressbar);
+		/*progressbar_binding*/ ctx[9](progressbar);
 
 		return {
 			c() {
@@ -8020,13 +7969,13 @@
 				current = false;
 			},
 			d(detaching) {
-				/*progressbar_binding*/ ctx[10](null);
+				/*progressbar_binding*/ ctx[9](null);
 				destroy_component(progressbar, detaching);
 			}
 		};
 	}
 
-	// (118:20) {#if $processingPayment == false }
+	// (120:20) {#if $processingPayment == false }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8069,10 +8018,10 @@
 		};
 	}
 
-	// (125:32) {#if steps[currentActive-1] == "Your Info"}
+	// (127:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
-		let t_1_value = /*$t*/ ctx[2]("homepage.next") + "";
+		let t_1_value = /*$t*/ ctx[3]("homepage.next") + "";
 		let t_1;
 		let button_disabled_value;
 		let mounted;
@@ -8090,12 +8039,12 @@
 				append(button, t_1);
 
 				if (!mounted) {
-					dispose = listen(button, "click", /*click_handler*/ ctx[11]);
+					dispose = listen(button, "click", /*click_handler*/ ctx[10]);
 					mounted = true;
 				}
 			},
 			p(ctx, dirty) {
-				if (dirty & /*$t*/ 4 && t_1_value !== (t_1_value = /*$t*/ ctx[2]("homepage.next") + "")) set_data(t_1, t_1_value);
+				if (dirty & /*$t*/ 8 && t_1_value !== (t_1_value = /*$t*/ ctx[3]("homepage.next") + "")) set_data(t_1, t_1_value);
 
 				if (dirty & /*currentActive*/ 1 && button_disabled_value !== (button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[6].length)) {
 					button.disabled = button_disabled_value;
@@ -8122,51 +8071,39 @@
 		let t1;
 		let div10;
 		let div9;
-		let p0;
-		let select;
-		let t2;
 		let div8;
 		let div7;
 		let div1;
 		let div0;
 		let h10;
-		let t3_value = /*$t*/ ctx[2]("homepage.header") + "";
+		let t2_value = /*$t*/ ctx[3]("homepage.header") + "";
+		let t2;
 		let t3;
+		let p0;
+		let t4_value = /*$t*/ ctx[3]("homepage.message") + "";
 		let t4;
-		let p1;
-		let t5_value = /*$t*/ ctx[2]("homepage.message") + "";
 		let t5;
-		let t6;
 		let div3;
 		let div2;
 		let h11;
-		let t7_value = /*$t*/ ctx[2]("homepage.header") + "";
+		let t6_value = /*$t*/ ctx[3]("homepage.header") + "";
+		let t6;
 		let t7;
+		let p1;
+		let t8_value = /*$t*/ ctx[3]("homepage.message") + "";
 		let t8;
-		let p2;
-		let t9_value = /*$t*/ ctx[2]("homepage.message") + "";
 		let t9;
-		let t10;
 		let br;
-		let t11;
+		let t10;
 		let div6;
 		let div4;
-		let previous_key = /*$locale*/ ctx[3];
-		let t12;
+		let previous_key = /*$locale*/ ctx[2];
+		let t11;
 		let div5;
 		let checkoutform;
-		let t13;
+		let t12;
 		let current;
-		let mounted;
-		let dispose;
 		tailwind = new Tailwind({});
-		let each_value = ensure_array_like(locales);
-		let each_blocks = [];
-
-		for (let i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
-		}
-
 		let key_block = create_key_block(ctx);
 
 		checkoutform = new CheckoutForm({
@@ -8189,53 +8126,44 @@
 				t1 = space();
 				div10 = element("div");
 				div9 = element("div");
-				p0 = element("p");
-				select = element("select");
-
-				for (let i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
-				}
-
-				t2 = space();
 				div8 = element("div");
 				div7 = element("div");
 				div1 = element("div");
 				div0 = element("div");
 				h10 = element("h1");
-				t3 = text(t3_value);
-				t4 = space();
-				p1 = element("p");
-				t5 = text(t5_value);
-				t6 = space();
+				t2 = text(t2_value);
+				t3 = space();
+				p0 = element("p");
+				t4 = text(t4_value);
+				t5 = space();
 				div3 = element("div");
 				div2 = element("div");
 				h11 = element("h1");
-				t7 = text(t7_value);
-				t8 = space();
-				p2 = element("p");
-				t9 = text(t9_value);
-				t10 = space();
+				t6 = text(t6_value);
+				t7 = space();
+				p1 = element("p");
+				t8 = text(t8_value);
+				t9 = space();
 				br = element("br");
-				t11 = space();
+				t10 = space();
 				div6 = element("div");
 				div4 = element("div");
 				key_block.c();
-				t12 = space();
+				t11 = space();
 				div5 = element("div");
 				create_component(checkoutform.$$.fragment);
-				t13 = space();
+				t12 = space();
 				if (if_block) if_block.c();
 				if (!src_url_equal(script0.src, script0_src_value = "https://cdn.jsdelivr.net/npm/sweetalert2@11")) attr(script0, "src", script0_src_value);
 				attr(script1, "type", "text/javascript");
 				if (!src_url_equal(script1.src, script1_src_value = "https://cdn.weglot.com/weglot.min.js")) attr(script1, "src", script1_src_value);
-				if (/*$locale*/ ctx[3] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[8].call(select));
 				attr(h10, "class", "text-4xl font-medium mb-4");
-				attr(p1, "class", "text-base font-semibold");
+				attr(p0, "class", "text-base font-semibold");
 				attr(div0, "class", "text-gray-900 text-left px-8 w-5/6");
 				attr(div1, "class", "hidden md:block md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden md:h-[550px]");
 				set_style(div1, "background-image", "url('" + /*bgImageUrl*/ ctx[5] + "') ");
 				attr(h11, "class", "text-2xl font-medium mb-4");
-				attr(p2, "class", "text-sm font-semibold");
+				attr(p1, "class", "text-sm font-semibold");
 				attr(div2, "class", "text-gray-900 text-left px-8 w-full");
 				attr(div3, "class", "block md:hidden bg-white pt-8 py-4 rounded-t-2xl mb-4");
 				attr(div4, "class", "block mb-2");
@@ -8254,63 +8182,43 @@
 				insert(target, t1, anchor);
 				insert(target, div10, anchor);
 				append(div10, div9);
-				append(div9, p0);
-				append(p0, select);
-
-				for (let i = 0; i < each_blocks.length; i += 1) {
-					if (each_blocks[i]) {
-						each_blocks[i].m(select, null);
-					}
-				}
-
-				select_option(select, /*$locale*/ ctx[3], true);
-				append(div9, t2);
 				append(div9, div8);
 				append(div8, div7);
 				append(div7, div1);
 				append(div1, div0);
 				append(div0, h10);
-				append(h10, t3);
-				append(div0, t4);
-				append(div0, p1);
-				append(p1, t5);
-				append(div7, t6);
+				append(h10, t2);
+				append(div0, t3);
+				append(div0, p0);
+				append(p0, t4);
+				append(div7, t5);
 				append(div7, div3);
 				append(div3, div2);
 				append(div2, h11);
-				append(h11, t7);
-				append(div2, t8);
-				append(div2, p2);
-				append(p2, t9);
-				append(div2, t10);
+				append(h11, t6);
+				append(div2, t7);
+				append(div2, p1);
+				append(p1, t8);
+				append(div2, t9);
 				append(div2, br);
-				append(div7, t11);
+				append(div7, t10);
 				append(div7, div6);
 				append(div6, div4);
 				key_block.m(div4, null);
-				append(div6, t12);
+				append(div6, t11);
 				append(div6, div5);
 				mount_component(checkoutform, div5, null);
-				append(div6, t13);
+				append(div6, t12);
 				if (if_block) if_block.m(div6, null);
 				current = true;
-
-				if (!mounted) {
-					dispose = listen(select, "change", /*select_change_handler*/ ctx[8]);
-					mounted = true;
-				}
 			},
 			p(ctx, [dirty]) {
-				if (dirty & /*$locale*/ 8) {
-					select_option(select, /*$locale*/ ctx[3]);
-				}
+				if ((!current || dirty & /*$t*/ 8) && t2_value !== (t2_value = /*$t*/ ctx[3]("homepage.header") + "")) set_data(t2, t2_value);
+				if ((!current || dirty & /*$t*/ 8) && t4_value !== (t4_value = /*$t*/ ctx[3]("homepage.message") + "")) set_data(t4, t4_value);
+				if ((!current || dirty & /*$t*/ 8) && t6_value !== (t6_value = /*$t*/ ctx[3]("homepage.header") + "")) set_data(t6, t6_value);
+				if ((!current || dirty & /*$t*/ 8) && t8_value !== (t8_value = /*$t*/ ctx[3]("homepage.message") + "")) set_data(t8, t8_value);
 
-				if ((!current || dirty & /*$t*/ 4) && t3_value !== (t3_value = /*$t*/ ctx[2]("homepage.header") + "")) set_data(t3, t3_value);
-				if ((!current || dirty & /*$t*/ 4) && t5_value !== (t5_value = /*$t*/ ctx[2]("homepage.message") + "")) set_data(t5, t5_value);
-				if ((!current || dirty & /*$t*/ 4) && t7_value !== (t7_value = /*$t*/ ctx[2]("homepage.header") + "")) set_data(t7, t7_value);
-				if ((!current || dirty & /*$t*/ 4) && t9_value !== (t9_value = /*$t*/ ctx[2]("homepage.message") + "")) set_data(t9, t9_value);
-
-				if (dirty & /*$locale*/ 8 && safe_not_equal(previous_key, previous_key = /*$locale*/ ctx[3])) {
+				if (dirty & /*$locale*/ 4 && safe_not_equal(previous_key, previous_key = /*$locale*/ ctx[2])) {
 					group_outros();
 					transition_out(key_block, 1, 1, noop$1);
 					check_outros();
@@ -8362,26 +8270,23 @@
 				detach(script0);
 				detach(script1);
 				destroy_component(tailwind, detaching);
-				destroy_each(each_blocks, detaching);
 				key_block.d(detaching);
 				destroy_component(checkoutform);
 				if (if_block) if_block.d();
-				mounted = false;
-				dispose();
 			}
 		};
 	}
 
 	function instance($$self, $$props, $$invalidate) {
+		let $locale;
 		let $formErrors;
 		let $t;
 		let $userForm;
-		let $locale;
 		let $processingPayment;
-		component_subscribe($$self, formErrors, $$value => $$invalidate(13, $formErrors = $$value));
-		component_subscribe($$self, t, $$value => $$invalidate(2, $t = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(14, $userForm = $$value));
-		component_subscribe($$self, locale, $$value => $$invalidate(3, $locale = $$value));
+		component_subscribe($$self, locale, $$value => $$invalidate(2, $locale = $$value));
+		component_subscribe($$self, formErrors, $$value => $$invalidate(12, $formErrors = $$value));
+		component_subscribe($$self, t, $$value => $$invalidate(3, $t = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(13, $userForm = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(4, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8390,7 +8295,7 @@
 			currentActive = 1,
 			progressBar;
 
-		let currentLanguage = "";
+		let currentLanguage = ""; //default
 
 		onMount(() => {
 			currentLanguage = Weglot.getCurrentLang();
@@ -8429,17 +8334,12 @@
 
 		const getCurrentLanguage = () => {
 			currentLanguage = Weglot.getCurrentLang();
-
-			// $locale = currentLanguage;
-			console.log(currentLanguage);
+			console.log('Webflow language is ' + currentLanguage);
+			set_store_value(locale, $locale = currentLanguage, $locale);
+			console.log('Locale Language is ' + currentLanguage);
 		};
 
 		Weglot.on("languageChanged", getCurrentLanguage);
-
-		function select_change_handler() {
-			$locale = select_value(this);
-			locale.set($locale);
-		}
 
 		function progressbar_currentActive_binding(value) {
 			currentActive = value;
@@ -8458,13 +8358,12 @@
 		return [
 			currentActive,
 			progressBar,
-			$t,
 			$locale,
+			$t,
 			$processingPayment,
 			bgImageUrl,
 			steps,
 			handleProgress,
-			select_change_handler,
 			progressbar_currentActive_binding,
 			progressbar_binding,
 			click_handler
