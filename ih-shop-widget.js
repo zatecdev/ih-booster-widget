@@ -6491,11 +6491,11 @@
 
 	function get_each_context(ctx, list, i) {
 		const child_ctx = ctx.slice();
-		child_ctx[12] = list[i];
+		child_ctx[13] = list[i];
 		return child_ctx;
 	}
 
-	// (56:0) {:else}
+	// (60:0) {:else}
 	function create_else_block$1(ctx) {
 		let div2;
 		let div1;
@@ -6522,12 +6522,12 @@
 				}
 
 				attr(div0, "class", "legend");
-				attr(div0, "id", `label-${/*uniqueID*/ ctx[7]}`);
+				attr(div0, "id", `label-${/*uniqueID*/ ctx[8]}`);
 				attr(div1, "role", "radiogroup");
 				attr(div1, "class", "group-container svelte-1qjf8v8");
-				attr(div1, "aria-labelledby", `label-${/*uniqueID*/ ctx[7]}`);
+				attr(div1, "aria-labelledby", `label-${/*uniqueID*/ ctx[8]}`);
 				set_style(div1, "font-size", /*fontSize*/ ctx[4] + "px");
-				attr(div1, "id", `group-${/*uniqueID*/ ctx[7]}`);
+				attr(div1, "id", `group-${/*uniqueID*/ ctx[8]}`);
 				attr(div2, "class", "s s--multi svelte-1qjf8v8");
 			},
 			m(target, anchor) {
@@ -6546,7 +6546,7 @@
 			p(ctx, dirty) {
 				if (dirty & /*label*/ 2) set_data(t0, /*label*/ ctx[1]);
 
-				if (dirty & /*options, uniqueID, value*/ 137) {
+				if (dirty & /*options, uniqueID, value*/ 265) {
 					each_value = ensure_array_like(/*options*/ ctx[3]);
 					let i;
 
@@ -6583,7 +6583,7 @@
 		};
 	}
 
-	// (46:29) 
+	// (50:29) 
 	function create_if_block_1$3(ctx) {
 		let div;
 		let span;
@@ -6600,10 +6600,10 @@
 				t0 = text(/*label*/ ctx[1]);
 				t1 = space();
 				button = element("button");
-				attr(span, "id", `switch-${/*uniqueID*/ ctx[7]}`);
+				attr(span, "id", `switch-${/*uniqueID*/ ctx[8]}`);
 				attr(button, "role", "switch");
-				attr(button, "aria-checked", /*checked*/ ctx[5]);
-				attr(button, "aria-labelledby", `switch-${/*uniqueID*/ ctx[7]}`);
+				attr(button, "aria-checked", /*checked*/ ctx[7]);
+				attr(button, "aria-labelledby", `switch-${/*uniqueID*/ ctx[8]}`);
 				attr(button, "class", "svelte-1qjf8v8");
 				attr(div, "class", "s s--slider svelte-1qjf8v8");
 				set_style(div, "font-size", /*fontSize*/ ctx[4] + "px");
@@ -6616,15 +6616,15 @@
 				append(div, button);
 
 				if (!mounted) {
-					dispose = listen(button, "click", prevent_default(/*handleClick*/ ctx[8]));
+					dispose = listen(button, "click", prevent_default(/*handleClick*/ ctx[9]));
 					mounted = true;
 				}
 			},
 			p(ctx, dirty) {
 				if (dirty & /*label*/ 2) set_data(t0, /*label*/ ctx[1]);
 
-				if (dirty & /*checked*/ 32) {
-					attr(button, "aria-checked", /*checked*/ ctx[5]);
+				if (dirty & /*checked*/ 128) {
+					attr(button, "aria-checked", /*checked*/ ctx[7]);
 				}
 
 				if (dirty & /*fontSize*/ 16) {
@@ -6642,7 +6642,7 @@
 		};
 	}
 
-	// (34:0) {#if design == 'inner'}
+	// (38:0) {#if design == 'inner'}
 	function create_if_block$3(ctx) {
 		let div;
 		let span0;
@@ -6650,11 +6650,9 @@
 		let t1;
 		let button;
 		let span1;
-		let t2_value = /*$t*/ ctx[6]("form.plantOnce") + "";
 		let t2;
 		let t3;
 		let span2;
-		let t4_value = /*$t*/ ctx[6]("form.plantMonthly") + "";
 		let t4;
 		let mounted;
 		let dispose;
@@ -6667,17 +6665,17 @@
 				t1 = space();
 				button = element("button");
 				span1 = element("span");
-				t2 = text(t2_value);
+				t2 = text(/*labelOnce*/ ctx[5]);
 				t3 = space();
 				span2 = element("span");
-				t4 = text(t4_value);
-				attr(span0, "id", `switch-${/*uniqueID*/ ctx[7]}`);
+				t4 = text(/*labelMonthly*/ ctx[6]);
+				attr(span0, "id", `switch-${/*uniqueID*/ ctx[8]}`);
 				attr(span0, "class", "svelte-1qjf8v8");
 				attr(span1, "class", "svelte-1qjf8v8");
 				attr(span2, "class", "svelte-1qjf8v8");
 				attr(button, "role", "switch");
-				attr(button, "aria-checked", /*checked*/ ctx[5]);
-				attr(button, "aria-labelledby", `switch-${/*uniqueID*/ ctx[7]}`);
+				attr(button, "aria-checked", /*checked*/ ctx[7]);
+				attr(button, "aria-labelledby", `switch-${/*uniqueID*/ ctx[8]}`);
 				attr(button, "class", "svelte-1qjf8v8");
 				attr(div, "class", "s s--inner svelte-1qjf8v8");
 			},
@@ -6694,17 +6692,17 @@
 				append(span2, t4);
 
 				if (!mounted) {
-					dispose = listen(button, "click", prevent_default(/*handleClick*/ ctx[8]));
+					dispose = listen(button, "click", prevent_default(/*handleClick*/ ctx[9]));
 					mounted = true;
 				}
 			},
 			p(ctx, dirty) {
 				if (dirty & /*label*/ 2) set_data(t0, /*label*/ ctx[1]);
-				if (dirty & /*$t*/ 64 && t2_value !== (t2_value = /*$t*/ ctx[6]("form.plantOnce") + "")) set_data(t2, t2_value);
-				if (dirty & /*$t*/ 64 && t4_value !== (t4_value = /*$t*/ ctx[6]("form.plantMonthly") + "")) set_data(t4, t4_value);
+				if (dirty & /*labelOnce*/ 32) set_data(t2, /*labelOnce*/ ctx[5]);
+				if (dirty & /*labelMonthly*/ 64) set_data(t4, /*labelMonthly*/ ctx[6]);
 
-				if (dirty & /*checked*/ 32) {
-					attr(button, "aria-checked", /*checked*/ ctx[5]);
+				if (dirty & /*checked*/ 128) {
+					attr(button, "aria-checked", /*checked*/ ctx[7]);
 				}
 			},
 			d(detaching) {
@@ -6718,7 +6716,7 @@
 		};
 	}
 
-	// (64:8) {#each options as option}
+	// (68:8) {#each options as option}
 	function create_each_block(ctx) {
 		let input;
 		let input_id_value;
@@ -6726,14 +6724,14 @@
 		let value_has_changed = false;
 		let t0;
 		let label_1;
-		let t1_value = /*option*/ ctx[12] + "";
+		let t1_value = /*option*/ ctx[13] + "";
 		let t1;
 		let t2;
 		let label_1_for_value;
 		let binding_group;
 		let mounted;
 		let dispose;
-		binding_group = init_binding_group(/*$$binding_groups*/ ctx[10][0]);
+		binding_group = init_binding_group(/*$$binding_groups*/ ctx[11][0]);
 
 		return {
 			c() {
@@ -6743,11 +6741,11 @@
 				t1 = text(t1_value);
 				t2 = space();
 				attr(input, "type", "radio");
-				attr(input, "id", input_id_value = `${/*option*/ ctx[12]}-${/*uniqueID*/ ctx[7]}`);
-				input.__value = input_value_value = /*option*/ ctx[12];
+				attr(input, "id", input_id_value = `${/*option*/ ctx[13]}-${/*uniqueID*/ ctx[8]}`);
+				input.__value = input_value_value = /*option*/ ctx[13];
 				set_input_value(input, input.__value);
 				attr(input, "class", "svelte-1qjf8v8");
-				attr(label_1, "for", label_1_for_value = `${/*option*/ ctx[12]}-${/*uniqueID*/ ctx[7]}`);
+				attr(label_1, "for", label_1_for_value = `${/*option*/ ctx[13]}-${/*uniqueID*/ ctx[8]}`);
 				attr(label_1, "class", "svelte-1qjf8v8");
 				binding_group.p(input);
 			},
@@ -6760,16 +6758,16 @@
 				append(label_1, t2);
 
 				if (!mounted) {
-					dispose = listen(input, "change", /*input_change_handler*/ ctx[9]);
+					dispose = listen(input, "change", /*input_change_handler*/ ctx[10]);
 					mounted = true;
 				}
 			},
 			p(ctx, dirty) {
-				if (dirty & /*options*/ 8 && input_id_value !== (input_id_value = `${/*option*/ ctx[12]}-${/*uniqueID*/ ctx[7]}`)) {
+				if (dirty & /*options*/ 8 && input_id_value !== (input_id_value = `${/*option*/ ctx[13]}-${/*uniqueID*/ ctx[8]}`)) {
 					attr(input, "id", input_id_value);
 				}
 
-				if (dirty & /*options*/ 8 && input_value_value !== (input_value_value = /*option*/ ctx[12])) {
+				if (dirty & /*options*/ 8 && input_value_value !== (input_value_value = /*option*/ ctx[13])) {
 					input.__value = input_value_value;
 					set_input_value(input, input.__value);
 					value_has_changed = true;
@@ -6779,9 +6777,9 @@
 					input.checked = input.__value === /*value*/ ctx[0];
 				}
 
-				if (dirty & /*options*/ 8 && t1_value !== (t1_value = /*option*/ ctx[12] + "")) set_data(t1, t1_value);
+				if (dirty & /*options*/ 8 && t1_value !== (t1_value = /*option*/ ctx[13] + "")) set_data(t1, t1_value);
 
-				if (dirty & /*options*/ 8 && label_1_for_value !== (label_1_for_value = `${/*option*/ ctx[12]}-${/*uniqueID*/ ctx[7]}`)) {
+				if (dirty & /*options*/ 8 && label_1_for_value !== (label_1_for_value = `${/*option*/ ctx[13]}-${/*uniqueID*/ ctx[8]}`)) {
 					attr(label_1, "for", label_1_for_value);
 				}
 			},
@@ -6846,20 +6844,20 @@
 	}
 
 	function instance$3($$self, $$props, $$invalidate) {
-		let $t;
-		component_subscribe($$self, t, $$value => $$invalidate(6, $t = $$value));
 		let { label } = $$props;
 		let { design = 'inner label' } = $$props;
 		let { options = [] } = $$props;
 		let { fontSize = 16 } = $$props;
 		let { value = 'Once' } = $$props;
+		let { labelOnce } = $$props;
+		let { labelMonthly } = $$props;
 		let checked = true;
 		const uniqueID = Math.floor(Math.random() * 100);
 
 		function handleClick(event) {
 			const target = event.target;
 			const state = target.getAttribute('aria-checked');
-			$$invalidate(5, checked = state === 'true' ? false : true);
+			$$invalidate(7, checked = state === 'true' ? false : true);
 			$$invalidate(0, value = checked === true ? 'Once' : 'Monthly');
 		}
 		const $$binding_groups = [[]];
@@ -6875,6 +6873,8 @@
 			if ('options' in $$props) $$invalidate(3, options = $$props.options);
 			if ('fontSize' in $$props) $$invalidate(4, fontSize = $$props.fontSize);
 			if ('value' in $$props) $$invalidate(0, value = $$props.value);
+			if ('labelOnce' in $$props) $$invalidate(5, labelOnce = $$props.labelOnce);
+			if ('labelMonthly' in $$props) $$invalidate(6, labelMonthly = $$props.labelMonthly);
 		};
 
 		return [
@@ -6883,8 +6883,9 @@
 			design,
 			options,
 			fontSize,
+			labelOnce,
+			labelMonthly,
 			checked,
-			$t,
 			uniqueID,
 			handleClick,
 			input_change_handler,
@@ -6907,7 +6908,9 @@
 					design: 2,
 					options: 3,
 					fontSize: 4,
-					value: 0
+					value: 0,
+					labelOnce: 5,
+					labelMonthly: 6
 				},
 				add_css$1
 			);
@@ -7078,7 +7081,12 @@
 			/*switch_1_value_binding*/ ctx[7](value);
 		}
 
-		let switch_1_props = { label: "", design: "inner" };
+		let switch_1_props = {
+			label: "",
+			labelOnce: /*$t*/ ctx[2]("form.plantOnce"),
+			labelMonthly: /*$t*/ ctx[2]("form.plantMonthly"),
+			design: "inner"
+		};
 
 		if (/*$userForm*/ ctx[1].contributionFrequency !== void 0) {
 			switch_1_props.value = /*$userForm*/ ctx[1].contributionFrequency;
@@ -7371,6 +7379,8 @@
 			},
 			p(ctx, [dirty]) {
 				const switch_1_changes = {};
+				if (dirty & /*$t*/ 4) switch_1_changes.labelOnce = /*$t*/ ctx[2]("form.plantOnce");
+				if (dirty & /*$t*/ 4) switch_1_changes.labelMonthly = /*$t*/ ctx[2]("form.plantMonthly");
 
 				if (!updating_value && dirty & /*$userForm*/ 2) {
 					updating_value = true;
@@ -7975,7 +7985,7 @@
 		};
 	}
 
-	// (120:20) {#if $processingPayment == false }
+	// (118:20) {#if $processingPayment == false }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8018,7 +8028,7 @@
 		};
 	}
 
-	// (127:32) {#if steps[currentActive-1] == "Your Info"}
+	// (125:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1_value = /*$t*/ ctx[3]("homepage.next") + "";
@@ -8334,9 +8344,9 @@
 
 		const getCurrentLanguage = () => {
 			currentLanguage = Weglot.getCurrentLang();
-			console.log('Webflow language is ' + currentLanguage);
+
+			//update locale
 			set_store_value(locale, $locale = currentLanguage, $locale);
-			console.log('Locale Language is ' + currentLanguage);
 		};
 
 		Weglot.on("languageChanged", getCurrentLanguage);

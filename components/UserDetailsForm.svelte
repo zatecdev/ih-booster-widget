@@ -30,7 +30,7 @@
 
 <div class="block mb-4 w-full">
     <div class="flex justify-center">
-        <Switch bind:value={$userForm.contributionFrequency} label="" design="inner" />
+        <Switch bind:value={$userForm.contributionFrequency} label="" labelOnce={ $t("form.plantOnce") } labelMonthly={ $t("form.plantMonthly") }  design="inner" />
     </div>
 </div>
 

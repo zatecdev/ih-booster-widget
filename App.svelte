@@ -51,10 +51,8 @@
 
     const getCurrentLanguage = () => {
         currentLanguage = Weglot.getCurrentLang();
-        console.log('Webflow language is ' + currentLanguage)
-
+        //update locale
         $locale = currentLanguage;
-        console.log('Locale Language is ' + currentLanguage)
     }
 
     Weglot.on("languageChanged", getCurrentLanguage);

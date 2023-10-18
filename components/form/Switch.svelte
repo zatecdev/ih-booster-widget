@@ -10,8 +10,12 @@
     export let options = [];
 	export let fontSize = 16;
 	export let value = 'Once';
+    export let labelOnce;
+    export let labelMonthly;
 
     let checked = true;
+
+
 
 
 	const uniqueID = Math.floor(Math.random() * 100)
@@ -39,8 +43,8 @@
         aria-checked={checked}
         aria-labelledby={`switch-${uniqueID}`}
         on:click|preventDefault={handleClick}>
-            <span>{ $t("form.plantOnce") }</span>
-            <span>{ $t("form.plantMonthly") }</span>
+            <span>{ labelOnce }</span>
+            <span>{ labelMonthly }</span>
     </button>
 </div>
 {:else if design == 'slider'}
