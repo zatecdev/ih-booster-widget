@@ -306,11 +306,19 @@
     }
 
     /* Extra small devices (phones, 478px and down) */
-    @media only screen and (max-width: 478px) {
+    @media screen and (min-width:401px) and (max-width:478px) {
         .s--inner button span {
             border-radius: 50px;
             padding-left: 25px;
             padding-right: 25px;
+        }
+    }
+
+    @media only screen and (max-width: 400px) {
+        .s--inner button span {
+            border-radius: 50px;
+            padding-left: 10px;
+            padding-right: 10px;
         }
     }
 
