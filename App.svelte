@@ -11,6 +11,13 @@
 
     let steps = ['Your Info', 'Payment', 'Certificate'], currentActive = 1, progressBar;
 
+    let currentLanguage = "";
+
+    onMount(() => {
+		currentLanguage = Weglot.getCurrentLang();
+        console.log(currentLanguage)
+	});
+
     const handleProgress = (stepIncrement) => {
         
         //Form validationn (basic)
@@ -41,11 +48,20 @@
 
         progressBar.handleProgress(stepIncrement)
     }
-        
+
+    const getCurrentLanguage = () => {
+        currentLanguage = Weglot.getCurrentLang();
+        // $locale = currentLanguage;
+        console.log(currentLanguage)
+    }
+
+    Weglot.on("languageChanged", getCurrentLanguage);
+    
 </script>
 
 <svelte:head>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script>
 </svelte:head>
 
 <!-- Don't remove, add tailwind base config -->

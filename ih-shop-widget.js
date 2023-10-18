@@ -7944,19 +7944,19 @@
 
 	function get_each_context(ctx, list, i) {
 		const child_ctx = ctx.slice();
-		child_ctx[15] = list[i];
+		child_ctx[17] = list[i];
 		return child_ctx;
 	}
 
-	// (58:14) {#each locales as l}
+	// (74:14) {#each locales as l}
 	function create_each_block(ctx) {
 		let option;
 
 		return {
 			c() {
 				option = element("option");
-				option.textContent = `${/*l*/ ctx[15]}`;
-				option.__value = /*l*/ ctx[15];
+				option.textContent = `${/*l*/ ctx[17]}`;
+				option.__value = /*l*/ ctx[17];
 				set_input_value(option, option.__value);
 			},
 			m(target, anchor) {
@@ -7971,7 +7971,7 @@
 		};
 	}
 
-	// (89:24) {#key $locale}
+	// (105:24) {#key $locale}
 	function create_key_block(ctx) {
 		let progressbar;
 		let updating_currentActive;
@@ -8026,7 +8026,7 @@
 		};
 	}
 
-	// (102:20) {#if $processingPayment == false }
+	// (118:20) {#if $processingPayment == false }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8069,7 +8069,7 @@
 		};
 	}
 
-	// (109:32) {#if steps[currentActive-1] == "Your Info"}
+	// (125:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1_value = /*$t*/ ctx[2]("homepage.next") + "";
@@ -8113,8 +8113,10 @@
 	}
 
 	function create_fragment(ctx) {
-		let script;
-		let script_src_value;
+		let script0;
+		let script0_src_value;
+		let script1;
+		let script1_src_value;
 		let t0;
 		let tailwind;
 		let t1;
@@ -8178,8 +8180,10 @@
 
 		return {
 			c() {
-				script = element("script");
-				script.innerHTML = ``;
+				script0 = element("script");
+				script0.innerHTML = ``;
+				script1 = element("script");
+				script1.innerHTML = ``;
 				t0 = space();
 				create_component(tailwind.$$.fragment);
 				t1 = space();
@@ -8221,7 +8225,9 @@
 				create_component(checkoutform.$$.fragment);
 				t13 = space();
 				if (if_block) if_block.c();
-				if (!src_url_equal(script.src, script_src_value = "https://cdn.jsdelivr.net/npm/sweetalert2@11")) attr(script, "src", script_src_value);
+				if (!src_url_equal(script0.src, script0_src_value = "https://cdn.jsdelivr.net/npm/sweetalert2@11")) attr(script0, "src", script0_src_value);
+				attr(script1, "type", "text/javascript");
+				if (!src_url_equal(script1.src, script1_src_value = "https://cdn.weglot.com/weglot.min.js")) attr(script1, "src", script1_src_value);
 				if (/*$locale*/ ctx[3] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[8].call(select));
 				attr(h10, "class", "text-4xl font-medium mb-4");
 				attr(p1, "class", "text-base font-semibold");
@@ -8241,7 +8247,8 @@
 				attr(div10, "class", "h-full block md:flex items-center justify-center");
 			},
 			m(target, anchor) {
-				append(document.head, script);
+				append(document.head, script0);
+				append(document.head, script1);
 				insert(target, t0, anchor);
 				mount_component(tailwind, target, anchor);
 				insert(target, t1, anchor);
@@ -8352,7 +8359,8 @@
 					detach(div10);
 				}
 
-				detach(script);
+				detach(script0);
+				detach(script1);
 				destroy_component(tailwind, detaching);
 				destroy_each(each_blocks, detaching);
 				key_block.d(detaching);
@@ -8370,9 +8378,9 @@
 		let $userForm;
 		let $locale;
 		let $processingPayment;
-		component_subscribe($$self, formErrors, $$value => $$invalidate(12, $formErrors = $$value));
+		component_subscribe($$self, formErrors, $$value => $$invalidate(13, $formErrors = $$value));
 		component_subscribe($$self, t, $$value => $$invalidate(2, $t = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(13, $userForm = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(14, $userForm = $$value));
 		component_subscribe($$self, locale, $$value => $$invalidate(3, $locale = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(4, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8381,6 +8389,13 @@
 		let steps = ['Your Info', 'Payment', 'Certificate'],
 			currentActive = 1,
 			progressBar;
+
+		let currentLanguage = "";
+
+		onMount(() => {
+			currentLanguage = Weglot.getCurrentLang();
+			console.log(currentLanguage);
+		});
 
 		const handleProgress = stepIncrement => {
 			//Form validationn (basic)
@@ -8411,6 +8426,15 @@
 
 			progressBar.handleProgress(stepIncrement);
 		};
+
+		const getCurrentLanguage = () => {
+			currentLanguage = Weglot.getCurrentLang();
+
+			// $locale = currentLanguage;
+			console.log(currentLanguage);
+		};
+
+		Weglot.on("languageChanged", getCurrentLanguage);
 
 		function select_change_handler() {
 			$locale = select_value(this);
