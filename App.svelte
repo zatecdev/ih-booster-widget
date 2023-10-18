@@ -51,7 +51,7 @@
 <!-- Don't remove, add tailwind base config -->
 <Tailwind />
 
-<div class="h-screen flex items-center justify-center">
+<div class="h-screen block md:flex items-center justify-center">
     <div class="h-auto place-items-center">
         <p>
             <select bind:value={$locale}>

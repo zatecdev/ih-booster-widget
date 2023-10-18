@@ -278,8 +278,35 @@
         border-radius: 1.5em;
     }
 
-    /* Extra small devices (phones, 600px and down) */
-    @media only screen and (max-width: 600px) {
+    /* Extra small devices (phones, 478px and down) */
+    @media only screen and (max-width: 1051px) {
+        .s--inner button span {
+            border-radius: 50px;
+            padding-left: 55px;
+            padding-right: 55px;
+        }
+    }
+
+    /* Extra small devices (phones, 767 and down) */
+    @media screen and (min-width:768px) and (max-width:1050px) {
+        .s--inner button span {
+            border-radius: 50px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+
+    /* Extra small devices (phones, 767 and down) */
+    @media screen and (min-width:479px) and (max-width:767px) {
+        .s--inner button span {
+            border-radius: 50px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+
+    /* Extra small devices (phones, 478px and down) */
+    @media only screen and (max-width: 478px) {
         .s--inner button span {
             border-radius: 50px;
             padding-left: 30px;
