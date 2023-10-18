@@ -11,12 +11,12 @@
 
     let steps = ['Your Info', 'Payment', 'Certificate'], currentActive = 1, progressBar;
 
-    let currentLanguage = ""; //default
+    //let currentLanguage = ""; //default
 
-    onMount(() => {
-		currentLanguage = Weglot.getCurrentLang();
-        $locale = currentLanguage;
-	});
+    // onMount(() => {
+	// 	currentLanguage = Weglot.getCurrentLang();
+    //     $locale = currentLanguage;
+	// });
 
     const handleProgress = (stepIncrement) => {
         
@@ -49,19 +49,19 @@
         progressBar.handleProgress(stepIncrement)
     }
 
-    const getCurrentLanguage = () => {
-        currentLanguage = Weglot.getCurrentLang();
-        //update locale
-        $locale = currentLanguage;
-    }
+    // const getCurrentLanguage = () => {
+    //     currentLanguage = Weglot.getCurrentLang();
+    //     //update locale
+    //     $locale = currentLanguage;
+    // }
 
-    Weglot.on("languageChanged", getCurrentLanguage);
+    // Weglot.on("languageChanged", getCurrentLanguage);
 
 </script>
 
 <svelte:head>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script>
+    <!-- <script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script> -->
 </svelte:head>
 
 <!-- Don't remove, add tailwind base config -->
@@ -69,13 +69,13 @@
 
 <div id="widget-container" class="h-full block md:flex items-center justify-center">
     <div class="h-auto place-items-center">
-        <!-- <p>
+        <p>
             <select bind:value={$locale}>
               {#each locales as l}
                 <option value={l}>{l}</option>
               {/each}
             </select>
-        </p> -->
+        </p>
 
         <div class="antialiased max-w-full md:max-w-6xl mx-auto px-2 md:px-8">
             <div class="relative block md:flex items-center p-2 md:p-8">
