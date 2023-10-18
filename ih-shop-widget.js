@@ -8394,7 +8394,7 @@
 
 		onMount(() => {
 			currentLanguage = Weglot.getCurrentLang();
-			console.log(currentLanguage);
+			console.log('on initialiaze, language is ' + currentLanguage);
 		});
 
 		const handleProgress = stepIncrement => {
