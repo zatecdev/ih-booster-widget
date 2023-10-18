@@ -51,7 +51,7 @@
 <!-- Don't remove, add tailwind base config -->
 <Tailwind />
 
-<div class="h-screen block md:flex items-center justify-center">
+<div class="h-full block md:flex items-center justify-center">
     <div class="h-auto place-items-center">
         <p>
             <select bind:value={$locale}>
@@ -73,12 +73,13 @@
                 </div>
 
                 <!-- mobile header -->
-                <div class="block md:hidden bg-white pt-8 rounded-t-2xl mb-4">
-                    <div class="text-gray-900 text-left px-8 w-5/6">
+                <div class="block md:hidden bg-white pt-8 py-4 rounded-t-2xl mb-4">
+                    <div class="text-gray-900 text-left px-8 w-full">
                         <h1 class="text-2xl font-medium mb-4">{ $t("homepage.header") }</h1>
                         <p class="text-sm font-semibold">
                             { $t("homepage.message") }
                         </p>
+                        <br />
                     </div>
                 </div>
         
