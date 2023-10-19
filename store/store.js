@@ -9,7 +9,7 @@ export const stripePaymentIntentId = writable("");
 export const formErrors = writable({ firstName: "", lastName: "", email: ""});
 
 export const userForm = writable({
-    contributionFrequency: 'Once', //Once or Monthly [default Once]
+    contributionFrequency: 'Monthly', //Once or Monthly [default Once]
 
     //personal information
     firstName: '',
@@ -26,4 +26,12 @@ export const userForm = writable({
 // export const totalPrice = derived(contributionValue, $contributionValue => ( Number($contributionValue ) * 4.80).toFixed(2) )
 
 //Quick/dirty, to refactor
-export const totalPrice = derived(contributionValue, $contributionValue => ( Number($contributionValue ) == 1 ? 4.80 : ( Number($contributionValue ) == 4 ? 18.80 : ( Number($contributionValue ) == 11 ? 49.80 : 85.00) ) ).toFixed(2) )
+//export const totalPrice = derived(contributionValue, $contributionValue => ( Number($contributionValue ) == 1 ? 4.80 : ( Number($contributionValue ) == 4 ? 18.80 : ( Number($contributionValue ) == 11 ? 49.80 : 85.00) ) ).toFixed(2) )
+
+export const price = derived(contributionValue, $contributionValue => ( 
+    Number($contributionValue ) == 1 ? 4.80 : ( Number($contributionValue ) == 4 ? 18.80 : ( Number($contributionValue ) == 11 ? 49.80 : 85.00) ) ).toFixed(2) 
+)
+
+export const totalPrice = derived([price, userForm], ([$price, $userForm]) => 
+    $userForm.contributionFrequency == "Once" ? $price : ( $price - ( $price * 0.15) ).toFixed(2)
+);

@@ -12,11 +12,9 @@
 	export let value = 'Once';
     export let labelOnce;
     export let labelMonthly;
+    export let saveLabel;
 
-    let checked = true;
-
-
-
+    let checked = false; //false = monthly is checked [true means once off checked]
 
 	const uniqueID = Math.floor(Math.random() * 100)
 
@@ -44,7 +42,7 @@
         aria-labelledby={`switch-${uniqueID}`}
         on:click|preventDefault={handleClick}>
             <span>{ labelOnce }</span>
-            <span>{ labelMonthly }</span>
+            <span style="position: relative;">{ labelMonthly } <span class="discount_percent">{ saveLabel }</span></span>
     </button>
 </div>
 {:else if design == 'slider'}
@@ -282,6 +280,23 @@
         border-radius: 1.5em;
     }
 
+    .discount_percent {
+        position: absolute; 
+        top: 30px; 
+        /* right: 33%; */
+        right: 0 !important;
+        left: 0 !important;
+        width: 50% !important;
+        margin: 0 auto !important;
+        font-size: 11px !important;
+        color: #000 !important;
+        background: #FADA73 !important;
+        padding: 1px !important;
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+        border-radius: 15px !important;
+    }
+
     /* Extra small devices (phones, 478px and down) */
     @media only screen and (max-width: 1051px) {
         .s--inner button span {
@@ -307,6 +322,11 @@
             padding-left: 20px;
             padding-right: 20px;
         }
+
+        .discount_percent {
+            font-size: 10px !important;
+            width: 75% !important;
+        }
     }
 
     /* Extra small devices (phones, 478px and down) */
@@ -316,6 +336,11 @@
             padding-left: 25px;
             padding-right: 25px;
         }
+
+        .discount_percent {
+            font-size: 10px !important;
+            width: 75% !important;
+        }
     }
 
     @media only screen and (max-width: 400px) {
@@ -323,6 +348,11 @@
             border-radius: 50px;
             padding-left: 10px;
             padding-right: 10px;
+        }
+
+        .discount_percent {
+            font-size: 10px !important;
+            width: 80% !important;
         }
     }
 

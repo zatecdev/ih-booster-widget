@@ -11,6 +11,7 @@ export default {
 
         "form.plantOnce": "Plant Once",
         "form.plantMonthly": "Plant Monthly",
+        "form.plantMonthlySave": "Save 15%",
 
         "form.how_many_trees": "How many trees would you like to plant?",
         "form.firstName": "First Name",
@@ -48,6 +49,7 @@ export default {
 
         "form.plantOnce": "Einmalig",
         "form.plantMonthly": "Monatlich",
+        "form.plantMonthlySave": "15% Sparen",
 
         "form.how_many_trees": "Wie viele Bäume möchten Sie pflanzen?",
         "form.firstName": "Vorname",
