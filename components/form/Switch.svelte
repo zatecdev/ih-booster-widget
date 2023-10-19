@@ -290,7 +290,7 @@
         margin: 0 auto !important;
         font-size: 11px !important;
         color: #000 !important;
-        background: #FADA73 !important;
+        background: #DEE37D !important;
         padding: 1px !important;
         padding-left: 5px !important;
         padding-right: 5px !important;
