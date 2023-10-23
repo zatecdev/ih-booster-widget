@@ -7327,6 +7327,7 @@
 				attr(div9, "class", "");
 				attr(div10, "class", "flex items-center justify-between mr-6");
 				attr(div11, "class", "w-5/6");
+				attr(span, "id", "total-price");
 				attr(span, "class", "text-sm bg-[#5F753D] text-white rounded-md px-1 py-2");
 				attr(div12, "class", "W-1/6 flex items-center");
 				set_style(div12, "min-width", "65px");

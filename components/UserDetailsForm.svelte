@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="W-1/6 flex items-center" style="min-width: 65px;">
-            <span class="text-sm bg-[#5F753D] text-white rounded-md px-1 py-2">
+            <span id="total-price" class="text-sm bg-[#5F753D] text-white rounded-md px-1 py-2">
                 € {$totalPrice}
             </span>
         </div>
