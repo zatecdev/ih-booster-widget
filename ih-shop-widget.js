@@ -420,26 +420,6 @@
 	}
 
 	/**
-	 * @returns {void} */
-	function select_option(select, value, mounting) {
-		for (let i = 0; i < select.options.length; i += 1) {
-			const option = select.options[i];
-			if (option.__value === value) {
-				option.selected = true;
-				return;
-			}
-		}
-		if (!mounting || value !== undefined) {
-			select.selectedIndex = -1; // no option should be selected
-		}
-	}
-
-	function select_value(select) {
-		const selected_option = select.querySelector(':checked');
-		return selected_option && selected_option.__value;
-	}
-
-	/**
 	 * @template T
 	 * @param {string} type
 	 * @param {T} [detail]
@@ -1695,7 +1675,6 @@
 	};
 
 	const locale = writable("de");
-	const locales = Object.keys(translations);
 
 	function translate(locale, key, vars) {
 	  // Let's throw some errors if we're trying to use keys/locales that don't exist.
@@ -1717,7 +1696,7 @@
 	  return text;
 	}
 
-	const t = derived(locale, ($locale) => (key, vars = {}) =>
+	derived(locale, ($locale) => (key, vars = {}) =>
 	  translate($locale, key, vars)
 	);
 
@@ -1727,17 +1706,17 @@
 		append_styles(target, "svelte-9k8xcy", ".step-tab.svelte-9k8xcy{color:#C5C2C0;border-bottom:2px solid #F2EFED;width:30%;font-size:13px;font-weight:600}.step-tab-active.svelte-9k8xcy{color:#5F753D !important;border-bottom:2px solid #5F753D !important}.progress-container.svelte-9k8xcy{display:flex;justify-content:space-between;position:relative;margin-bottom:30px;max-width:100%;width:75%;margin:0 auto !important;text-align:left}.progress-container.svelte-9k8xcy::before{content:'';position:absolute;top:50%;left:0;transform:translateY(-50%);height:4px;width:100%;z-index:-1}.progress.svelte-9k8xcy{background-color:#5F753D;position:absolute;top:50%;left:0;transform:translateY(-50%);height:4px;width:0%;transition:0.4s ease}");
 	}
 
-	function get_each_context$2(ctx, list, i) {
+	function get_each_context$1(ctx, list, i) {
 		const child_ctx = ctx.slice();
-		child_ctx[10] = list[i];
-		child_ctx[12] = i;
+		child_ctx[9] = list[i];
+		child_ctx[11] = i;
 		return child_ctx;
 	}
 
 	// (47:1) {#each steps as step, i}
-	function create_each_block$2(ctx) {
+	function create_each_block$1(ctx) {
 		let div;
-		let t_1_value = /*progressSteps*/ ctx[4][/*i*/ ctx[12]].caption + "";
+		let t_1_value = /*progressSteps*/ ctx[4][/*i*/ ctx[11]].caption + "";
 		let t_1;
 		let div_class_value;
 
@@ -1746,18 +1725,18 @@
 				div = element("div");
 				t_1 = text(t_1_value);
 
-				attr(div, "class", div_class_value = "step-tab " + (/*i*/ ctx[12] == /*currentActive*/ ctx[0] - 1
+				attr(div, "class", div_class_value = "step-tab " + (/*i*/ ctx[11] == /*currentActive*/ ctx[0] - 1
 				? 'step-tab-active'
 				: '') + " svelte-9k8xcy");
 
-				attr(div, "data-title", /*progressSteps*/ ctx[4][/*i*/ ctx[12]].caption);
+				attr(div, "data-title", /*progressSteps*/ ctx[4][/*i*/ ctx[11]].caption);
 			},
 			m(target, anchor) {
 				insert(target, div, anchor);
 				append(div, t_1);
 			},
 			p(ctx, dirty) {
-				if (dirty & /*currentActive*/ 1 && div_class_value !== (div_class_value = "step-tab " + (/*i*/ ctx[12] == /*currentActive*/ ctx[0] - 1
+				if (dirty & /*currentActive*/ 1 && div_class_value !== (div_class_value = "step-tab " + (/*i*/ ctx[11] == /*currentActive*/ ctx[0] - 1
 				? 'step-tab-active'
 				: '') + " svelte-9k8xcy")) {
 					attr(div, "class", div_class_value);
@@ -1779,7 +1758,7 @@
 		let each_blocks = [];
 
 		for (let i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+			each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
 		}
 
 		return {
@@ -1816,12 +1795,12 @@
 					let i;
 
 					for (i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$2(ctx, each_value, i);
+						const child_ctx = get_each_context$1(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(child_ctx, dirty);
 						} else {
-							each_blocks[i] = create_each_block$2(child_ctx);
+							each_blocks[i] = create_each_block$1(child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(div1, null);
 						}
@@ -1849,18 +1828,13 @@
 	}
 
 	function instance$a($$self, $$props, $$invalidate) {
-		let $t;
-		component_subscribe($$self, t, $$value => $$invalidate(8, $t = $$value));
 		let { steps = [], currentActive = 1 } = $$props;
 		let circles, progress;
 
 		let progressSteps = [
-			{ id: 1, caption: $t('form.step.info') },
-			{ id: 2, caption: $t('form.step.payment') },
-			{
-				id: 3,
-				caption: $t('form.step.certificate')
-			}
+			{ id: 1, caption: "Your Info" },
+			{ id: 2, caption: "Your Info" },
+			{ id: 3, caption: "Certificate" }
 		];
 
 		const handleProgress = stepIncrement => {
@@ -5671,7 +5645,7 @@
 		return {
 			c() {
 				p = element("p");
-				p.textContent = `Error: ${/*error*/ ctx[18].message}`;
+				p.textContent = `Error: ${/*error*/ ctx[16].message}`;
 			},
 			m(target, anchor) {
 				insert(target, p, anchor);
@@ -5687,7 +5661,7 @@
 		};
 	}
 
-	// (127:4) {:then data}
+	// (128:4) {:then data}
 	function create_then_block(ctx) {
 		let current_block_type_index;
 		let if_block;
@@ -5760,14 +5734,14 @@
 		};
 	}
 
-	// (162:8) {:else}
+	// (163:8) {:else}
 	function create_else_block$2(ctx) {
 		let spinner;
 		let current;
 
 		spinner = new Spinner({
 				props: {
-					caption: /*$t*/ ctx[8]("payment.processingPayment")
+					caption: "Processing your payment, please wait..."
 				}
 			});
 
@@ -5779,11 +5753,7 @@
 				mount_component(spinner, target, anchor);
 				current = true;
 			},
-			p(ctx, dirty) {
-				const spinner_changes = {};
-				if (dirty & /*$t*/ 256) spinner_changes.caption = /*$t*/ ctx[8]("payment.processingPayment");
-				spinner.$set(spinner_changes);
-			},
+			p: noop$1,
 			i(local) {
 				if (current) return;
 				transition_in(spinner.$$.fragment, local);
@@ -5799,14 +5769,14 @@
 		};
 	}
 
-	// (128:8) {#if stripe && clientSecret}
+	// (129:8) {#if stripe && clientSecret}
 	function create_if_block_1$4(ctx) {
 		let elements_1;
 		let updating_elements;
 		let current;
 
 		function elements_1_elements_binding(value) {
-			/*elements_1_elements_binding*/ ctx[10](value);
+			/*elements_1_elements_binding*/ ctx[9](value);
 		}
 
 		let elements_1_props = {
@@ -5836,7 +5806,7 @@
 				if (dirty & /*stripe*/ 8) elements_1_changes.stripe = /*stripe*/ ctx[3];
 				if (dirty & /*clientSecret*/ 32) elements_1_changes.clientSecret = /*clientSecret*/ ctx[5];
 
-				if (dirty & /*$$scope, isProcessing, $t, handleStepProgress*/ 524609) {
+				if (dirty & /*$$scope, isProcessing, handleStepProgress*/ 131137) {
 					elements_1_changes.$$scope = { dirty, ctx };
 				}
 
@@ -5863,18 +5833,15 @@
 		};
 	}
 
-	// (129:12) <Elements {stripe} {clientSecret} bind:elements>
+	// (130:12) <Elements {stripe} {clientSecret} bind:elements>
 	function create_default_slot(ctx) {
 		let paymentelement;
 		let t0;
 		let div1;
 		let button0;
-		let t1_value = /*$t*/ ctx[8]("homepage.back") + "";
-		let t1;
 		let t2;
 		let div0;
 		let button1;
-		let t3_value = /*$t*/ ctx[8]("payment.pay") + "";
 		let t3;
 		let button1_disabled_value;
 		let current;
@@ -5888,11 +5855,11 @@
 				t0 = space();
 				div1 = element("div");
 				button0 = element("button");
-				t1 = text(t1_value);
+				button0.textContent = "Back";
 				t2 = space();
 				div0 = element("div");
 				button1 = element("button");
-				t3 = text(t3_value);
+				t3 = text("Pay");
 				attr(button0, "class", "text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l");
 				attr(button1, "class", "bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full");
 				button1.disabled = button1_disabled_value = /*isProcessing*/ ctx[6] == true;
@@ -5904,7 +5871,6 @@
 				insert(target, t0, anchor);
 				insert(target, div1, anchor);
 				append(div1, button0);
-				append(button0, t1);
 				append(div1, t2);
 				append(div1, div0);
 				append(div0, button1);
@@ -5913,7 +5879,7 @@
 
 				if (!mounted) {
 					dispose = [
-						listen(button0, "click", /*click_handler*/ ctx[9]),
+						listen(button0, "click", /*click_handler*/ ctx[8]),
 						listen(button1, "click", /*processPayment*/ ctx[2])
 					];
 
@@ -5921,9 +5887,6 @@
 				}
 			},
 			p(ctx, dirty) {
-				if ((!current || dirty & /*$t*/ 256) && t1_value !== (t1_value = /*$t*/ ctx[8]("homepage.back") + "")) set_data(t1, t1_value);
-				if ((!current || dirty & /*$t*/ 256) && t3_value !== (t3_value = /*$t*/ ctx[8]("payment.pay") + "")) set_data(t3, t3_value);
-
 				if (!current || dirty & /*isProcessing*/ 64 && button1_disabled_value !== (button1_disabled_value = /*isProcessing*/ ctx[6] == true)) {
 					button1.disabled = button1_disabled_value;
 				}
@@ -5950,11 +5913,11 @@
 		};
 	}
 
-	// (123:32)           {#if hasError == false}
+	// (124:32)           {#if hasError == false}
 	function create_pending_block(ctx) {
 		let if_block_anchor;
 		let current;
-		let if_block = /*hasError*/ ctx[7] == false && create_if_block$4(ctx);
+		let if_block = /*hasError*/ ctx[7] == false && create_if_block$4();
 
 		return {
 			c() {
@@ -5969,13 +5932,11 @@
 			p(ctx, dirty) {
 				if (/*hasError*/ ctx[7] == false) {
 					if (if_block) {
-						if_block.p(ctx, dirty);
-
 						if (dirty & /*hasError*/ 128) {
 							transition_in(if_block, 1);
 						}
 					} else {
-						if_block = create_if_block$4(ctx);
+						if_block = create_if_block$4();
 						if_block.c();
 						transition_in(if_block, 1);
 						if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -6009,16 +5970,11 @@
 		};
 	}
 
-	// (124:8) {#if hasError == false}
+	// (125:8) {#if hasError == false}
 	function create_if_block$4(ctx) {
 		let spinner;
 		let current;
-
-		spinner = new Spinner({
-				props: {
-					caption: /*$t*/ ctx[8]("payment.pleaseWait")
-				}
-			});
+		spinner = new Spinner({ props: { caption: "Please wait..." } });
 
 		return {
 			c() {
@@ -6027,11 +5983,6 @@
 			m(target, anchor) {
 				mount_component(spinner, target, anchor);
 				current = true;
-			},
-			p(ctx, dirty) {
-				const spinner_changes = {};
-				if (dirty & /*$t*/ 256) spinner_changes.caption = /*$t*/ ctx[8]("payment.pleaseWait");
-				spinner.$set(spinner_changes);
 			},
 			i(local) {
 				if (current) return;
@@ -6060,8 +6011,8 @@
 			pending: create_pending_block,
 			then: create_then_block,
 			catch: create_catch_block,
-			value: 17,
-			error: 18,
+			value: 15,
+			error: 16,
 			blocks: [,,,]
 		};
 
@@ -6110,16 +6061,12 @@
 	}
 
 	function instance$6($$self, $$props, $$invalidate) {
-		let $t;
 		let $stripePaymentIntentId;
-		let $locale;
 		let $userForm;
 		let $contributionValue;
-		component_subscribe($$self, t, $$value => $$invalidate(8, $t = $$value));
-		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(11, $stripePaymentIntentId = $$value));
-		component_subscribe($$self, locale, $$value => $$invalidate(12, $locale = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(13, $userForm = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(14, $contributionValue = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(10, $stripePaymentIntentId = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(11, $userForm = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(12, $contributionValue = $$value));
 		let { handleStepProgress } = $$props;
 		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 		let stripe = null;
@@ -6145,7 +6092,10 @@
 
 			let paymentFrequency = $userForm.contributionFrequency; //once or monthly
 			let userDetails = $userForm;
-			let userLocale = $locale;
+
+			// let userLocale              = $locale;
+			let userLocale = "de"; //default, testing
+
 			let paymentIntentId = $stripePaymentIntentId;
 
 			const axiosConfig = {
@@ -6212,7 +6162,7 @@
 				successPayment.set(true); //update payment success
 
 				Swal.fire({
-					title: $t("payment.thankyou"),
+					title: "Thank you for your impact purchase!",
 					width: 600,
 					padding: '3em',
 					color: '#000',
@@ -6248,7 +6198,6 @@
 			clientSecret,
 			isProcessing,
 			hasError,
-			$t,
 			click_handler,
 			elements_1_elements_binding
 		];
@@ -6279,40 +6228,34 @@
 	function create_fragment$5(ctx) {
 		let div;
 		let h1;
-		let t0_value = /*$t*/ ctx[2]("certificate.thankyou") + "";
 		let t0;
+		let t1_value = /*$userForm*/ ctx[1].firstName + "";
 		let t1;
-		let t2_value = /*$userForm*/ ctx[1].firstName + "";
 		let t2;
+		let t3_value = /*$userForm*/ ctx[1].lastName + "";
 		let t3;
-		let t4_value = /*$userForm*/ ctx[1].lastName + "";
 		let t4;
 		let t5;
-		let t6;
 		let p;
-		let t7_value = /*$t*/ ctx[2]("certificate.message") + "";
 		let t7;
-		let t8;
 		let a;
-		let t9_value = /*$t*/ ctx[2]("certificate.download") + "";
-		let t9;
+		let t8;
 
 		return {
 			c() {
 				div = element("div");
 				h1 = element("h1");
-				t0 = text(t0_value);
-				t1 = space();
-				t2 = text(t2_value);
-				t3 = space();
-				t4 = text(t4_value);
-				t5 = text("!");
-				t6 = space();
+				t0 = text("Thank you ");
+				t1 = text(t1_value);
+				t2 = space();
+				t3 = text(t3_value);
+				t4 = text("!");
+				t5 = space();
 				p = element("p");
-				t7 = text(t7_value);
-				t8 = space();
+				p.textContent = "Check your email soon for your personalized certificate. Can't wait? Download instantly.";
+				t7 = space();
 				a = element("a");
-				t9 = text(t9_value);
+				t8 = text("Download Certificate");
 				attr(h1, "class", "mt-4 text-teal-900 font-semibold");
 				attr(p, "class", "text-sm text-bold mt-4 mb-8");
 				attr(a, "class", "mt-4 mt-4 bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full");
@@ -6328,20 +6271,15 @@
 				append(h1, t2);
 				append(h1, t3);
 				append(h1, t4);
-				append(h1, t5);
-				append(div, t6);
+				append(div, t5);
 				append(div, p);
-				append(p, t7);
-				append(div, t8);
+				append(div, t7);
 				append(div, a);
-				append(a, t9);
+				append(a, t8);
 			},
 			p(ctx, [dirty]) {
-				if (dirty & /*$t*/ 4 && t0_value !== (t0_value = /*$t*/ ctx[2]("certificate.thankyou") + "")) set_data(t0, t0_value);
-				if (dirty & /*$userForm*/ 2 && t2_value !== (t2_value = /*$userForm*/ ctx[1].firstName + "")) set_data(t2, t2_value);
-				if (dirty & /*$userForm*/ 2 && t4_value !== (t4_value = /*$userForm*/ ctx[1].lastName + "")) set_data(t4, t4_value);
-				if (dirty & /*$t*/ 4 && t7_value !== (t7_value = /*$t*/ ctx[2]("certificate.message") + "")) set_data(t7, t7_value);
-				if (dirty & /*$t*/ 4 && t9_value !== (t9_value = /*$t*/ ctx[2]("certificate.download") + "")) set_data(t9, t9_value);
+				if (dirty & /*$userForm*/ 2 && t1_value !== (t1_value = /*$userForm*/ ctx[1].firstName + "")) set_data(t1, t1_value);
+				if (dirty & /*$userForm*/ 2 && t3_value !== (t3_value = /*$userForm*/ ctx[1].lastName + "")) set_data(t3, t3_value);
 
 				if (dirty & /*certificateUrl*/ 1) {
 					attr(a, "href", /*certificateUrl*/ ctx[0]);
@@ -6360,10 +6298,8 @@
 	function instance$5($$self, $$props, $$invalidate) {
 		let $userForm;
 		let $contributionValue;
-		let $t;
 		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(3, $contributionValue = $$value));
-		component_subscribe($$self, t, $$value => $$invalidate(2, $t = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(2, $contributionValue = $$value));
 		let certificateUrl;
 		const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 
@@ -6396,7 +6332,7 @@
 			});
 		};
 
-		return [certificateUrl, $userForm, $t];
+		return [certificateUrl, $userForm];
 	}
 
 	class ThankyouForm extends SvelteComponent {
@@ -6520,7 +6456,7 @@
 		append_styles(target, "svelte-1herolf", ":root{--accent-color:#5F753D;--gray:#ccc;--cream:#F5F2F0}.s--inner.svelte-1herolf button.svelte-1herolf.svelte-1herolf{font-weight:500;padding:0.3em;background:var(--cream);border-radius:50px}[role='switch'][aria-checked='true'].svelte-1herolf .svelte-1herolf.svelte-1herolf:first-child,[role='switch'][aria-checked='false'].svelte-1herolf .svelte-1herolf.svelte-1herolf:last-child{display:none;color:#fff}.s--inner.svelte-1herolf button span.svelte-1herolf.svelte-1herolf{-webkit-user-select:none;-moz-user-select:none;user-select:none;pointer-events:none;padding:0.45em;border-radius:50px;padding-left:60px;padding-right:60px;background:var(--cream);color:var(--accent-color)}.s--slider.svelte-1herolf.svelte-1herolf.svelte-1herolf{display:flex;align-items:center}.s--slider.svelte-1herolf button.svelte-1herolf.svelte-1herolf{width:3em;height:1.6em;position:relative;margin:0 0 0 0.5em;background:var(--gray);border:none}.s--slider.svelte-1herolf button.svelte-1herolf.svelte-1herolf::before{content:'';position:absolute;width:1.3em;height:1.3em;background:#fff;top:0.13em;right:1.5em;transition:transform 0.3s}.s--slider.svelte-1herolf button[aria-checked='true'].svelte-1herolf.svelte-1herolf{background-color:var(--accent-color)}.s--slider.svelte-1herolf button[aria-checked='true'].svelte-1herolf.svelte-1herolf::before{transform:translateX(1.3em);transition:transform 0.3s}.s--slider.svelte-1herolf button.svelte-1herolf.svelte-1herolf:focus{box-shadow:0 0px 0px 1px var(--accent-color)}.s--multi.svelte-1herolf .group-container.svelte-1herolf.svelte-1herolf{border:none;padding:0;white-space:nowrap}.s--multi.svelte-1herolf label.svelte-1herolf.svelte-1herolf{display:inline-block;line-height:1.6;position:relative;z-index:2}.s--multi.svelte-1herolf input.svelte-1herolf.svelte-1herolf{opacity:0;position:absolute}.s--multi.svelte-1herolf label.svelte-1herolf.svelte-1herolf:first-of-type{padding-right:5em}.s--multi.svelte-1herolf label.svelte-1herolf.svelte-1herolf:last-child{margin-left:-5em;padding-left:5em}.s--multi.svelte-1herolf:focus-within label.svelte-1herolf.svelte-1herolf:first-of-type:after{box-shadow:0 0px 8px var(--accent-color);border-radius:1.5em}.s--multi.svelte-1herolf label.svelte-1herolf.svelte-1herolf:first-of-type:before,.s--multi.svelte-1herolf label.svelte-1herolf.svelte-1herolf:first-of-type:after{content:\"\";height:1.25em;overflow:hidden;pointer-events:none;position:absolute;vertical-align:middle}.s--multi.svelte-1herolf label.svelte-1herolf.svelte-1herolf:first-of-type:before{border-radius:100%;z-index:2;position:absolute;width:1.2em;height:1.2em;background:#fff;top:0.2em;right:1.2em;transition:transform 0.3s}.s--multi.svelte-1herolf label.svelte-1herolf.svelte-1herolf:first-of-type:after{background:var(--accent-color);border-radius:1em;margin:0 1em;transition:background .2s ease-in-out;width:3em;height:1.6em}.s--multi.svelte-1herolf input.svelte-1herolf:first-of-type:checked~label.svelte-1herolf:first-of-type:after{background:var(--gray)}.s--multi.svelte-1herolf input.svelte-1herolf:first-of-type:checked~label.svelte-1herolf:first-of-type:before{transform:translateX(-1.4em)}.s--multi.svelte-1herolf input.svelte-1herolf:last-of-type:checked~label.svelte-1herolf:last-of-type{z-index:1}.s--multi.svelte-1herolf input.svelte-1herolf.svelte-1herolf:focus{box-shadow:0 0px 8px var(--accent-color);border-radius:1.5em}[role='switch'][aria-checked='true'].svelte-1herolf .svelte-1herolf.svelte-1herolf:first-child,[role='switch'][aria-checked='false'].svelte-1herolf .svelte-1herolf.svelte-1herolf:last-child{border-radius:50px;background:var(--accent-color);display:inline-block}.s--slider.svelte-1herolf button.svelte-1herolf.svelte-1herolf{border-radius:1.5em}.s--slider.svelte-1herolf button.svelte-1herolf.svelte-1herolf::before{border-radius:100%}.s--slider.svelte-1herolf button.svelte-1herolf.svelte-1herolf:focus{box-shadow:0 0px 8px var(--accent-color);border-radius:1.5em}.discount_percent.svelte-1herolf.svelte-1herolf.svelte-1herolf{position:absolute;top:30px;right:0 !important;left:0 !important;width:50% !important;margin:0 auto !important;font-size:11px !important;color:#000 !important;background:#DEE37D !important;padding:1px !important;padding-left:5px !important;padding-right:5px !important;border-radius:15px !important}@media only screen and (max-width: 1051px){.s--inner.svelte-1herolf button span.svelte-1herolf.svelte-1herolf{border-radius:50px;padding-left:55px;padding-right:55px}}@media screen and (min-width:768px) and (max-width:1050px){.s--inner.svelte-1herolf button span.svelte-1herolf.svelte-1herolf{border-radius:50px;padding-left:20px;padding-right:20px}}@media screen and (min-width:479px) and (max-width:767px){.s--inner.svelte-1herolf button span.svelte-1herolf.svelte-1herolf{border-radius:50px;padding-left:20px;padding-right:20px}.discount_percent.svelte-1herolf.svelte-1herolf.svelte-1herolf{font-size:10px !important;width:75% !important}}@media screen and (min-width:401px) and (max-width:478px){.s--inner.svelte-1herolf button span.svelte-1herolf.svelte-1herolf{border-radius:50px;padding-left:25px;padding-right:25px}.discount_percent.svelte-1herolf.svelte-1herolf.svelte-1herolf{font-size:10px !important;width:75% !important}}@media only screen and (max-width: 400px){.s--inner.svelte-1herolf button span.svelte-1herolf.svelte-1herolf{border-radius:50px;padding-left:10px;padding-right:10px}.discount_percent.svelte-1herolf.svelte-1herolf.svelte-1herolf{font-size:10px !important;width:80% !important}}");
 	}
 
-	function get_each_context$1(ctx, list, i) {
+	function get_each_context(ctx, list, i) {
 		const child_ctx = ctx.slice();
 		child_ctx[14] = list[i];
 		return child_ctx;
@@ -6537,7 +6473,7 @@
 		let each_blocks = [];
 
 		for (let i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+			each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
 		}
 
 		return {
@@ -6582,12 +6518,12 @@
 					let i;
 
 					for (i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context$1(ctx, each_value, i);
+						const child_ctx = get_each_context(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(child_ctx, dirty);
 						} else {
-							each_blocks[i] = create_each_block$1(child_ctx);
+							each_blocks[i] = create_each_block(child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(div1, null);
 						}
@@ -6760,7 +6696,7 @@
 	}
 
 	// (66:8) {#each options as option}
-	function create_each_block$1(ctx) {
+	function create_each_block(ctx) {
 		let input;
 		let input_id_value;
 		let input_value_value;
@@ -6968,7 +6904,7 @@
 
 	function create_if_block_2(ctx) {
 		let span;
-		let t_1_value = /*$formErrors*/ ctx[5].firstName + "";
+		let t_1_value = /*$formErrors*/ ctx[4].firstName + "";
 		let t_1;
 
 		return {
@@ -6982,7 +6918,7 @@
 				append(span, t_1);
 			},
 			p(ctx, dirty) {
-				if (dirty & /*$formErrors*/ 32 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[5].firstName + "")) set_data(t_1, t_1_value);
+				if (dirty & /*$formErrors*/ 16 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[4].firstName + "")) set_data(t_1, t_1_value);
 			},
 			d(detaching) {
 				if (detaching) {
@@ -6995,7 +6931,7 @@
 	// (90:8) {#if $formErrors.lastName != ""}
 	function create_if_block_1$2(ctx) {
 		let span;
-		let t_1_value = /*$formErrors*/ ctx[5].lastName + "";
+		let t_1_value = /*$formErrors*/ ctx[4].lastName + "";
 		let t_1;
 
 		return {
@@ -7009,7 +6945,7 @@
 				append(span, t_1);
 			},
 			p(ctx, dirty) {
-				if (dirty & /*$formErrors*/ 32 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[5].lastName + "")) set_data(t_1, t_1_value);
+				if (dirty & /*$formErrors*/ 16 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[4].lastName + "")) set_data(t_1, t_1_value);
 			},
 			d(detaching) {
 				if (detaching) {
@@ -7022,7 +6958,7 @@
 	// (96:0) {#if $formErrors.email != ""}
 	function create_if_block$2(ctx) {
 		let span;
-		let t_1_value = /*$formErrors*/ ctx[5].email + "";
+		let t_1_value = /*$formErrors*/ ctx[4].email + "";
 		let t_1;
 
 		return {
@@ -7036,7 +6972,7 @@
 				append(span, t_1);
 			},
 			p(ctx, dirty) {
-				if (dirty & /*$formErrors*/ 32 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[5].email + "")) set_data(t_1, t_1_value);
+				if (dirty & /*$formErrors*/ 16 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[4].email + "")) set_data(t_1, t_1_value);
 			},
 			d(detaching) {
 				if (detaching) {
@@ -7054,8 +6990,6 @@
 		let t0;
 		let div14;
 		let p;
-		let t1_value = /*$t*/ ctx[2]("form.how_many_trees") + "";
-		let t1;
 		let t2;
 		let div13;
 		let div11;
@@ -7125,14 +7059,14 @@
 		let dispose;
 
 		function switch_1_value_binding(value) {
-			/*switch_1_value_binding*/ ctx[7](value);
+			/*switch_1_value_binding*/ ctx[6](value);
 		}
 
 		let switch_1_props = {
 			label: "",
-			labelOnce: /*$t*/ ctx[2]("form.plantOnce"),
-			labelMonthly: /*$t*/ ctx[2]("form.plantMonthly"),
-			saveLabel: /*$t*/ ctx[2]('form.plantMonthlySave'),
+			labelOnce: "Plant Once",
+			labelMonthly: "Plant Monthly",
+			saveLabel: "Save 15%",
 			design: "inner"
 		};
 
@@ -7144,10 +7078,10 @@
 		binding_callbacks.push(() => bind$1(switch_1, 'value', switch_1_value_binding));
 
 		function inputfield0_value_binding(value) {
-			/*inputfield0_value_binding*/ ctx[17](value);
+			/*inputfield0_value_binding*/ ctx[16](value);
 		}
 
-		let inputfield0_props = { label: /*$t*/ ctx[2]("form.firstName") };
+		let inputfield0_props = { label: "First Name" };
 
 		if (/*$userForm*/ ctx[1].firstName !== void 0) {
 			inputfield0_props.value = /*$userForm*/ ctx[1].firstName;
@@ -7155,13 +7089,13 @@
 
 		inputfield0 = new InputField({ props: inputfield0_props });
 		binding_callbacks.push(() => bind$1(inputfield0, 'value', inputfield0_value_binding));
-		let if_block0 = /*$formErrors*/ ctx[5].firstName != "" && create_if_block_2(ctx);
+		let if_block0 = /*$formErrors*/ ctx[4].firstName != "" && create_if_block_2(ctx);
 
 		function inputfield1_value_binding(value) {
-			/*inputfield1_value_binding*/ ctx[18](value);
+			/*inputfield1_value_binding*/ ctx[17](value);
 		}
 
-		let inputfield1_props = { label: /*$t*/ ctx[2]("form.lastName") };
+		let inputfield1_props = { label: "Last Name" };
 
 		if (/*$userForm*/ ctx[1].lastName !== void 0) {
 			inputfield1_props.value = /*$userForm*/ ctx[1].lastName;
@@ -7169,13 +7103,13 @@
 
 		inputfield1 = new InputField({ props: inputfield1_props });
 		binding_callbacks.push(() => bind$1(inputfield1, 'value', inputfield1_value_binding));
-		let if_block1 = /*$formErrors*/ ctx[5].lastName != "" && create_if_block_1$2(ctx);
+		let if_block1 = /*$formErrors*/ ctx[4].lastName != "" && create_if_block_1$2(ctx);
 
 		function inputfield2_value_binding(value) {
-			/*inputfield2_value_binding*/ ctx[19](value);
+			/*inputfield2_value_binding*/ ctx[18](value);
 		}
 
-		let inputfield2_props = { label: /*$t*/ ctx[2]("form.email") };
+		let inputfield2_props = { label: "Email" };
 
 		if (/*$userForm*/ ctx[1].email !== void 0) {
 			inputfield2_props.value = /*$userForm*/ ctx[1].email;
@@ -7183,13 +7117,13 @@
 
 		inputfield2 = new InputField({ props: inputfield2_props });
 		binding_callbacks.push(() => bind$1(inputfield2, 'value', inputfield2_value_binding));
-		let if_block2 = /*$formErrors*/ ctx[5].email != "" && create_if_block$2(ctx);
+		let if_block2 = /*$formErrors*/ ctx[4].email != "" && create_if_block$2(ctx);
 
 		function inputfield3_value_binding(value) {
-			/*inputfield3_value_binding*/ ctx[20](value);
+			/*inputfield3_value_binding*/ ctx[19](value);
 		}
 
-		let inputfield3_props = { label: /*$t*/ ctx[2]("form.address") };
+		let inputfield3_props = { label: "Address" };
 
 		if (/*$userForm*/ ctx[1].address !== void 0) {
 			inputfield3_props.value = /*$userForm*/ ctx[1].address;
@@ -7199,10 +7133,10 @@
 		binding_callbacks.push(() => bind$1(inputfield3, 'value', inputfield3_value_binding));
 
 		function inputfield4_value_binding(value) {
-			/*inputfield4_value_binding*/ ctx[21](value);
+			/*inputfield4_value_binding*/ ctx[20](value);
 		}
 
-		let inputfield4_props = { label: /*$t*/ ctx[2]("form.postalCode") };
+		let inputfield4_props = { label: "Postal Code" };
 
 		if (/*$userForm*/ ctx[1].postalCode !== void 0) {
 			inputfield4_props.value = /*$userForm*/ ctx[1].postalCode;
@@ -7212,10 +7146,10 @@
 		binding_callbacks.push(() => bind$1(inputfield4, 'value', inputfield4_value_binding));
 
 		function inputfield5_value_binding(value) {
-			/*inputfield5_value_binding*/ ctx[22](value);
+			/*inputfield5_value_binding*/ ctx[21](value);
 		}
 
-		let inputfield5_props = { label: /*$t*/ ctx[2]("form.city") };
+		let inputfield5_props = { label: "City" };
 
 		if (/*$userForm*/ ctx[1].city !== void 0) {
 			inputfield5_props.value = /*$userForm*/ ctx[1].city;
@@ -7223,7 +7157,7 @@
 
 		inputfield5 = new InputField({ props: inputfield5_props });
 		binding_callbacks.push(() => bind$1(inputfield5, 'value', inputfield5_value_binding));
-		binding_group = init_binding_group(/*$$binding_groups*/ ctx[9][0]);
+		binding_group = init_binding_group(/*$$binding_groups*/ ctx[8][0]);
 
 		return {
 			c() {
@@ -7233,7 +7167,7 @@
 				t0 = space();
 				div14 = element("div");
 				p = element("p");
-				t1 = text(t1_value);
+				p.textContent = "How many trees would you like to plant?";
 				t2 = space();
 				div13 = element("div");
 				div11 = element("div");
@@ -7269,7 +7203,7 @@
 				div12 = element("div");
 				span = element("span");
 				t15 = text("€ ");
-				t16 = text(/*$totalPrice*/ ctx[4]);
+				t16 = text(/*$totalPrice*/ ctx[3]);
 				t17 = space();
 				div17 = element("div");
 				div15 = element("div");
@@ -7301,28 +7235,28 @@
 				attr(input0, "class", "form-radio my-1 h-4 w-4 p-1 text-[#5F753D] checked:bg-[#5F753D]");
 				input0.__value = 1;
 				set_input_value(input0, input0.__value);
-				input0.checked = input0_checked_value = /*$contributionValue*/ ctx[3] === 1;
+				input0.checked = input0_checked_value = /*$contributionValue*/ ctx[2] === 1;
 				attr(div2, "class", "text-center text-xs");
 				attr(div3, "class", "");
 				attr(input1, "type", "radio");
 				attr(input1, "class", "form-radio my-1 h-4 w-4 p-1 text-[#5F753D] checked:bg-[#5F753D]");
 				input1.__value = 4;
 				set_input_value(input1, input1.__value);
-				input1.checked = input1_checked_value = /*$contributionValue*/ ctx[3] === 4;
+				input1.checked = input1_checked_value = /*$contributionValue*/ ctx[2] === 4;
 				attr(div4, "class", "text-center text-xs");
 				attr(div5, "class", "");
 				attr(input2, "type", "radio");
 				attr(input2, "class", "form-radio my-1 h-4 w-4 p-1 text-[#5F753D] checked:bg-[#5F753D]");
 				input2.__value = 11;
 				set_input_value(input2, input2.__value);
-				input2.checked = input2_checked_value = /*$contributionValue*/ ctx[3] === 11;
+				input2.checked = input2_checked_value = /*$contributionValue*/ ctx[2] === 11;
 				attr(div6, "class", "text-center text-xs");
 				attr(div7, "class", "");
 				attr(input3, "type", "radio");
 				attr(input3, "class", "form-radio my-1 h-4 w-4 p-1 text-[#5F753D] checked:bg-[#5F753D]");
 				input3.__value = 22;
 				set_input_value(input3, input3.__value);
-				input3.checked = input3_checked_value = /*$contributionValue*/ ctx[3] === 22;
+				input3.checked = input3_checked_value = /*$contributionValue*/ ctx[2] === 22;
 				attr(div8, "class", "text-center text-xs");
 				attr(div9, "class", "");
 				attr(div10, "class", "flex items-center justify-between mr-6");
@@ -7348,7 +7282,6 @@
 				insert(target, t0, anchor);
 				insert(target, div14, anchor);
 				append(div14, p);
-				append(p, t1);
 				append(div14, t2);
 				append(div14, div13);
 				append(div13, div11);
@@ -7413,14 +7346,14 @@
 
 				if (!mounted) {
 					dispose = [
-						listen(input0, "change", /*input0_change_handler*/ ctx[8]),
-						listen(input0, "change", /*change_handler*/ ctx[10]),
-						listen(input1, "change", /*input1_change_handler*/ ctx[11]),
-						listen(input1, "change", /*change_handler_1*/ ctx[12]),
-						listen(input2, "change", /*input2_change_handler*/ ctx[13]),
-						listen(input2, "change", /*change_handler_2*/ ctx[14]),
-						listen(input3, "change", /*input3_change_handler*/ ctx[15]),
-						listen(input3, "change", /*change_handler_3*/ ctx[16])
+						listen(input0, "change", /*input0_change_handler*/ ctx[7]),
+						listen(input0, "change", /*change_handler*/ ctx[9]),
+						listen(input1, "change", /*input1_change_handler*/ ctx[10]),
+						listen(input1, "change", /*change_handler_1*/ ctx[11]),
+						listen(input2, "change", /*input2_change_handler*/ ctx[12]),
+						listen(input2, "change", /*change_handler_2*/ ctx[13]),
+						listen(input3, "change", /*input3_change_handler*/ ctx[14]),
+						listen(input3, "change", /*change_handler_3*/ ctx[15])
 					];
 
 					mounted = true;
@@ -7428,9 +7361,6 @@
 			},
 			p(ctx, [dirty]) {
 				const switch_1_changes = {};
-				if (dirty & /*$t*/ 4) switch_1_changes.labelOnce = /*$t*/ ctx[2]("form.plantOnce");
-				if (dirty & /*$t*/ 4) switch_1_changes.labelMonthly = /*$t*/ ctx[2]("form.plantMonthly");
-				if (dirty & /*$t*/ 4) switch_1_changes.saveLabel = /*$t*/ ctx[2]('form.plantMonthlySave');
 
 				if (!updating_value && dirty & /*$userForm*/ 2) {
 					updating_value = true;
@@ -7439,9 +7369,8 @@
 				}
 
 				switch_1.$set(switch_1_changes);
-				if ((!current || dirty & /*$t*/ 4) && t1_value !== (t1_value = /*$t*/ ctx[2]("form.how_many_trees") + "")) set_data(t1, t1_value);
 
-				if (!current || dirty & /*$contributionValue*/ 8 && input0_checked_value !== (input0_checked_value = /*$contributionValue*/ ctx[3] === 1)) {
+				if (!current || dirty & /*$contributionValue*/ 4 && input0_checked_value !== (input0_checked_value = /*$contributionValue*/ ctx[2] === 1)) {
 					input0.checked = input0_checked_value;
 				}
 
@@ -7449,7 +7378,7 @@
 					input0.checked = input0.__value === /*group*/ ctx[0];
 				}
 
-				if (!current || dirty & /*$contributionValue*/ 8 && input1_checked_value !== (input1_checked_value = /*$contributionValue*/ ctx[3] === 4)) {
+				if (!current || dirty & /*$contributionValue*/ 4 && input1_checked_value !== (input1_checked_value = /*$contributionValue*/ ctx[2] === 4)) {
 					input1.checked = input1_checked_value;
 				}
 
@@ -7457,7 +7386,7 @@
 					input1.checked = input1.__value === /*group*/ ctx[0];
 				}
 
-				if (!current || dirty & /*$contributionValue*/ 8 && input2_checked_value !== (input2_checked_value = /*$contributionValue*/ ctx[3] === 11)) {
+				if (!current || dirty & /*$contributionValue*/ 4 && input2_checked_value !== (input2_checked_value = /*$contributionValue*/ ctx[2] === 11)) {
 					input2.checked = input2_checked_value;
 				}
 
@@ -7465,7 +7394,7 @@
 					input2.checked = input2.__value === /*group*/ ctx[0];
 				}
 
-				if (!current || dirty & /*$contributionValue*/ 8 && input3_checked_value !== (input3_checked_value = /*$contributionValue*/ ctx[3] === 22)) {
+				if (!current || dirty & /*$contributionValue*/ 4 && input3_checked_value !== (input3_checked_value = /*$contributionValue*/ ctx[2] === 22)) {
 					input3.checked = input3_checked_value;
 				}
 
@@ -7473,9 +7402,8 @@
 					input3.checked = input3.__value === /*group*/ ctx[0];
 				}
 
-				if (!current || dirty & /*$totalPrice*/ 16) set_data(t16, /*$totalPrice*/ ctx[4]);
+				if (!current || dirty & /*$totalPrice*/ 8) set_data(t16, /*$totalPrice*/ ctx[3]);
 				const inputfield0_changes = {};
-				if (dirty & /*$t*/ 4) inputfield0_changes.label = /*$t*/ ctx[2]("form.firstName");
 
 				if (!updating_value_1 && dirty & /*$userForm*/ 2) {
 					updating_value_1 = true;
@@ -7485,7 +7413,7 @@
 
 				inputfield0.$set(inputfield0_changes);
 
-				if (/*$formErrors*/ ctx[5].firstName != "") {
+				if (/*$formErrors*/ ctx[4].firstName != "") {
 					if (if_block0) {
 						if_block0.p(ctx, dirty);
 					} else {
@@ -7499,7 +7427,6 @@
 				}
 
 				const inputfield1_changes = {};
-				if (dirty & /*$t*/ 4) inputfield1_changes.label = /*$t*/ ctx[2]("form.lastName");
 
 				if (!updating_value_2 && dirty & /*$userForm*/ 2) {
 					updating_value_2 = true;
@@ -7509,7 +7436,7 @@
 
 				inputfield1.$set(inputfield1_changes);
 
-				if (/*$formErrors*/ ctx[5].lastName != "") {
+				if (/*$formErrors*/ ctx[4].lastName != "") {
 					if (if_block1) {
 						if_block1.p(ctx, dirty);
 					} else {
@@ -7523,7 +7450,6 @@
 				}
 
 				const inputfield2_changes = {};
-				if (dirty & /*$t*/ 4) inputfield2_changes.label = /*$t*/ ctx[2]("form.email");
 
 				if (!updating_value_3 && dirty & /*$userForm*/ 2) {
 					updating_value_3 = true;
@@ -7533,7 +7459,7 @@
 
 				inputfield2.$set(inputfield2_changes);
 
-				if (/*$formErrors*/ ctx[5].email != "") {
+				if (/*$formErrors*/ ctx[4].email != "") {
 					if (if_block2) {
 						if_block2.p(ctx, dirty);
 					} else {
@@ -7547,7 +7473,6 @@
 				}
 
 				const inputfield3_changes = {};
-				if (dirty & /*$t*/ 4) inputfield3_changes.label = /*$t*/ ctx[2]("form.address");
 
 				if (!updating_value_4 && dirty & /*$userForm*/ 2) {
 					updating_value_4 = true;
@@ -7557,7 +7482,6 @@
 
 				inputfield3.$set(inputfield3_changes);
 				const inputfield4_changes = {};
-				if (dirty & /*$t*/ 4) inputfield4_changes.label = /*$t*/ ctx[2]("form.postalCode");
 
 				if (!updating_value_5 && dirty & /*$userForm*/ 2) {
 					updating_value_5 = true;
@@ -7567,7 +7491,6 @@
 
 				inputfield4.$set(inputfield4_changes);
 				const inputfield5_changes = {};
-				if (dirty & /*$t*/ 4) inputfield5_changes.label = /*$t*/ ctx[2]("form.city");
 
 				if (!updating_value_6 && dirty & /*$userForm*/ 2) {
 					updating_value_6 = true;
@@ -7631,15 +7554,13 @@
 
 	function instance$2($$self, $$props, $$invalidate) {
 		let $userForm;
-		let $t;
 		let $contributionValue;
 		let $totalPrice;
 		let $formErrors;
 		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
-		component_subscribe($$self, t, $$value => $$invalidate(2, $t = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(3, $contributionValue = $$value));
-		component_subscribe($$self, totalPrice, $$value => $$invalidate(4, $totalPrice = $$value));
-		component_subscribe($$self, formErrors, $$value => $$invalidate(5, $formErrors = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(2, $contributionValue = $$value));
+		component_subscribe($$self, totalPrice, $$value => $$invalidate(3, $totalPrice = $$value));
+		component_subscribe($$self, formErrors, $$value => $$invalidate(4, $formErrors = $$value));
 		let group = 1;
 
 		const handleChange = (event, value) => {
@@ -7729,7 +7650,6 @@
 		return [
 			group,
 			$userForm,
-			$t,
 			$contributionValue,
 			$totalPrice,
 			$formErrors,
@@ -7981,95 +7901,10 @@
 
 	/* App.svelte generated by Svelte v4.2.1 */
 
-	function get_each_context(ctx, list, i) {
-		const child_ctx = ctx.slice();
-		child_ctx[15] = list[i];
-		return child_ctx;
-	}
-
-	// (74:14) {#each locales as l}
-	function create_each_block(ctx) {
-		let option;
-
-		return {
-			c() {
-				option = element("option");
-				option.textContent = `${/*l*/ ctx[15]}`;
-				option.__value = /*l*/ ctx[15];
-				set_input_value(option, option.__value);
-			},
-			m(target, anchor) {
-				insert(target, option, anchor);
-			},
-			p: noop$1,
-			d(detaching) {
-				if (detaching) {
-					detach(option);
-				}
-			}
-		};
-	}
-
-	// (105:24) {#key $locale}
-	function create_key_block(ctx) {
-		let progressbar;
-		let updating_currentActive;
-		let current;
-
-		function progressbar_currentActive_binding(value) {
-			/*progressbar_currentActive_binding*/ ctx[9](value);
-		}
-
-		let progressbar_props = { steps: /*steps*/ ctx[6] };
-
-		if (/*currentActive*/ ctx[0] !== void 0) {
-			progressbar_props.currentActive = /*currentActive*/ ctx[0];
-		}
-
-		progressbar = new ProgressBar({ props: progressbar_props });
-		binding_callbacks.push(() => bind$1(progressbar, 'currentActive', progressbar_currentActive_binding));
-		/*progressbar_binding*/ ctx[10](progressbar);
-
-		return {
-			c() {
-				create_component(progressbar.$$.fragment);
-			},
-			m(target, anchor) {
-				mount_component(progressbar, target, anchor);
-				current = true;
-			},
-			p(ctx, dirty) {
-				const progressbar_changes = {};
-
-				if (!updating_currentActive && dirty & /*currentActive*/ 1) {
-					updating_currentActive = true;
-					progressbar_changes.currentActive = /*currentActive*/ ctx[0];
-					add_flush_callback(() => updating_currentActive = false);
-				}
-
-				progressbar.$set(progressbar_changes);
-			},
-			i(local) {
-				if (current) return;
-				transition_in(progressbar.$$.fragment, local);
-				current = true;
-			},
-			o(local) {
-				transition_out(progressbar.$$.fragment, local);
-				current = false;
-			},
-			d(detaching) {
-				/*progressbar_binding*/ ctx[10](null);
-				destroy_component(progressbar, detaching);
-			}
-		};
-	}
-
-	// (118:20) {#if $processingPayment == false }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
-		let if_block = /*steps*/ ctx[6][/*currentActive*/ ctx[0] - 1] == "Your Info" && create_if_block_1(ctx);
+		let if_block = /*steps*/ ctx[4][/*currentActive*/ ctx[0] - 1] == "Your Info" && create_if_block_1(ctx);
 
 		return {
 			c() {
@@ -8085,7 +7920,7 @@
 				if (if_block) if_block.m(div0, null);
 			},
 			p(ctx, dirty) {
-				if (/*steps*/ ctx[6][/*currentActive*/ ctx[0] - 1] == "Your Info") {
+				if (/*steps*/ ctx[4][/*currentActive*/ ctx[0] - 1] == "Your Info") {
 					if (if_block) {
 						if_block.p(ctx, dirty);
 					} else {
@@ -8111,7 +7946,6 @@
 	// (125:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
-		let t_1_value = /*$t*/ ctx[2]("homepage.next") + "";
 		let t_1;
 		let button_disabled_value;
 		let mounted;
@@ -8120,23 +7954,21 @@
 		return {
 			c() {
 				button = element("button");
-				t_1 = text(t_1_value);
+				t_1 = text("Next");
 				attr(button, "class", "bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full");
-				button.disabled = button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[6].length;
+				button.disabled = button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[4].length;
 			},
 			m(target, anchor) {
 				insert(target, button, anchor);
 				append(button, t_1);
 
 				if (!mounted) {
-					dispose = listen(button, "click", /*click_handler*/ ctx[11]);
+					dispose = listen(button, "click", /*click_handler*/ ctx[8]);
 					mounted = true;
 				}
 			},
 			p(ctx, dirty) {
-				if (dirty & /*$t*/ 4 && t_1_value !== (t_1_value = /*$t*/ ctx[2]("homepage.next") + "")) set_data(t_1, t_1_value);
-
-				if (dirty & /*currentActive*/ 1 && button_disabled_value !== (button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[6].length)) {
+				if (dirty & /*currentActive*/ 1 && button_disabled_value !== (button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[4].length)) {
 					button.disabled = button_disabled_value;
 				}
 			},
@@ -8159,61 +7991,46 @@
 		let t1;
 		let div10;
 		let div9;
-		let p0;
-		let select;
-		let t2;
 		let div8;
 		let div7;
 		let div1;
 		let div0;
-		let h10;
-		let t3_value = /*$t*/ ctx[2]("homepage.header") + "";
-		let t3;
-		let t4;
-		let p1;
-		let t5_value = /*$t*/ ctx[2]("homepage.message") + "";
 		let t5;
-		let t6;
 		let div3;
-		let div2;
-		let h11;
-		let t7_value = /*$t*/ ctx[2]("homepage.header") + "";
-		let t7;
-		let t8;
-		let p2;
-		let t9_value = /*$t*/ ctx[2]("homepage.message") + "";
-		let t9;
 		let t10;
-		let br;
-		let t11;
 		let div6;
 		let div4;
-		let previous_key = /*$locale*/ ctx[3];
-		let t12;
+		let progressbar;
+		let updating_currentActive;
+		let t11;
 		let div5;
 		let checkoutform;
-		let t13;
+		let t12;
 		let current;
-		let mounted;
-		let dispose;
 		tailwind = new Tailwind({});
-		let each_value = ensure_array_like(locales);
-		let each_blocks = [];
 
-		for (let i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+		function progressbar_currentActive_binding(value) {
+			/*progressbar_currentActive_binding*/ ctx[6](value);
 		}
 
-		let key_block = create_key_block(ctx);
+		let progressbar_props = { steps: /*steps*/ ctx[4] };
+
+		if (/*currentActive*/ ctx[0] !== void 0) {
+			progressbar_props.currentActive = /*currentActive*/ ctx[0];
+		}
+
+		progressbar = new ProgressBar({ props: progressbar_props });
+		binding_callbacks.push(() => bind$1(progressbar, 'currentActive', progressbar_currentActive_binding));
+		/*progressbar_binding*/ ctx[7](progressbar);
 
 		checkoutform = new CheckoutForm({
 				props: {
-					handleStepProgress: /*handleProgress*/ ctx[7],
-					activeStep: /*steps*/ ctx[6][/*currentActive*/ ctx[0] - 1]
+					handleStepProgress: /*handleProgress*/ ctx[5],
+					activeStep: /*steps*/ ctx[4][/*currentActive*/ ctx[0] - 1]
 				}
 			});
 
-		let if_block = /*$processingPayment*/ ctx[4] == false && create_if_block(ctx);
+		let if_block = /*$processingPayment*/ ctx[2] == false && create_if_block(ctx);
 
 		return {
 			c() {
@@ -8224,52 +8041,27 @@
 				t1 = space();
 				div10 = element("div");
 				div9 = element("div");
-				p0 = element("p");
-				select = element("select");
-
-				for (let i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
-				}
-
-				t2 = space();
 				div8 = element("div");
 				div7 = element("div");
 				div1 = element("div");
 				div0 = element("div");
-				h10 = element("h1");
-				t3 = text(t3_value);
-				t4 = space();
-				p1 = element("p");
-				t5 = text(t5_value);
-				t6 = space();
+				div0.innerHTML = `<h1 class="text-4xl font-medium mb-4">Plant more trees</h1> <p class="text-base font-semibold">Now it&#39;s your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!</p>`;
+				t5 = space();
 				div3 = element("div");
-				div2 = element("div");
-				h11 = element("h1");
-				t7 = text(t7_value);
-				t8 = space();
-				p2 = element("p");
-				t9 = text(t9_value);
+				div3.innerHTML = `<div class="text-gray-900 text-left px-8 w-full"><h1 class="text-2xl font-medium mb-4">Plant more trees</h1> <p class="text-sm font-semibold">Now it&#39;s your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!</p> <br/></div>`;
 				t10 = space();
-				br = element("br");
-				t11 = space();
 				div6 = element("div");
 				div4 = element("div");
-				key_block.c();
-				t12 = space();
+				create_component(progressbar.$$.fragment);
+				t11 = space();
 				div5 = element("div");
 				create_component(checkoutform.$$.fragment);
-				t13 = space();
+				t12 = space();
 				if (if_block) if_block.c();
 				if (!src_url_equal(script.src, script_src_value = "https://cdn.jsdelivr.net/npm/sweetalert2@11")) attr(script, "src", script_src_value);
-				if (/*$locale*/ ctx[3] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[8].call(select));
-				attr(h10, "class", "text-4xl font-medium mb-4");
-				attr(p1, "class", "text-base font-semibold");
 				attr(div0, "class", "text-gray-900 text-left px-8 w-5/6");
 				attr(div1, "class", "hidden md:block md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden md:h-[550px]");
-				set_style(div1, "background-image", "url('" + /*bgImageUrl*/ ctx[5] + "') ");
-				attr(h11, "class", "text-2xl font-medium mb-4");
-				attr(p2, "class", "text-sm font-semibold");
-				attr(div2, "class", "text-gray-900 text-left px-8 w-full");
+				set_style(div1, "background-image", "url('" + /*bgImageUrl*/ ctx[3] + "') ");
 				attr(div3, "class", "block md:hidden bg-white pt-8 py-4 rounded-t-2xl mb-4");
 				attr(div4, "class", "block mb-2");
 				attr(div5, "class", "block");
@@ -8287,79 +8079,38 @@
 				insert(target, t1, anchor);
 				insert(target, div10, anchor);
 				append(div10, div9);
-				append(div9, p0);
-				append(p0, select);
-
-				for (let i = 0; i < each_blocks.length; i += 1) {
-					if (each_blocks[i]) {
-						each_blocks[i].m(select, null);
-					}
-				}
-
-				select_option(select, /*$locale*/ ctx[3], true);
-				append(div9, t2);
 				append(div9, div8);
 				append(div8, div7);
 				append(div7, div1);
 				append(div1, div0);
-				append(div0, h10);
-				append(h10, t3);
-				append(div0, t4);
-				append(div0, p1);
-				append(p1, t5);
-				append(div7, t6);
+				append(div7, t5);
 				append(div7, div3);
-				append(div3, div2);
-				append(div2, h11);
-				append(h11, t7);
-				append(div2, t8);
-				append(div2, p2);
-				append(p2, t9);
-				append(div2, t10);
-				append(div2, br);
-				append(div7, t11);
+				append(div7, t10);
 				append(div7, div6);
 				append(div6, div4);
-				key_block.m(div4, null);
-				append(div6, t12);
+				mount_component(progressbar, div4, null);
+				append(div6, t11);
 				append(div6, div5);
 				mount_component(checkoutform, div5, null);
-				append(div6, t13);
+				append(div6, t12);
 				if (if_block) if_block.m(div6, null);
 				current = true;
-
-				if (!mounted) {
-					dispose = listen(select, "change", /*select_change_handler*/ ctx[8]);
-					mounted = true;
-				}
 			},
 			p(ctx, [dirty]) {
-				if (dirty & /*$locale*/ 8) {
-					select_option(select, /*$locale*/ ctx[3]);
+				const progressbar_changes = {};
+
+				if (!updating_currentActive && dirty & /*currentActive*/ 1) {
+					updating_currentActive = true;
+					progressbar_changes.currentActive = /*currentActive*/ ctx[0];
+					add_flush_callback(() => updating_currentActive = false);
 				}
 
-				if ((!current || dirty & /*$t*/ 4) && t3_value !== (t3_value = /*$t*/ ctx[2]("homepage.header") + "")) set_data(t3, t3_value);
-				if ((!current || dirty & /*$t*/ 4) && t5_value !== (t5_value = /*$t*/ ctx[2]("homepage.message") + "")) set_data(t5, t5_value);
-				if ((!current || dirty & /*$t*/ 4) && t7_value !== (t7_value = /*$t*/ ctx[2]("homepage.header") + "")) set_data(t7, t7_value);
-				if ((!current || dirty & /*$t*/ 4) && t9_value !== (t9_value = /*$t*/ ctx[2]("homepage.message") + "")) set_data(t9, t9_value);
-
-				if (dirty & /*$locale*/ 8 && safe_not_equal(previous_key, previous_key = /*$locale*/ ctx[3])) {
-					group_outros();
-					transition_out(key_block, 1, 1, noop$1);
-					check_outros();
-					key_block = create_key_block(ctx);
-					key_block.c();
-					transition_in(key_block, 1);
-					key_block.m(div4, null);
-				} else {
-					key_block.p(ctx, dirty);
-				}
-
+				progressbar.$set(progressbar_changes);
 				const checkoutform_changes = {};
-				if (dirty & /*currentActive*/ 1) checkoutform_changes.activeStep = /*steps*/ ctx[6][/*currentActive*/ ctx[0] - 1];
+				if (dirty & /*currentActive*/ 1) checkoutform_changes.activeStep = /*steps*/ ctx[4][/*currentActive*/ ctx[0] - 1];
 				checkoutform.$set(checkoutform_changes);
 
-				if (/*$processingPayment*/ ctx[4] == false) {
+				if (/*$processingPayment*/ ctx[2] == false) {
 					if (if_block) {
 						if_block.p(ctx, dirty);
 					} else {
@@ -8375,13 +8126,13 @@
 			i(local) {
 				if (current) return;
 				transition_in(tailwind.$$.fragment, local);
-				transition_in(key_block);
+				transition_in(progressbar.$$.fragment, local);
 				transition_in(checkoutform.$$.fragment, local);
 				current = true;
 			},
 			o(local) {
 				transition_out(tailwind.$$.fragment, local);
-				transition_out(key_block);
+				transition_out(progressbar.$$.fragment, local);
 				transition_out(checkoutform.$$.fragment, local);
 				current = false;
 			},
@@ -8394,27 +8145,21 @@
 
 				detach(script);
 				destroy_component(tailwind, detaching);
-				destroy_each(each_blocks, detaching);
-				key_block.d(detaching);
+				/*progressbar_binding*/ ctx[7](null);
+				destroy_component(progressbar);
 				destroy_component(checkoutform);
 				if (if_block) if_block.d();
-				mounted = false;
-				dispose();
 			}
 		};
 	}
 
 	function instance($$self, $$props, $$invalidate) {
 		let $formErrors;
-		let $t;
 		let $userForm;
-		let $locale;
 		let $processingPayment;
-		component_subscribe($$self, formErrors, $$value => $$invalidate(12, $formErrors = $$value));
-		component_subscribe($$self, t, $$value => $$invalidate(2, $t = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(13, $userForm = $$value));
-		component_subscribe($$self, locale, $$value => $$invalidate(3, $locale = $$value));
-		component_subscribe($$self, processingPayment, $$value => $$invalidate(4, $processingPayment = $$value));
+		component_subscribe($$self, formErrors, $$value => $$invalidate(9, $formErrors = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(10, $userForm = $$value));
+		component_subscribe($$self, processingPayment, $$value => $$invalidate(2, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 
@@ -8434,19 +8179,19 @@
 
 			if ($userForm.firstName == "" || $userForm.lastName == "" || $userForm.email == "" || !$userForm.email.match(emailValidationRegex)) {
 				if ($userForm.firstName == "") {
-					set_store_value(formErrors, $formErrors.firstName = $t("form.firstNameValidation"), $formErrors);
+					set_store_value(formErrors, $formErrors.firstName = "First name field is required.", $formErrors);
 				} else {
 					set_store_value(formErrors, $formErrors.firstName = "", $formErrors);
 				}
 
 				if ($userForm.lastName == "") {
-					set_store_value(formErrors, $formErrors.lastName = $t("form.lastNameValidation"), $formErrors);
+					set_store_value(formErrors, $formErrors.lastName = "Last name field is required.", $formErrors);
 				} else {
 					set_store_value(formErrors, $formErrors.lastName = "", $formErrors);
 				}
 
 				if ($userForm.email == "" || !$userForm.email.match(emailValidationRegex)) {
-					set_store_value(formErrors, $formErrors.email = $t("form.emailValidation"), $formErrors);
+					set_store_value(formErrors, $formErrors.email = "Please enter a valid email address", $formErrors);
 				} else {
 					set_store_value(formErrors, $formErrors.email = "", $formErrors);
 				}
@@ -8456,11 +8201,6 @@
 
 			progressBar.handleProgress(stepIncrement);
 		};
-
-		function select_change_handler() {
-			$locale = select_value(this);
-			locale.set($locale);
-		}
 
 		function progressbar_currentActive_binding(value) {
 			currentActive = value;
@@ -8479,13 +8219,10 @@
 		return [
 			currentActive,
 			progressBar,
-			$t,
-			$locale,
 			$processingPayment,
 			bgImageUrl,
 			steps,
 			handleProgress,
-			select_change_handler,
 			progressbar_currentActive_binding,
 			progressbar_binding,
 			click_handler

@@ -46,14 +46,16 @@
 
 
 <div class="bg-white px-8 pt-6 pb-8 mb-4 text-center">
-    <h1 class="mt-4 text-teal-900 font-semibold">{ $t("certificate.thankyou") } {$userForm.firstName} {$userForm.lastName}!</h1>
-    <p class="text-sm text-bold mt-4 mb-8">{ $t("certificate.message") }</p>
+    <h1 class="mt-4 text-teal-900 font-semibold">Thank you {$userForm.firstName} {$userForm.lastName}!</h1>
+    <p class="text-sm text-bold mt-4 mb-8">
+        Check your email soon for your personalized certificate. Can't wait? Download instantly.
+    </p>
     <!-- <button class="bg-teal-800 hover:bg-teal-900 text-white font-bold py-2 px-4 border border-green-800 rounded">/button> -->
 
     <a class="mt-4 mt-4 bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full" 
         href={certificateUrl}
         target="_blank"
     >
-        { $t("certificate.download") }
+        Download Certificate
     </a>
 </div>

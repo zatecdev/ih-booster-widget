@@ -26,19 +26,19 @@
 
         if ( $userForm.firstName == "" || $userForm.lastName == "" || $userForm.email == "" || !$userForm.email.match(emailValidationRegex) ) {
             if ($userForm.firstName == "") {
-                $formErrors.firstName = $t("form.firstNameValidation")
+                $formErrors.firstName = "First name field is required.";
             } else {
                 $formErrors.firstName = ""
             }
 
             if ($userForm.lastName == "") {
-                $formErrors.lastName = $t("form.lastNameValidation")
+                $formErrors.lastName = "Last name field is required.";
             } else {
                 $formErrors.lastName = ""
             }
 
             if ( $userForm.email == "" || !$userForm.email.match(emailValidationRegex)) {
-                $formErrors.email = $t("form.emailValidation")
+                $formErrors.email = "Please enter a valid email address";
             } else {
                 $formErrors.email = ""
             }
@@ -69,21 +69,21 @@
 
 <div id="widget-container" class="h-full block md:flex items-center justify-center">
     <div class="h-auto place-items-center">
-        <p>
+        <!-- <p>
             <select bind:value={$locale}>
               {#each locales as l}
                 <option value={l}>{l}</option>
               {/each}
             </select>
-        </p>
+        </p> -->
 
         <div class="antialiased max-w-full md:max-w-6xl mx-auto px-2 md:px-8">
             <div class="relative block md:flex items-center p-2 md:p-8">
                 <div class="hidden md:block md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden md:h-[550px]" style="background-image: url('{bgImageUrl}') ;">
                     <div class="text-gray-900 text-left px-8 w-5/6">
-                        <h1 class="text-4xl font-medium mb-4">{ $t("homepage.header") }</h1>
+                        <h1 class="text-4xl font-medium mb-4">Plant more trees</h1>
                         <p class="text-base font-semibold">
-                            { $t("homepage.message") }
+                            Now it's your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!
                         </p>
                     </div>
                 </div>
@@ -91,9 +91,9 @@
                 <!-- mobile header -->
                 <div class="block md:hidden bg-white pt-8 py-4 rounded-t-2xl mb-4">
                     <div class="text-gray-900 text-left px-8 w-full">
-                        <h1 class="text-2xl font-medium mb-4">{ $t("homepage.header") }</h1>
+                        <h1 class="text-2xl font-medium mb-4">Plant more trees</h1>
                         <p class="text-sm font-semibold">
-                            { $t("homepage.message") }
+                            Now it's your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!
                         </p>
                         <br />
                     </div>
@@ -102,9 +102,9 @@
                 <!-- container 2 -->
                 <div class="w-full md:w-1/2 relative z-0 bg-white rounded-none md:rounded-r-2xl overflow-hidden py-8 h-full md:h-[550px] overflow-auto">
                     <div class="block mb-2">
-                        {#key $locale}
+                        <!-- {#key $locale} -->
                             <ProgressBar {steps} bind:currentActive bind:this={progressBar} />
-                        {/key}
+                        <!-- {/key} -->
                     </div>
                 
                     <!-- payment form here -->
@@ -123,7 +123,7 @@
                                 {/if} -->
 
                                 {#if steps[currentActive-1] == "Your Info"}
-                                    <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full" on:click={() => handleProgress(+1)} disabled={currentActive == steps.length}>{ $t("homepage.next") }</button>
+                                    <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full" on:click={() => handleProgress(+1)} disabled={currentActive == steps.length}>Next</button>
                                 {/if}
                             </div>
                         </div>

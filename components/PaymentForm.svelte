@@ -35,7 +35,8 @@
         let numberOfTrees           = $contributionValue;
         let paymentFrequency        = $userForm.contributionFrequency; //once or monthly
         let userDetails             = $userForm;
-        let userLocale              = $locale;
+        // let userLocale              = $locale;
+        let userLocale              = "de"; //default, testing
         let paymentIntentId         = $stripePaymentIntentId
 
         const axiosConfig = { 
@@ -101,7 +102,7 @@
             successPayment.set( true ); //update payment success
 
             Swal.fire({
-                title: $t("payment.thankyou"),
+                title: "Thank you for your impact purchase!",
                 width: 600,
                 padding: '3em',
                 color: '#000',
@@ -122,7 +123,7 @@
 <div class="text-center mt-4">
     {#await getPaymentIntent() }
         {#if hasError == false}
-            <Spinner caption={ $t("payment.pleaseWait") } />
+            <Spinner caption="Please wait..." />
         {/if}
     {:then data}
         {#if stripe && clientSecret}
@@ -135,13 +136,13 @@
                     </div> -->
 
                     <button class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" on:click={() => handleStepProgress(-1)}>
-                        { $t("homepage.back") }
+                        Back
                     </button>
                             
                     <div class="step-button">
                         <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" 
                             disabled={isProcessing == true}
-                            on:click={processPayment}>{ $t("payment.pay") }
+                            on:click={processPayment}>Pay
                         </button>
                     </div>
                 </div>
@@ -160,7 +161,7 @@
             </div> -->
 
         {:else}
-            <Spinner caption={ $t("payment.processingPayment") } />
+            <Spinner caption="Processing your payment, please wait..." />
         {/if}
     {:catch error}
         <p>Error: {error.message}</p>

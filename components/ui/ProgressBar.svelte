@@ -4,7 +4,7 @@
 	export let steps = [], currentActive = 1;
 	let circles, progress;
 
-	let progressSteps = [{id: 1, caption: $t('form.step.info') }, {id: 2, caption: $t('form.step.payment') }, {id: 3, caption: $t('form.step.certificate') } ]
+	let progressSteps = [{id: 1, caption: "Your Info" }, {id: 2, caption: "Your Info" }, {id: 3, caption: "Certificate" } ]
 
 	export const handleProgress = (stepIncrement) => {
 		circles = document.querySelectorAll('.step-tab');
