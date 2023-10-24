@@ -82,19 +82,19 @@
     <div class="w-full md:w-1/2 md:mr-2">
         <InputField label="First Name" bind:value={$userForm.firstName} />
         {#if $formErrors.firstName != ""}
-            <span class="text-red-500 text-sm">{$formErrors.firstName}</span>
+            <span id="firstNameError" class="text-red-500 text-sm">{$formErrors.firstName}</span>
         {/if}
     </div>
     <div class="w-full md:w-1/2">
         <InputField label="Last Name" bind:value={$userForm.lastName} />
         {#if $formErrors.lastName != ""}
-            <span class="text-red-500 text-sm">{$formErrors.lastName}</span>
+            <span id="lastNameError" class="text-red-500 text-sm">{$formErrors.lastName}</span>
         {/if}
     </div>
 </div>
 <InputField label="Email"  bind:value={$userForm.email} />
 {#if $formErrors.email != ""}
-    <span class="text-red-500 text-sm">{$formErrors.email}</span>
+    <span id="emailError" class="text-red-500 text-sm">{$formErrors.email}</span>
 {/if}
 
 <InputField label="Address"  bind:value={$userForm.address} />
