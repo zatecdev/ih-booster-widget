@@ -36,7 +36,7 @@
 
 <div class="block mb-4 w-full px-1 py-2">
     <p class="text-center font-bold mb-2">How many trees would you like to plant?</p>
-    <div class="flex items-start justify-end">
+    <div class="flex items-start justify-end" id="items-price-container">
         <div class="w-5/6">
             <!-- <RangeSlider min={1} step={3} max={22} bind:values on:stop={(e) => { updateContributionValue( e ) }}/> -->
 

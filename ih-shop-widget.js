@@ -7266,6 +7266,7 @@
 				attr(div12, "class", "W-1/6 flex items-center");
 				set_style(div12, "min-width", "65px");
 				attr(div13, "class", "flex items-start justify-end");
+				attr(div13, "id", "items-price-container");
 				attr(div14, "class", "block mb-4 w-full px-1 py-2");
 				attr(div15, "class", "w-full md:w-1/2 md:mr-2");
 				attr(div16, "class", "w-full md:w-1/2");
