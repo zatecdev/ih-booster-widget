@@ -5,6 +5,7 @@
     import CheckoutForm from './components/CheckoutForm.svelte';
     import Tailwind from './Tailwind.svelte';
     import { onMount } from 'svelte';
+    import axios from 'axios';
     
     const bgImageUrl = new URL('./images/background.jpg', import.meta.url).href
     const logo = new URL('./images/logo.png', import.meta.url).href
@@ -57,11 +58,26 @@
 
     // Weglot.on("languageChanged", getCurrentLanguage);
 
+    //Testing, getting user's country
+    axios.get('https://www.cloudflare.com/cdn-cgi/trace')
+        .then(function (response) {
+            response = response.data.trim().split('\n').reduce(function(obj, pair) {
+                pair = pair.split('=');
+                return obj[pair[0]] = pair[1], obj;
+            }, {});
+
+            $userForm.country = response.loc;
+        })
+        .catch(function (error) {
+            // console.log(error);
+        })
+
 </script>
 
 <svelte:head>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- <script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 </svelte:head>
 
 <!-- Don't remove, add tailwind base config -->

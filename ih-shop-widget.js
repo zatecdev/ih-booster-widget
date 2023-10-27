@@ -7955,7 +7955,7 @@
 		};
 	}
 
-	// (125:32) {#if steps[currentActive-1] == "Your Info"}
+	// (141:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -7996,8 +7996,10 @@
 	}
 
 	function create_fragment(ctx) {
-		let script;
-		let script_src_value;
+		let script0;
+		let script0_src_value;
+		let script1;
+		let script1_src_value;
 		let t0;
 		let tailwind;
 		let t1;
@@ -8046,8 +8048,10 @@
 
 		return {
 			c() {
-				script = element("script");
-				script.innerHTML = ``;
+				script0 = element("script");
+				script0.innerHTML = ``;
+				script1 = element("script");
+				script1.innerHTML = ``;
 				t0 = space();
 				create_component(tailwind.$$.fragment);
 				t1 = space();
@@ -8070,7 +8074,8 @@
 				create_component(checkoutform.$$.fragment);
 				t12 = space();
 				if (if_block) if_block.c();
-				if (!src_url_equal(script.src, script_src_value = "https://cdn.jsdelivr.net/npm/sweetalert2@11")) attr(script, "src", script_src_value);
+				if (!src_url_equal(script0.src, script0_src_value = "https://cdn.jsdelivr.net/npm/sweetalert2@11")) attr(script0, "src", script0_src_value);
+				if (!src_url_equal(script1.src, script1_src_value = "https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js")) attr(script1, "src", script1_src_value);
 				attr(div0, "class", "text-gray-900 text-left px-8 w-5/6");
 				attr(div1, "class", "hidden md:block md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden md:h-[550px]");
 				set_style(div1, "background-image", "url('" + /*bgImageUrl*/ ctx[3] + "') ");
@@ -8085,7 +8090,8 @@
 				attr(div10, "class", "h-full block md:flex items-center justify-center");
 			},
 			m(target, anchor) {
-				append(document.head, script);
+				append(document.head, script0);
+				append(document.head, script1);
 				insert(target, t0, anchor);
 				mount_component(tailwind, target, anchor);
 				insert(target, t1, anchor);
@@ -8155,7 +8161,8 @@
 					detach(div10);
 				}
 
-				detach(script);
+				detach(script0);
+				detach(script1);
 				destroy_component(tailwind, detaching);
 				/*progressbar_binding*/ ctx[7](null);
 				destroy_component(progressbar);
@@ -8166,11 +8173,11 @@
 	}
 
 	function instance($$self, $$props, $$invalidate) {
-		let $formErrors;
 		let $userForm;
+		let $formErrors;
 		let $processingPayment;
-		component_subscribe($$self, formErrors, $$value => $$invalidate(9, $formErrors = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(10, $userForm = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(9, $userForm = $$value));
+		component_subscribe($$self, formErrors, $$value => $$invalidate(10, $formErrors = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(2, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8213,6 +8220,27 @@
 
 			progressBar.handleProgress(stepIncrement);
 		};
+
+		// const getCurrentLanguage = () => {
+		//     currentLanguage = Weglot.getCurrentLang();
+		//     //update locale
+		//     $locale = currentLanguage;
+		// }
+		// Weglot.on("languageChanged", getCurrentLanguage);
+		//Testing, getting user's country
+		axios$1.get('https://www.cloudflare.com/cdn-cgi/trace').then(function (response) {
+			response = response.data.trim().split('\n').reduce(
+				function (obj, pair) {
+					pair = pair.split('=');
+					return (obj[pair[0]] = pair[1], obj);
+				},
+				{}
+			);
+
+			set_store_value(userForm, $userForm.country = response.loc, $userForm);
+		}).catch(function (error) {
+			
+		}); // console.log(error);
 
 		function progressbar_currentActive_binding(value) {
 			currentActive = value;
