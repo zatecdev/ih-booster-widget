@@ -40,9 +40,16 @@
         role="switch"
         aria-checked={checked}
         aria-labelledby={`switch-${uniqueID}`}
+        id="switch-btn"
         on:click|preventDefault={handleClick}>
             <span>{ labelOnce }</span>
-            <span style="position: relative;">{ labelMonthly } <span class="discount_percent">{ saveLabel }</span></span>
+            <span 
+                style="position: relative;"
+                title="This is my tooltip"
+                id="switch-btn-span"
+                role="tooltip"
+            >{ labelMonthly } &#x1F6C8;<span class="tool_tip">&#x2022; Ongoing contribution to sustainability projects
+                <br />&#x2022; Cancel subscription anytime, no fees<br />&#x2022; Enjoy 15% off regular rates</span><span class="discount_percent">{ saveLabel }</span></span>
     </button>
 </div>
 {:else if design == 'slider'}
@@ -103,8 +110,8 @@
         pointer-events: none;
         padding: 0.45em;
         border-radius: 50px;
-        padding-left: 60px;
-        padding-right: 60px;
+        padding-left: 55px;
+        padding-right: 55px;
         background: var(--cream);
         color: var(--accent-color);
 
@@ -274,12 +281,10 @@
     .s--slider button::before {
         border-radius: 100%;
     }
-
     .s--slider button:focus {
         box-shadow: 0 0px 8px var(--accent-color);
         border-radius: 1.5em;
     }
-
     .discount_percent {
         position: absolute; 
         top: 30px; 
@@ -295,6 +300,36 @@
         padding-left: 5px !important;
         padding-right: 5px !important;
         border-radius: 15px !important;
+    }
+    #switch-btn:hover > span:nth-child(1n+2) .tool_tip {
+        opacity: 1 !important;
+    }
+    .tool_tip {
+        opacity: 1 !important;
+        position: absolute;
+        top: -60px;
+        right: -15px;
+        font-size: 11px !important;
+        width: 260px;
+        color: #5F753D !important;
+        border: 1px solid #5F753D;
+        background: #fff !important;
+        border-radius: 5px !important;
+        padding: 1px !important;
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+        text-align: left !important;
+    }
+
+    .tool_tip::after {
+        content: " ";
+        position: absolute;
+        top: 100%; /* At the bottom of the tooltip */
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #5F753D transparent transparent transparent;
     }
 
     /* Extra small devices (phones, 478px and down) */
@@ -313,6 +348,13 @@
             padding-left: 20px;
             padding-right: 20px;
         }
+
+        .tool_tip {
+            top: -55px;
+            right: -65px;
+            font-size: 10px !important;
+            width: 260px;
+        }
     }
 
     /* Extra small devices (phones, 767 and down) */
@@ -326,6 +368,13 @@
         .discount_percent {
             font-size: 10px !important;
             width: 75% !important;
+        }
+
+        .tool_tip {
+            top: -55px;
+            right: -45px;
+            font-size: 10px !important;
+            width: 260px;
         }
     }
 
@@ -341,6 +390,13 @@
             font-size: 10px !important;
             width: 75% !important;
         }
+
+        .tool_tip {
+            top: -55px;
+            right: -45px;
+            font-size: 10px !important;
+            width: 260px;
+        }
     }
 
     @media only screen and (max-width: 400px) {
@@ -353,6 +409,13 @@
         .discount_percent {
             font-size: 10px !important;
             width: 80% !important;
+        }
+
+        .tool_tip {
+            top: -55px;
+            right: -55px;
+            font-size: 10px !important;
+            width: 260px;
         }
     }
 
