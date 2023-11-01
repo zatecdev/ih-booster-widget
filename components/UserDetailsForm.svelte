@@ -1,12 +1,11 @@
 <script>
     import { t, locale, locales } from '../store/i18n';
-    import RangeSlider from 'svelte-range-slider-pips'
     import MultiSelect from 'svelte-multiselect'
 
     import { userForm, contributionValue, totalPrice, formErrors } from '../store/store.js';
 
     import InputField from "./form/InputField.svelte";
-    import Switch from "./form/Switch.svelte";
+    import Switch from "./form/Switch.svelte"
 
     import { countries } from '../data/countries.js';
 
@@ -15,11 +14,6 @@
     let group = 1;
 
     let selectedCountry;
-
-    const updateContributionValue = ( event ) => {
-        console.log(event.detail.value)
-        contributionValue.set( event.detail.value )
-    }
     
     const handleChange = ( event, value ) => {
         contributionValue.set( Number( value ) )
@@ -38,9 +32,7 @@
     <p class="text-center font-bold mb-2">How many trees would you like to plant?</p>
     <div class="flex items-start justify-end" id="items-price-container">
         <div class="w-5/6">
-            <!-- <RangeSlider min={1} step={3} max={22} bind:values on:stop={(e) => { updateContributionValue( e ) }}/> -->
-
-            <div class="flex items-center justify-between mr-6">
+             <div class="flex items-center justify-between mr-6">
                 <div class="">
                     <label>
                         <input type="radio" bind:group class="form-radio my-1 h-4 w-4 p-1 text-[#5F753D] checked:bg-[#5F753D]" value={1} on:change={ (event) => handleChange(event, 1) } checked={ $contributionValue === 1 } />
