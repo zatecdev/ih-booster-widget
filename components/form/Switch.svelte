@@ -24,7 +24,7 @@
                 data-tooltip-target="tooltip-dark" 
             >{ labelMonthly } &#x1F6C8;</button>
             <span class="absolute bg-[#DEE37D] text-black rounded-2xl text-xs px-1 md:px-4 py-1 top-[25px] md:top-10 right-6 md:right-10">{ saveLabel }</span>
-            <span class="tool_tip pointer-events-none absolute -top-[50px] md:-top-[60px] -left-[55px] md:-left-[5px] w-max rounded bg-white px-1 md:px-2 py-1 text-[8px] md:text-[9px] font-medium text-[#5F753D] opacity-0 shadow transition-opacity group-hover:opacity-100">
+            <span class="tool_tip text-left pointer-events-none absolute -top-[50px] md:-top-[60px] -left-[55px] md:-left-[5px] w-max rounded bg-white px-1 md:px-2 py-1 text-[8px] md:text-[9px] font-medium text-[#5F753D] opacity-0 shadow transition-opacity group-hover:opacity-100">
                 &#x2022; Ongoing contribution to sustainability projects<br />
                 &#x2022; Cancel subscription anytime, no fees<br />
                 &#x2022; Enjoy 15% off regular rates

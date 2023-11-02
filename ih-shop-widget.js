@@ -6516,7 +6516,7 @@
 				attr(button1, "data-tooltip-target", "tooltip-dark");
 				toggle_class(button1, "active", /*$userForm*/ ctx[3].contributionFrequency === "Monthly");
 				attr(span0, "class", "absolute bg-[#DEE37D] text-black rounded-2xl text-xs px-1 md:px-4 py-1 top-[25px] md:top-10 right-6 md:right-10");
-				attr(span1, "class", "tool_tip pointer-events-none absolute -top-[50px] md:-top-[60px] -left-[55px] md:-left-[5px] w-max rounded bg-white px-1 md:px-2 py-1 text-[8px] md:text-[9px] font-medium text-[#5F753D] opacity-0 shadow transition-opacity group-hover:opacity-100 svelte-wscrds");
+				attr(span1, "class", "tool_tip text-left pointer-events-none absolute -top-[50px] md:-top-[60px] -left-[55px] md:-left-[5px] w-max rounded bg-white px-1 md:px-2 py-1 text-[8px] md:text-[9px] font-medium text-[#5F753D] opacity-0 shadow transition-opacity group-hover:opacity-100 svelte-wscrds");
 				attr(div0, "class", "group relative w-max");
 				attr(div1, "class", "flex align-items-center justify-between text-[#5F753D] bg-[#F5F2F0] gap-4 px-1 py-1 space-x4 rounded-[50px]");
 				attr(div2, "class", "md:px-8 w-full");
