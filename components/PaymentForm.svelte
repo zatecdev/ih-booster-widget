@@ -120,7 +120,7 @@
     }
 </script>
 
-<div class="text-center mt-4">
+<div class="text-center mt-4 py-4 h-auto">
     {#await getPaymentIntent() }
         {#if hasError == false}
             <Spinner caption="Please wait..." />

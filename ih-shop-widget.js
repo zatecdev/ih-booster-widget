@@ -6029,7 +6029,7 @@
 			c() {
 				div = element("div");
 				info.block.c();
-				attr(div, "class", "text-center mt-4");
+				attr(div, "class", "text-center mt-4 py-4 h-auto");
 			},
 			m(target, anchor) {
 				insert(target, div, anchor);
