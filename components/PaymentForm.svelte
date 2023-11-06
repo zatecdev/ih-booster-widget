@@ -37,7 +37,8 @@
         let userDetails             = $userForm;
         // let userLocale              = $locale;
         let userLocale              = "de"; //default, testing
-        let paymentIntentId         = $stripePaymentIntentId
+        // let paymentIntentId         = $stripePaymentIntentId
+        let paymentIntentId         = "pi_3O7wYaGDeLz4avmc1xXrzpNz";
 
         const axiosConfig = { 
             headers: {
@@ -120,46 +121,41 @@
     }
 </script>
 
-<div class="text-center mt-4 py-4 h-auto">
+<div id="payment-element-container" class="text-center py-4 h-auto">
     {#await getPaymentIntent() }
         {#if hasError == false}
             <Spinner caption="Please wait..." />
         {/if}
     {:then data}
         {#if stripe && clientSecret}
-            <Elements {stripe} {clientSecret} bind:elements>
-                <PaymentElement />
 
-                <div class="flex text-center justify-between mx-auto no-scrollbar mt-4">
-                    <!-- <div class="step-button">
-                        <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" on:click={() => handleStepProgress(-1)}>{ $t("homepage.back") }</button>
-                    </div> -->
+            <div class="flex flex-col text-center justify-between mx-auto">
 
-                    <button class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" on:click={() => handleStepProgress(-1)}>
-                        Back
-                    </button>
-                            
-                    <div class="step-button">
-                        <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" 
-                            disabled={isProcessing == true}
-                            on:click={processPayment}>Pay
+                <Elements 
+                    {stripe} 
+                    {clientSecret}
+                    bind:elements
+                >
+
+                    <PaymentElement />
+
+                    <div class="flex justify-between pt-4 pb-4 mb-8">
+                        <button class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" on:click={() => handleStepProgress(-1)}>
+                            Back
                         </button>
+                                
+                        <div class="step-button">
+                            <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-16 border rounded-full" 
+                                disabled={isProcessing == true}
+                                on:click={processPayment}>Pay
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-            </Elements>
+                </Elements>
 
-            <!-- <div class="inline-flex space-x-2.5">
-                <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-20 px-4 border rounded-full" on:click={() => handleStepProgress(-1)}>{ $t("homepage.back") }</button>
-
-                <button 
-                    class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full"
-                    disabled={isProcessing == true}
-                    on:click={processPayment}
-                >{ $t("payment.pay") }</button>
-
-            </div> -->
-
+            </div>
+            
         {:else}
             <Spinner caption="Processing your payment, please wait..." />
         {/if}

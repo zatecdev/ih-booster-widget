@@ -116,7 +116,7 @@
                 </div>
         
                 <!-- container 2 -->
-                <div class="w-full md:w-1/2 relative z-0 bg-white rounded-none md:rounded-r-2xl overflow-hidden py-8 h-full md:h-[550px] overflow-auto">
+                <div class="w-full md:w-1/2 relative z-0 bg-white rounded-none md:rounded-r-2xl py-8 h-full md:h-[550px] overflow-x-hidden overflow-y-auto">
                     <div class="block mb-2">
                         <!-- {#key $locale} -->
                             <ProgressBar {steps} bind:currentActive bind:this={progressBar} />
