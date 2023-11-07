@@ -133,7 +133,7 @@
                 <Elements 
                     {stripe} 
                     {clientSecret}
-                    locale={$userForm.country.toLocaleLowerCase()}
+                    locale={$userForm.country.toLocaleLowerCase() == "de" ? "de" : "en"}
                     bind:elements
                 >
 

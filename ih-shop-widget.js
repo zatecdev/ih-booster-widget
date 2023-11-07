@@ -5790,7 +5790,9 @@
 		let elements_1_props = {
 			stripe: /*stripe*/ ctx[3],
 			clientSecret: /*clientSecret*/ ctx[5],
-			locale: /*$userForm*/ ctx[8].country.toLocaleLowerCase(),
+			locale: /*$userForm*/ ctx[8].country.toLocaleLowerCase() == "de"
+			? "de"
+			: "en",
 			$$slots: { default: [create_default_slot] },
 			$$scope: { ctx }
 		};
@@ -5817,7 +5819,10 @@
 				const elements_1_changes = {};
 				if (dirty & /*stripe*/ 8) elements_1_changes.stripe = /*stripe*/ ctx[3];
 				if (dirty & /*clientSecret*/ 32) elements_1_changes.clientSecret = /*clientSecret*/ ctx[5];
-				if (dirty & /*$userForm*/ 256) elements_1_changes.locale = /*$userForm*/ ctx[8].country.toLocaleLowerCase();
+
+				if (dirty & /*$userForm*/ 256) elements_1_changes.locale = /*$userForm*/ ctx[8].country.toLocaleLowerCase() == "de"
+				? "de"
+				: "en";
 
 				if (dirty & /*$$scope, isProcessing, handleStepProgress*/ 131137) {
 					elements_1_changes.$$scope = { dirty, ctx };
@@ -5850,7 +5855,7 @@
 		};
 	}
 
-	// (133:16) <Elements                       {stripe}                       {clientSecret}                      locale={$userForm.country.toLocaleLowerCase()}                      bind:elements                  >
+	// (133:16) <Elements                       {stripe}                       {clientSecret}                      locale={$userForm.country.toLocaleLowerCase() == "de" ? "de" : "en"}                      bind:elements                  >
 	function create_default_slot(ctx) {
 		let paymentelement;
 		let t0;
