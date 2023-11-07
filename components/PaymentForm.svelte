@@ -37,8 +37,7 @@
         let userDetails             = $userForm;
         // let userLocale              = $locale;
         let userLocale              = "de"; //default, testing
-        // let paymentIntentId         = $stripePaymentIntentId
-        let paymentIntentId         = "pi_3O7wYaGDeLz4avmc1xXrzpNz";
+        let paymentIntentId         = $stripePaymentIntentId
 
         const axiosConfig = { 
             headers: {
@@ -134,6 +133,7 @@
                 <Elements 
                     {stripe} 
                     {clientSecret}
+                    locale={$userForm.country.toLocaleLowerCase()}
                     bind:elements
                 >
 

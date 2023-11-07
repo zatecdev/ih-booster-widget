@@ -27,13 +27,13 @@
 
         if ( $userForm.firstName == "" || $userForm.lastName == "" || $userForm.email == "" || !$userForm.email.match(emailValidationRegex) ) {
             if ($userForm.firstName == "") {
-                $formErrors.firstName = "First name field is required.";
+                $formErrors.firstName = "First name field is required";
             } else {
                 $formErrors.firstName = ""
             }
 
             if ($userForm.lastName == "") {
-                $formErrors.lastName = "Last name field is required.";
+                $formErrors.lastName = "Last name field is required";
             } else {
                 $formErrors.lastName = ""
             }
@@ -95,7 +95,7 @@
 
         <div class="antialiased max-w-full md:max-w-6xl mx-auto px-2 md:px-8">
             <div class="relative block md:flex items-center p-2 md:p-8">
-                <div class="hidden md:block md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden md:h-[550px]" style="background-image: url('{bgImageUrl}') ;">
+                <div class="hidden md:block md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden md:h-[650px]" style="background-image: url('{bgImageUrl}') ;">
                     <div class="text-gray-900 text-left px-8 w-5/6">
                         <h1 class="text-4xl font-medium mb-4">Plant more trees</h1>
                         <p class="text-base font-semibold">
@@ -116,7 +116,7 @@
                 </div>
         
                 <!-- container 2 -->
-                <div class="w-full md:w-1/2 relative z-0 bg-white rounded-none md:rounded-r-2xl py-8 h-full md:h-[550px] overflow-x-hidden overflow-y-auto">
+                <div class="w-full md:w-1/2 relative z-0 bg-white rounded-none md:rounded-r-2xl py-8 h-full md:h-[650px] overflow-hidden">
                     <div class="block mb-2">
                         <!-- {#key $locale} -->
                             <ProgressBar {steps} bind:currentActive bind:this={progressBar} />

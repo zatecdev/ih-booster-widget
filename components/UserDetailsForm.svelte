@@ -6,6 +6,7 @@
 
     import InputField from "./form/InputField.svelte";
     import Switch from "./form/Switch.svelte"
+    import PricingTips from './PricingTips.svelte';
 
     import { countries } from '../data/countries.js';
 
@@ -22,9 +23,13 @@
 
 </script>
 
-<div class="block mb-4 w-full">
+<div class="block mb-2 w-full">
     <div class="flex justify-center">
         <Switch bind:value={$userForm.contributionFrequency} label="" labelOnce="Plant Once" labelMonthly="Plant Monthly" saveLabel="Save 15%" design="inner" />
+    </div>
+
+    <div class="mt-4">
+        <PricingTips />
     </div>
 </div>
 
@@ -74,19 +79,19 @@
     <div class="w-full md:w-1/2 md:mr-2">
         <InputField label="First Name" bind:value={$userForm.firstName} />
         {#if $formErrors.firstName != ""}
-            <span id="firstNameError" class="text-red-500 text-sm">{$formErrors.firstName}</span>
+            <span id="firstNameError" class="text-red-500 text-[10px] text-left">{$formErrors.firstName}</span>
         {/if}
     </div>
     <div class="w-full md:w-1/2">
         <InputField label="Last Name" bind:value={$userForm.lastName} />
         {#if $formErrors.lastName != ""}
-            <span id="lastNameError" class="text-red-500 text-sm">{$formErrors.lastName}</span>
+            <span id="lastNameError" class="text-red-500 text-[10px] text-left">{$formErrors.lastName}</span>
         {/if}
     </div>
 </div>
 <InputField label="Email"  bind:value={$userForm.email} />
 {#if $formErrors.email != ""}
-    <span id="emailError" class="text-red-500 text-sm">{$formErrors.email}</span>
+    <span id="emailError" class="text-red-500 text-[10px] text-left">{$formErrors.email}</span>
 {/if}
 
 <InputField label="Address"  bind:value={$userForm.address} />
