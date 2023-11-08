@@ -76,24 +76,25 @@
 </div>
 
 <div class="flex flex-col md:flex-row justify-between">
-    <div class="w-full md:w-1/2 md:mr-2">
+    <div class="w-full md:w-1/2 md:mr-2 text-left">
         <InputField label="First Name" bind:value={$userForm.firstName} />
         {#if $formErrors.firstName != ""}
             <span id="firstNameError" class="text-red-500 text-[11px] text-left">{$formErrors.firstName}</span>
         {/if}
     </div>
-    <div class="w-full md:w-1/2">
+    <div class="w-full md:w-1/2 text-left">
         <InputField label="Last Name" bind:value={$userForm.lastName} />
         {#if $formErrors.lastName != ""}
             <span id="lastNameError" class="text-red-500 text-[11px] text-left">{$formErrors.lastName}</span>
         {/if}
     </div>
 </div>
-<InputField label="Email"  bind:value={$userForm.email} />
-{#if $formErrors.email != ""}
-    <span id="emailError" class="text-red-500 text-[11px] text-left">{$formErrors.email}</span>
-{/if}
-
+<div class="text-left">
+    <InputField label="Email"  bind:value={$userForm.email} />
+    {#if $formErrors.email != ""}
+        <span id="emailError" class="text-red-500 text-[11px] text-left">{$formErrors.email}</span>
+    {/if}
+</div>
 <InputField label="Address"  bind:value={$userForm.address} />
 <div class="flex flex-col md:flex-row justify-between">
     <div class="w-full md:w-1/2 md:mr-2">

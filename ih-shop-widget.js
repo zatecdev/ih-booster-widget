@@ -6782,7 +6782,7 @@
 		};
 	}
 
-	// (93:0) {#if $formErrors.email != ""}
+	// (94:4) {#if $formErrors.email != ""}
 	function create_if_block$2(ctx) {
 		let span;
 		let t_1_value = /*$formErrors*/ ctx[4].email + "";
@@ -6869,6 +6869,7 @@
 		let updating_value_2;
 		let t21;
 		let t22;
+		let div19;
 		let inputfield2;
 		let updating_value_3;
 		let t23;
@@ -6876,12 +6877,12 @@
 		let inputfield3;
 		let updating_value_4;
 		let t25;
-		let div21;
-		let div19;
+		let div22;
+		let div20;
 		let inputfield4;
 		let updating_value_5;
 		let t26;
-		let div20;
+		let div21;
 		let inputfield5;
 		let updating_value_6;
 		let current;
@@ -7051,17 +7052,18 @@
 				t21 = space();
 				if (if_block1) if_block1.c();
 				t22 = space();
+				div19 = element("div");
 				create_component(inputfield2.$$.fragment);
 				t23 = space();
 				if (if_block2) if_block2.c();
 				t24 = space();
 				create_component(inputfield3.$$.fragment);
 				t25 = space();
-				div21 = element("div");
-				div19 = element("div");
+				div22 = element("div");
+				div20 = element("div");
 				create_component(inputfield4.$$.fragment);
 				t26 = space();
-				div20 = element("div");
+				div21 = element("div");
 				create_component(inputfield5.$$.fragment);
 				attr(div0, "class", "flex justify-center");
 				attr(div1, "class", "mt-4");
@@ -7104,12 +7106,13 @@
 				attr(div14, "class", "flex items-start justify-end");
 				attr(div14, "id", "items-price-container");
 				attr(div15, "class", "block mb-4 w-full px-1 py-2");
-				attr(div16, "class", "w-full md:w-1/2 md:mr-2");
-				attr(div17, "class", "w-full md:w-1/2");
+				attr(div16, "class", "w-full md:w-1/2 md:mr-2 text-left");
+				attr(div17, "class", "w-full md:w-1/2 text-left");
 				attr(div18, "class", "flex flex-col md:flex-row justify-between");
-				attr(div19, "class", "w-full md:w-1/2 md:mr-2");
-				attr(div20, "class", "w-full md:w-1/2");
-				attr(div21, "class", "flex flex-col md:flex-row justify-between");
+				attr(div19, "class", "text-left");
+				attr(div20, "class", "w-full md:w-1/2 md:mr-2");
+				attr(div21, "class", "w-full md:w-1/2");
+				attr(div22, "class", "flex flex-col md:flex-row justify-between");
 				binding_group.p(input0, input1, input2, input3);
 			},
 			m(target, anchor) {
@@ -7170,18 +7173,19 @@
 				append(div17, t21);
 				if (if_block1) if_block1.m(div17, null);
 				insert(target, t22, anchor);
-				mount_component(inputfield2, target, anchor);
-				insert(target, t23, anchor);
-				if (if_block2) if_block2.m(target, anchor);
+				insert(target, div19, anchor);
+				mount_component(inputfield2, div19, null);
+				append(div19, t23);
+				if (if_block2) if_block2.m(div19, null);
 				insert(target, t24, anchor);
 				mount_component(inputfield3, target, anchor);
 				insert(target, t25, anchor);
-				insert(target, div21, anchor);
-				append(div21, div19);
-				mount_component(inputfield4, div19, null);
-				append(div21, t26);
-				append(div21, div20);
-				mount_component(inputfield5, div20, null);
+				insert(target, div22, anchor);
+				append(div22, div20);
+				mount_component(inputfield4, div20, null);
+				append(div22, t26);
+				append(div22, div21);
+				mount_component(inputfield5, div21, null);
 				current = true;
 
 				if (!mounted) {
@@ -7305,7 +7309,7 @@
 					} else {
 						if_block2 = create_if_block$2(ctx);
 						if_block2.c();
-						if_block2.m(t24.parentNode, t24);
+						if_block2.m(div19, null);
 					}
 				} else if (if_block2) {
 					if_block2.d(1);
@@ -7371,10 +7375,10 @@
 					detach(t18);
 					detach(div18);
 					detach(t22);
-					detach(t23);
+					detach(div19);
 					detach(t24);
 					detach(t25);
-					detach(div21);
+					detach(div22);
 				}
 
 				destroy_component(switch_1);
@@ -7383,8 +7387,8 @@
 				if (if_block0) if_block0.d();
 				destroy_component(inputfield1);
 				if (if_block1) if_block1.d();
-				destroy_component(inputfield2, detaching);
-				if (if_block2) if_block2.d(detaching);
+				destroy_component(inputfield2);
+				if (if_block2) if_block2.d();
 				destroy_component(inputfield3, detaching);
 				destroy_component(inputfield4);
 				destroy_component(inputfield5);
