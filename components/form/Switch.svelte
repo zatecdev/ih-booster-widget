@@ -7,18 +7,18 @@
 
 </script>
 
-<div class="md:px-8 w-2/4 md:w-full">
-    <div class="flex align-items-center justify-between text-[#5F753D] bg-[#F5F2F0] gap-4 px-1 py-1 space-x4 rounded-[50px]">
+<div class="md:px-4 w-2/4 md:w-full">
+    <div class="flex align-items-center justify-between text-[#5F753D] bg-[#F5F2F0] gap-2 px-1 py-1 space-x4 rounded-[50px]">
         <button 
-            class="px-2 sm:px-4 md:px-8 py-2 rounded-[50px] text-[#5F753D] text-xs md:text-lg font-medium"
+            class="w-1/2 px-2 sm:px-4 md:px-8 py-2 rounded-[50px] text-[#5F753D] text-xs md:text-lg font-medium"
             class:active={$userForm.contributionFrequency === "Once"}
             on:click={() => $userForm.contributionFrequency = "Once"}
         >{ labelOnce }</button>
 
 
-        <div class="group relative w-max">
+        <div class="group relative w-1/2">
             <button 
-                class="px-2 sm:px-4 md:px-8 py-2 rounded-[50px] text-xs md:text-lg font-medium"
+                class="w-full px-2 sm:px-4 md:px-8 py-2 rounded-[50px] text-xs md:text-lg font-medium"
                 class:active={$userForm.contributionFrequency === "Monthly"}
                 on:click={() => $userForm.contributionFrequency = "Monthly"}
                 data-tooltip-target="tooltip-dark" 
