@@ -7918,7 +7918,7 @@
 				set_style(div1, "background-image", "url('" + /*bgImageUrl*/ ctx[3] + "') ");
 				attr(div2, "class", "text-gray-900 text-left px-8 w-full");
 				attr(div3, "class", "block md:hidden bg-white pt-8 py-4 rounded-t-2xl mb-4");
-				set_style(div3, "background-image", "linear-gradient(to bottom, transparent 40%, black 100%), url('" + /*bgImageUrl*/ ctx[3] + "')");
+				set_style(div3, "background-image", "linear-gradient(to bottom, transparent 0%, black 100%), url('" + /*bgImageUrl*/ ctx[3] + "')");
 				set_style(div3, "background-position", "center");
 				attr(div4, "class", "block mb-2");
 				attr(div5, "class", "block");
