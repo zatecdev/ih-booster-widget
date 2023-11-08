@@ -105,10 +105,12 @@
                 </div>
 
                 <!-- mobile header -->
-                <div class="block md:hidden bg-white pt-8 py-4 rounded-t-2xl mb-4" style="background-image: linear-gradient(to bottom, transparent 0%, black 100%), url('{bgImageUrl}') ;">
+                <div class="block md:hidden bg-white pt-8 py-4 rounded-t-2xl mb-4" 
+                    style="background-image: linear-gradient(to bottom, transparent 40%, black 100%), url('{bgImageUrl}'); background-position: center;"
+                >
                     <div class="text-gray-900 text-left px-8 w-full">
-                        <h1 class="text-2xl font-medium mb-4">Plant more trees</h1>
-                        <p class="text-sm font-semibold">
+                        <h1 class="text-2xl font-medium mb-4 text-white">Plant more trees</h1>
+                        <p class="text-sm font-semibold text-white">
                             Now it's your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!
                         </p>
                         <br />
