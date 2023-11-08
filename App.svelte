@@ -105,7 +105,7 @@
                 </div>
 
                 <!-- mobile header -->
-                <div class="block md:hidden bg-white pt-8 py-4 rounded-t-2xl mb-4">
+                <div class="block md:hidden bg-white pt-8 py-4 rounded-t-2xl mb-4" style="background-image: linear-gradient(to bottom, transparent 0%, black 100%), url('{bgImageUrl}') ;">
                     <div class="text-gray-900 text-left px-8 w-full">
                         <h1 class="text-2xl font-medium mb-4">Plant more trees</h1>
                         <p class="text-sm font-semibold">

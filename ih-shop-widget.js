@@ -7846,6 +7846,7 @@
 		let div0;
 		let t5;
 		let div3;
+		let div2;
 		let t10;
 		let div6;
 		let div4;
@@ -7899,7 +7900,8 @@
 				div0.innerHTML = `<h1 class="text-4xl font-medium mb-4">Plant more trees</h1> <p class="text-base font-semibold">Now it&#39;s your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!</p>`;
 				t5 = space();
 				div3 = element("div");
-				div3.innerHTML = `<div class="text-gray-900 text-left px-8 w-full"><h1 class="text-2xl font-medium mb-4">Plant more trees</h1> <p class="text-sm font-semibold">Now it&#39;s your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!</p> <br/></div>`;
+				div2 = element("div");
+				div2.innerHTML = `<h1 class="text-2xl font-medium mb-4">Plant more trees</h1> <p class="text-sm font-semibold">Now it&#39;s your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!</p> <br/>`;
 				t10 = space();
 				div6 = element("div");
 				div4 = element("div");
@@ -7914,7 +7916,9 @@
 				attr(div0, "class", "text-gray-900 text-left px-8 w-5/6");
 				attr(div1, "class", "hidden md:block md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden md:h-[650px]");
 				set_style(div1, "background-image", "url('" + /*bgImageUrl*/ ctx[3] + "') ");
+				attr(div2, "class", "text-gray-900 text-left px-8 w-full");
 				attr(div3, "class", "block md:hidden bg-white pt-8 py-4 rounded-t-2xl mb-4");
+				set_style(div3, "background-image", "linear-gradient(to bottom, transparent 0%, black 100%), url('" + /*bgImageUrl*/ ctx[3] + "') ");
 				attr(div4, "class", "block mb-2");
 				attr(div5, "class", "block");
 				attr(div6, "class", "w-full md:w-1/2 relative z-0 bg-white rounded-none md:rounded-r-2xl py-8 h-full md:h-[650px] overflow-hidden");
@@ -7938,6 +7942,7 @@
 				append(div1, div0);
 				append(div7, t5);
 				append(div7, div3);
+				append(div3, div2);
 				append(div7, t10);
 				append(div7, div6);
 				append(div6, div4);
