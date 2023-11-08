@@ -139,7 +139,7 @@
                                 {/if} -->
 
                                 {#if steps[currentActive-1] == "Your Info"}
-                                    <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full" on:click={() => handleProgress(+1)} disabled={currentActive == steps.length}>Next</button>
+                                    <button class="bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 rounded-full" on:click={() => handleProgress(+1)} disabled={currentActive == steps.length}>Next</button>
                                 {/if}
                             </div>
                         </div>

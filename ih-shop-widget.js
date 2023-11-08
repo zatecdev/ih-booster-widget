@@ -7802,7 +7802,7 @@
 			c() {
 				button = element("button");
 				t_1 = text("Next");
-				attr(button, "class", "bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 border rounded-full");
+				attr(button, "class", "bg-[#DEE37D] hover:bg-[#a7ac4a] text-gray-900 font-bold py-2 px-20 rounded-full");
 				button.disabled = button_disabled_value = /*currentActive*/ ctx[0] == /*steps*/ ctx[4].length;
 			},
 			m(target, anchor) {
