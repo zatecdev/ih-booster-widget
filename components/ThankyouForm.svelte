@@ -1,7 +1,8 @@
 <script>
     import axios from 'axios';
     import { onMount } from 'svelte';
-    import { userForm, contributionValue, processingPayment, successPayment } from '../store/store.js';
+    import { userForm, contributionValue, processingPayment, successPayment, stripeClientSecret, stripePaymentIntentId, price, totalPrice} from '../store/store.js';
+
     import { t, locale, locales } from '../store/i18n';
 
     let certificateUrl;
@@ -14,6 +15,20 @@
 
     const getCertificate = () => {
 
+        let numberOfTrees           = $contributionValue;
+        let paymentFrequency        = $userForm.contributionFrequency; //once or monthly
+        let userDetails             = $userForm;
+        let userLocale              = $locale;
+        let paymentIntentId         = $stripePaymentIntentId;
+        let vat_amount              = userLocale == "de" ? totalPrice * 0.19 : 0.00;
+
+        let productsMapping = {
+            one: "Tree Friend",
+            four: "Tree Lover",
+            elevent: "Climate Supporters",
+            twentyTwo: "Climate Hero"
+        }
+
         const certificateRequest = {
             customer_email: 'marcel.spitzner@growmytree.com', //testing
             customer_alias: "IH-Booster Customer",
@@ -21,9 +36,16 @@
             first_name: $userForm.firstName,
             last_name: $userForm.lastName,
             recipient_email: $userForm.email,
-            template: "tree-gmt-v2",
-            order_number: "2023-09-23",
-            email_language: "de"
+            template: "tree-ih-v1",
+            order_number: "2024-02-14", //TO CHANGE
+            lang: userLocale,
+            number_trees: numberOfTrees,
+            product_name: productsMapping.$contributionValue,
+            price: Number($price).toFixed(2),
+            total_price: Number($totalPrice).toFixed(2),
+            discount_amount: Number( Number($price) - Number($totalPrice)).toFixed(2),
+            vat_amount: Number(vat_amount).toFixed(2),
+            sub_total: Number( Number($totalPrice) - Number(vat_amount) ).toFixed(2)
         }
 
         const axiosConfig = { 
@@ -32,14 +54,24 @@
             } 
         }
 
-        axios.post( API_END_POINT + '/api/redeem-certificate', certificateRequest, axiosConfig)
+        // axios.post( API_END_POINT + '/api/redeem-certificate', certificateRequest, axiosConfig)
+        //     .then(function (response) {
+        //         console.log(response);
+        //         certificateUrl = response.data.de_certificate;
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
+
+        axios.post('https://automate.impacthero.com/webhook/impact/booster/certificate/generation', certificateRequest, axiosConfig)
             .then(function (response) {
                 console.log(response);
-                certificateUrl = response.data.de_certificate;
+                certificateUrl = response.de_certificate;
             })
             .catch(function (error) {
                 console.log(error);
             });
+
     }
 
 </script>

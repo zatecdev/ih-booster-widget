@@ -1,5 +1,5 @@
 <script>
-    import { processingPayment, userForm, formErrors } from './store/store';
+    import { processingPayment, userForm, formErrors, zohoConfig } from './store/store';
     import { t, locale, locales } from './store/i18n';
     import ProgressBar from './components/ui/ProgressBar.svelte';
     import CheckoutForm from './components/CheckoutForm.svelte';
@@ -18,6 +18,19 @@
 	// 	currentLanguage = Weglot.getCurrentLang();
     //     $locale = currentLanguage;
 	// });
+
+    onMount(() => {
+    
+        const urlParams = new URLSearchParams(window.location.search);
+        const zohoDealId = urlParams.get('zoho_deal_id');
+        const zohoAccountId = urlParams.get('zoho_account_id');
+
+        $zohoConfig.zohoDealId = zohoDealId;
+        $zohoConfig.zohoAccountId = zohoAccountId;
+
+        console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId )
+
+    });
 
     const handleProgress = (stepIncrement) => {
         

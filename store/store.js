@@ -35,3 +35,5 @@ export const price = derived(contributionValue, $contributionValue => (
 export const totalPrice = derived([price, userForm], ([$price, $userForm]) => 
     $userForm.contributionFrequency == "Once" ? $price : ( $price - ( $price * 0.15) ).toFixed(2)
 );
+
+export const zohoConfig = writable({ zohoDealId: "", zohoAccountId: "" });

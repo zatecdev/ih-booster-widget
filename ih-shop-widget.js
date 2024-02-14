@@ -1603,6 +1603,8 @@
 	    $userForm.contributionFrequency == "Once" ? $price : ( $price - ( $price * 0.15) ).toFixed(2)
 	);
 
+	const zohoConfig = writable({ zohoDealId: "", zohoAccountId: "" });
+
 	var translations = {
 	    en: {
 	        "homepage.header": "Plant more trees",
@@ -6091,7 +6093,7 @@
 		component_subscribe($$self, userForm, $$value => $$invalidate(8, $userForm = $$value));
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(12, $contributionValue = $$value));
 		let { handleStepProgress } = $$props;
-		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
+		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6","STRIPE_SECRET_KEY":"sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe","API_END_POINT":"https://growmytree.test"};
 		let stripe = null;
 
 		// Stripe Elements instance
@@ -6328,18 +6330,36 @@
 	}
 
 	function instance$6($$self, $$props, $$invalidate) {
+		let $totalPrice;
+		let $price;
 		let $userForm;
 		let $contributionValue;
+		let $locale;
+		component_subscribe($$self, totalPrice, $$value => $$invalidate(2, $totalPrice = $$value));
+		component_subscribe($$self, price, $$value => $$invalidate(3, $price = $$value));
 		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(2, $contributionValue = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(4, $contributionValue = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(5, $$value));
+		component_subscribe($$self, locale, $$value => $$invalidate(6, $locale = $$value));
 		let certificateUrl;
-		const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 
 		onMount(() => {
 			getCertificate();
 		});
 
 		const getCertificate = () => {
+			let numberOfTrees = $contributionValue;
+			$userForm.contributionFrequency; //once or monthly
+			let userLocale = $locale;
+			let vat_amount = userLocale == "de" ? totalPrice * 0.19 : 0.00;
+
+			let productsMapping = {
+				one: "Tree Friend",
+				four: "Tree Lover",
+				elevent: "Climate Supporters",
+				twentyTwo: "Climate Hero"
+			};
+
 			const certificateRequest = {
 				customer_email: 'marcel.spitzner@growmytree.com', //testing
 				customer_alias: "IH-Booster Customer",
@@ -6347,18 +6367,33 @@
 				first_name: $userForm.firstName,
 				last_name: $userForm.lastName,
 				recipient_email: $userForm.email,
-				template: "tree-gmt-v2",
-				order_number: "2023-09-23",
-				email_language: "de"
+				template: "tree-ih-v1",
+				order_number: "2024-02-14", //TO CHANGE
+				lang: userLocale,
+				number_trees: numberOfTrees,
+				product_name: productsMapping.$contributionValue,
+				price: Number($price).toFixed(2),
+				total_price: Number($totalPrice).toFixed(2),
+				discount_amount: Number(Number($price) - Number($totalPrice)).toFixed(2),
+				vat_amount: Number(vat_amount).toFixed(2),
+				sub_total: Number(Number($totalPrice) - Number(vat_amount)).toFixed(2)
 			};
 
 			const axiosConfig = {
 				headers: { 'Content-Type': 'application/json' }
 			};
 
-			axios$1.post(API_END_POINT + '/api/redeem-certificate', certificateRequest, axiosConfig).then(function (response) {
+			// axios.post( API_END_POINT + '/api/redeem-certificate', certificateRequest, axiosConfig)
+			//     .then(function (response) {
+			//         console.log(response);
+			//         certificateUrl = response.data.de_certificate;
+			//     })
+			//     .catch(function (error) {
+			//         console.log(error);
+			//     });
+			axios$1.post('https://automate.impacthero.com/webhook/impact/booster/certificate/generation', certificateRequest, axiosConfig).then(function (response) {
 				console.log(response);
-				$$invalidate(0, certificateUrl = response.data.de_certificate);
+				$$invalidate(0, certificateUrl = response.de_certificate);
 			}).catch(function (error) {
 				console.log(error);
 			});
@@ -7790,7 +7825,7 @@
 		};
 	}
 
-	// (143:32) {#if steps[currentActive-1] == "Your Info"}
+	// (156:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8016,9 +8051,11 @@
 	function instance($$self, $$props, $$invalidate) {
 		let $userForm;
 		let $formErrors;
+		let $zohoConfig;
 		let $processingPayment;
 		component_subscribe($$self, userForm, $$value => $$invalidate(9, $userForm = $$value));
 		component_subscribe($$self, formErrors, $$value => $$invalidate(10, $formErrors = $$value));
+		component_subscribe($$self, zohoConfig, $$value => $$invalidate(11, $zohoConfig = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(2, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8032,6 +8069,15 @@
 		// 	currentLanguage = Weglot.getCurrentLang();
 		//     $locale = currentLanguage;
 		// });
+		onMount(() => {
+			const urlParams = new URLSearchParams(window.location.search);
+			const zohoDealId = urlParams.get('zoho_deal_id');
+			const zohoAccountId = urlParams.get('zoho_account_id');
+			set_store_value(zohoConfig, $zohoConfig.zohoDealId = zohoDealId, $zohoConfig);
+			set_store_value(zohoConfig, $zohoConfig.zohoAccountId = zohoAccountId, $zohoConfig);
+			console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId);
+		});
+
 		const handleProgress = stepIncrement => {
 			//Form validationn (basic)
 			//let emailValidationRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
