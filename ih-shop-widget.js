@@ -6093,7 +6093,7 @@
 		component_subscribe($$self, userForm, $$value => $$invalidate(8, $userForm = $$value));
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(12, $contributionValue = $$value));
 		let { handleStepProgress } = $$props;
-		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6","STRIPE_SECRET_KEY":"sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe","API_END_POINT":"https://growmytree.test"};
+		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6","STRIPE_SECRET_KEY":"sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe","API_END_POINT":"https://certificate.growmytree.com"};
 		let stripe = null;
 
 		// Stripe Elements instance
