@@ -48,11 +48,11 @@
             sub_total: Number( Number($totalPrice) - Number(vat_amount) ).toFixed(2)
         }
 
-        const axiosConfig = { 
-            headers: {
-                'Content-Type': 'application/json',
-            } 
-        }
+        // const axiosConfig = { 
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     } 
+        // }
 
         // axios.post( API_END_POINT + '/api/redeem-certificate', certificateRequest, axiosConfig)
         //     .then(function (response) {
@@ -63,7 +63,7 @@
         //         console.log(error);
         //     });
 
-        axios.post('https://automate.impacthero.com/webhook/impact/booster/certificate/generation', certificateRequest, axiosConfig)
+        axios.post('https://automate.impacthero.com/webhook/impact/booster/certificate/generation', certificateRequest)
             .then(function (response) {
                 console.log(response);
                 certificateUrl = response.de_certificate;
