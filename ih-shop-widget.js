@@ -421,6 +421,26 @@
 
 	/**
 	 * @returns {void} */
+	function select_option(select, value, mounting) {
+		for (let i = 0; i < select.options.length; i += 1) {
+			const option = select.options[i];
+			if (option.__value === value) {
+				option.selected = true;
+				return;
+			}
+		}
+		if (!mounting || value !== undefined) {
+			select.selectedIndex = -1; // no option should be selected
+		}
+	}
+
+	function select_value(select) {
+		const selected_option = select.querySelector(':checked');
+		return selected_option && selected_option.__value;
+	}
+
+	/**
+	 * @returns {void} */
 	function toggle_class(element, name, toggle) {
 		// The `!!` is required because an `undefined` flag means flipping the current state.
 		element.classList.toggle(name, !!toggle);
@@ -1715,7 +1735,7 @@
 		append_styles(target, "svelte-9k8xcy", ".step-tab.svelte-9k8xcy{color:#C5C2C0;border-bottom:2px solid #F2EFED;width:30%;font-size:13px;font-weight:600}.step-tab-active.svelte-9k8xcy{color:#5F753D !important;border-bottom:2px solid #5F753D !important}.progress-container.svelte-9k8xcy{display:flex;justify-content:space-between;position:relative;margin-bottom:30px;max-width:100%;width:75%;margin:0 auto !important;text-align:left}.progress-container.svelte-9k8xcy::before{content:'';position:absolute;top:50%;left:0;transform:translateY(-50%);height:4px;width:100%;z-index:-1}.progress.svelte-9k8xcy{background-color:#5F753D;position:absolute;top:50%;left:0;transform:translateY(-50%);height:4px;width:0%;transition:0.4s ease}");
 	}
 
-	function get_each_context(ctx, list, i) {
+	function get_each_context$1(ctx, list, i) {
 		const child_ctx = ctx.slice();
 		child_ctx[9] = list[i];
 		child_ctx[11] = i;
@@ -1723,7 +1743,7 @@
 	}
 
 	// (47:1) {#each steps as step, i}
-	function create_each_block(ctx) {
+	function create_each_block$1(ctx) {
 		let div;
 		let t_1_value = /*progressSteps*/ ctx[4][/*i*/ ctx[11]].caption + "";
 		let t_1;
@@ -1767,7 +1787,7 @@
 		let each_blocks = [];
 
 		for (let i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+			each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
 		}
 
 		return {
@@ -1804,12 +1824,12 @@
 					let i;
 
 					for (i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context(ctx, each_value, i);
+						const child_ctx = get_each_context$1(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(child_ctx, dirty);
 						} else {
-							each_blocks[i] = create_each_block(child_ctx);
+							each_blocks[i] = create_each_block$1(child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(div1, null);
 						}
@@ -6093,7 +6113,7 @@
 		component_subscribe($$self, userForm, $$value => $$invalidate(8, $userForm = $$value));
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(12, $contributionValue = $$value));
 		let { handleStepProgress } = $$props;
-		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6","STRIPE_SECRET_KEY":"sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe","API_END_POINT":"https://growmytree.test"};
+		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 		let stripe = null;
 
 		// Stripe Elements instance
@@ -6119,7 +6139,7 @@
 			let userDetails = $userForm;
 
 			// let userLocale              = $locale;
-			let userLocale = "de"; //default, testing
+			let userLocale = $userForm.country == "DE" ? "de" : "en"; //default, testing
 
 			let paymentIntentId = $stripePaymentIntentId;
 
@@ -6339,6 +6359,38 @@
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(4, $contributionValue = $$value));
 		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
 		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(5, $$value));
+
+		let EU_COUNTRIES_CODES = [
+			'AT',
+			'BE',
+			'BG',
+			'CY',
+			'CZ',
+			'DE',
+			'DK',
+			'EE',
+			'ES',
+			'FI',
+			'FR',
+			'GB',
+			'GR',
+			'HU',
+			'HR',
+			'IE',
+			'IT',
+			'LT',
+			'LU',
+			'LV',
+			'MT',
+			'NL',
+			'PL',
+			'PT',
+			'RO',
+			'SE',
+			'SI',
+			'SK'
+		];
+
 		let certificateUrl;
 
 		onMount(() => {
@@ -6348,8 +6400,11 @@
 		const getCertificate = () => {
 			let numberOfTrees = $contributionValue;
 			$userForm.contributionFrequency; //once or monthly
-			let userLocale = "de"; //testing
-			let vat_amount = $totalPrice * 0.19 ;
+			let userLocale = $userForm.country == "DE" ? "de" : "en";
+
+			let vat_amount = EU_COUNTRIES_CODES.includes($userForm.country)
+			? $totalPrice * 0.19
+			: 0.00;
 
 			let productsMapping = {
 				1: "Tree Friend",
@@ -6782,11 +6837,269 @@
 		}
 	}
 
+	// export const countries =
+	//   `Afghanistan, Åland Islands, Albania, Algeria, American Samoa, Andorra, Angola, Anguilla, Antarctica, Antigua & Barbuda, Argentina, Armenia, Aruba, Australia, Austria, Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bermuda, Bhutan, Bolivia, Bosnia & Herzegovina, Botswana, Bouvet Island, Brazil, British Indian Ocean Territory, British Virgin Islands, Brunei, Bulgaria, Burkina Faso, Burundi, Cambodia, Cameroon, Canada, Cape Verde, Caribbean Netherlands, Cayman Islands, Central African Republic, Chad, Chile, China, Christmas Island, Cocos  Islands, Colombia, Comoros, Congo - Brazzaville, Congo - Kinshasa, Cook Islands, Costa Rica, Côte d’Ivoire, Croatia, Cuba, Curaçao, Cyprus, Czechia, Denmark, Djibouti, Dominica, Dominican Republic, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Eswatini, Ethiopia, Falkland Islands, Faroe Islands, Fiji, Finland, France, French Guiana, French Polynesia, French Southern Territories, Gabon, Gambia, Georgia, Germany, Ghana, Gibraltar, Greece, Greenland, Grenada, Guadeloupe, Guam, Guatemala, Guernsey, Guinea, Guinea-Bissau, Guyana, Haiti, Heard & McDonald Islands, Honduras, Hong Kong SAR China, Hungary, Iceland, India, Indonesia, Iran, Iraq, Ireland, Isle of Man, Israel, Italy, Jamaica, Japan, Jersey, Jordan, Kazakhstan, Kenya, Kiribati, Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg, Macao SAR China, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Martinique, Mauritania, Mauritius, Mayotte, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montenegro, Montserrat, Morocco, Mozambique, Myanmar, Namibia, Nauru, Nepal, Netherlands, New Caledonia, New Zealand, Nicaragua, Niger, Nigeria, Niue, Norfolk Island, North Korea, North Macedonia, Northern Mariana Islands, Norway, Oman, Pakistan, Palau, Palestinian Territories, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Pitcairn Islands, Poland, Portugal, Puerto Rico, Qatar, Réunion, Romania, Russia, Rwanda, Samoa, San Marino, São Tomé & Príncipe, Saudi Arabia, Senegal, Serbia, Seychelles, Sierra Leone, Singapore, Sint Maarten, Slovakia, Slovenia, Solomon Islands, Somalia, South Africa, South Georgia & South Sandwich Islands, South Korea, South Sudan, Spain, Sri Lanka, St. Barthélemy, St. Helena, St. Kitts & Nevis, St. Lucia, St. Martin, St. Pierre & Miquelon, St. Vincent & Grenadines, Sudan, Suriname, Svalbard & Jan Mayen, Sweden, Switzerland, Syria, Taiwan, Tajikistan, Tanzania, Thailand, Timor-Leste, Togo, Tokelau, Tonga, Trinidad & Tobago, Tunisia, Turkey, Turkmenistan, Turks & Caicos Islands, Tuvalu, U.S. Outlying Islands, U.S. Virgin Islands, Uganda, Ukraine, United Arab Emirates, United Kingdom, United States, Uruguay, Uzbekistan, Vanuatu, Vatican City, Venezuela, Vietnam, Wallis & Futuna, Western Sahara, Yemen, Zambia, Zimbabwe`.split(
+	//     `, `
+	// )
+
+	const countries = [
+	  {"name": "Afghanistan", "code": "AF"},
+	  {"name": "Åland Islands", "code": "AX"},
+	  {"name": "Albania", "code": "AL"},
+	  {"name": "Algeria", "code": "DZ"},
+	  {"name": "American Samoa", "code": "AS"},
+	  {"name": "AndorrA", "code": "AD"},
+	  {"name": "Angola", "code": "AO"},
+	  {"name": "Anguilla", "code": "AI"},
+	  {"name": "Antarctica", "code": "AQ"},
+	  {"name": "Antigua and Barbuda", "code": "AG"},
+	  {"name": "Argentina", "code": "AR"},
+	  {"name": "Armenia", "code": "AM"},
+	  {"name": "Aruba", "code": "AW"},
+	  {"name": "Australia", "code": "AU"},
+	  {"name": "Austria", "code": "AT"},
+	  {"name": "Azerbaijan", "code": "AZ"},
+	  {"name": "Bahamas", "code": "BS"},
+	  {"name": "Bahrain", "code": "BH"},
+	  {"name": "Bangladesh", "code": "BD"},
+	  {"name": "Barbados", "code": "BB"},
+	  {"name": "Belarus", "code": "BY"},
+	  {"name": "Belgium", "code": "BE"},
+	  {"name": "Belize", "code": "BZ"},
+	  {"name": "Benin", "code": "BJ"},
+	  {"name": "Bermuda", "code": "BM"},
+	  {"name": "Bhutan", "code": "BT"},
+	  {"name": "Bolivia", "code": "BO"},
+	  {"name": "Bosnia and Herzegovina", "code": "BA"},
+	  {"name": "Botswana", "code": "BW"},
+	  {"name": "Bouvet Island", "code": "BV"},
+	  {"name": "Brazil", "code": "BR"},
+	  {"name": "British Indian Ocean Territory", "code": "IO"},
+	  {"name": "Brunei Darussalam", "code": "BN"},
+	  {"name": "Bulgaria", "code": "BG"},
+	  {"name": "Burkina Faso", "code": "BF"},
+	  {"name": "Burundi", "code": "BI"},
+	  {"name": "Cambodia", "code": "KH"},
+	  {"name": "Cameroon", "code": "CM"},
+	  {"name": "Canada", "code": "CA"},
+	  {"name": "Cape Verde", "code": "CV"},
+	  {"name": "Cayman Islands", "code": "KY"},
+	  {"name": "Central African Republic", "code": "CF"},
+	  {"name": "Chad", "code": "TD"},
+	  {"name": "Chile", "code": "CL"},
+	  {"name": "China", "code": "CN"},
+	  {"name": "Christmas Island", "code": "CX"},
+	  {"name": "Cocos (Keeling) Islands", "code": "CC"},
+	  {"name": "Colombia", "code": "CO"},
+	  {"name": "Comoros", "code": "KM"},
+	  {"name": "Congo", "code": "CG"},
+	  {"name": "Congo, The Democratic Republic of the", "code": "CD"},
+	  {"name": "Cook Islands", "code": "CK"},
+	  {"name": "Costa Rica", "code": "CR"},
+	  {"name": "Cote D\"Ivoire", "code": "CI"},
+	  {"name": "Croatia", "code": "HR"},
+	  {"name": "Cuba", "code": "CU"},
+	  {"name": "Cyprus", "code": "CY"},
+	  {"name": "Czech Republic", "code": "CZ"},
+	  {"name": "Denmark", "code": "DK"},
+	  {"name": "Djibouti", "code": "DJ"},
+	  {"name": "Dominica", "code": "DM"},
+	  {"name": "Dominican Republic", "code": "DO"},
+	  {"name": "Ecuador", "code": "EC"},
+	  {"name": "Egypt", "code": "EG"},
+	  {"name": "El Salvador", "code": "SV"},
+	  {"name": "Equatorial Guinea", "code": "GQ"},
+	  {"name": "Eritrea", "code": "ER"},
+	  {"name": "Estonia", "code": "EE"},
+	  {"name": "Ethiopia", "code": "ET"},
+	  {"name": "Falkland Islands (Malvinas)", "code": "FK"},
+	  {"name": "Faroe Islands", "code": "FO"},
+	  {"name": "Fiji", "code": "FJ"},
+	  {"name": "Finland", "code": "FI"},
+	  {"name": "France", "code": "FR"},
+	  {"name": "French Guiana", "code": "GF"},
+	  {"name": "French Polynesia", "code": "PF"},
+	  {"name": "French Southern Territories", "code": "TF"},
+	  {"name": "Gabon", "code": "GA"},
+	  {"name": "Gambia", "code": "GM"},
+	  {"name": "Georgia", "code": "GE"},
+	  {"name": "Germany", "code": "DE"},
+	  {"name": "Ghana", "code": "GH"},
+	  {"name": "Gibraltar", "code": "GI"},
+	  {"name": "Greece", "code": "GR"},
+	  {"name": "Greenland", "code": "GL"},
+	  {"name": "Grenada", "code": "GD"},
+	  {"name": "Guadeloupe", "code": "GP"},
+	  {"name": "Guam", "code": "GU"},
+	  {"name": "Guatemala", "code": "GT"},
+	  {"name": "Guernsey", "code": "GG"},
+	  {"name": "Guinea", "code": "GN"},
+	  {"name": "Guinea-Bissau", "code": "GW"},
+	  {"name": "Guyana", "code": "GY"},
+	  {"name": "Haiti", "code": "HT"},
+	  {"name": "Heard Island and Mcdonald Islands", "code": "HM"},
+	  {"name": "Holy See (Vatican City State)", "code": "VA"},
+	  {"name": "Honduras", "code": "HN"},
+	  {"name": "Hong Kong", "code": "HK"},
+	  {"name": "Hungary", "code": "HU"},
+	  {"name": "Iceland", "code": "IS"},
+	  {"name": "India", "code": "IN"},
+	  {"name": "Indonesia", "code": "ID"},
+	  {"name": "Iran, Islamic Republic Of", "code": "IR"},
+	  {"name": "Iraq", "code": "IQ"},
+	  {"name": "Ireland", "code": "IE"},
+	  {"name": "Isle of Man", "code": "IM"},
+	  {"name": "Israel", "code": "IL"},
+	  {"name": "Italy", "code": "IT"},
+	  {"name": "Jamaica", "code": "JM"},
+	  {"name": "Japan", "code": "JP"},
+	  {"name": "Jersey", "code": "JE"},
+	  {"name": "Jordan", "code": "JO"},
+	  {"name": "Kazakhstan", "code": "KZ"},
+	  {"name": "Kenya", "code": "KE"},
+	  {"name": "Kiribati", "code": "KI"},
+	  {"name": "Korea, Democratic People\"S Republic of", "code": "KP"},
+	  {"name": "Korea, Republic of", "code": "KR"},
+	  {"name": "Kuwait", "code": "KW"},
+	  {"name": "Kyrgyzstan", "code": "KG"},
+	  {"name": "Lao People\"S Democratic Republic", "code": "LA"},
+	  {"name": "Latvia", "code": "LV"},
+	  {"name": "Lebanon", "code": "LB"},
+	  {"name": "Lesotho", "code": "LS"},
+	  {"name": "Liberia", "code": "LR"},
+	  {"name": "Libyan Arab Jamahiriya", "code": "LY"},
+	  {"name": "Liechtenstein", "code": "LI"},
+	  {"name": "Lithuania", "code": "LT"},
+	  {"name": "Luxembourg", "code": "LU"},
+	  {"name": "Macao", "code": "MO"},
+	  {"name": "Macedonia, The Former Yugoslav Republic of", "code": "MK"},
+	  {"name": "Madagascar", "code": "MG"},
+	  {"name": "Malawi", "code": "MW"},
+	  {"name": "Malaysia", "code": "MY"},
+	  {"name": "Maldives", "code": "MV"},
+	  {"name": "Mali", "code": "ML"},
+	  {"name": "Malta", "code": "MT"},
+	  {"name": "Marshall Islands", "code": "MH"},
+	  {"name": "Martinique", "code": "MQ"},
+	  {"name": "Mauritania", "code": "MR"},
+	  {"name": "Mauritius", "code": "MU"},
+	  {"name": "Mayotte", "code": "YT"},
+	  {"name": "Mexico", "code": "MX"},
+	  {"name": "Micronesia, Federated States of", "code": "FM"},
+	  {"name": "Moldova, Republic of", "code": "MD"},
+	  {"name": "Monaco", "code": "MC"},
+	  {"name": "Mongolia", "code": "MN"},
+	  {"name": "Montserrat", "code": "MS"},
+	  {"name": "Morocco", "code": "MA"},
+	  {"name": "Mozambique", "code": "MZ"},
+	  {"name": "Myanmar", "code": "MM"},
+	  {"name": "Namibia", "code": "NA"},
+	  {"name": "Nauru", "code": "NR"},
+	  {"name": "Nepal", "code": "NP"},
+	  {"name": "Netherlands", "code": "NL"},
+	  {"name": "Netherlands Antilles", "code": "AN"},
+	  {"name": "New Caledonia", "code": "NC"},
+	  {"name": "New Zealand", "code": "NZ"},
+	  {"name": "Nicaragua", "code": "NI"},
+	  {"name": "Niger", "code": "NE"},
+	  {"name": "Nigeria", "code": "NG"},
+	  {"name": "Niue", "code": "NU"},
+	  {"name": "Norfolk Island", "code": "NF"},
+	  {"name": "Northern Mariana Islands", "code": "MP"},
+	  {"name": "Norway", "code": "NO"},
+	  {"name": "Oman", "code": "OM"},
+	  {"name": "Pakistan", "code": "PK"},
+	  {"name": "Palau", "code": "PW"},
+	  {"name": "Palestinian Territory, Occupied", "code": "PS"},
+	  {"name": "Panama", "code": "PA"},
+	  {"name": "Papua New Guinea", "code": "PG"},
+	  {"name": "Paraguay", "code": "PY"},
+	  {"name": "Peru", "code": "PE"},
+	  {"name": "Philippines", "code": "PH"},
+	  {"name": "Pitcairn", "code": "PN"},
+	  {"name": "Poland", "code": "PL"},
+	  {"name": "Portugal", "code": "PT"},
+	  {"name": "Puerto Rico", "code": "PR"},
+	  {"name": "Qatar", "code": "QA"},
+	  {"name": "Reunion", "code": "RE"},
+	  {"name": "Romania", "code": "RO"},
+	  {"name": "Russian Federation", "code": "RU"},
+	  {"name": "RWANDA", "code": "RW"},
+	  {"name": "Saint Helena", "code": "SH"},
+	  {"name": "Saint Kitts and Nevis", "code": "KN"},
+	  {"name": "Saint Lucia", "code": "LC"},
+	  {"name": "Saint Pierre and Miquelon", "code": "PM"},
+	  {"name": "Saint Vincent and the Grenadines", "code": "VC"},
+	  {"name": "Samoa", "code": "WS"},
+	  {"name": "San Marino", "code": "SM"},
+	  {"name": "Sao Tome and Principe", "code": "ST"},
+	  {"name": "Saudi Arabia", "code": "SA"},
+	  {"name": "Senegal", "code": "SN"},
+	  {"name": "Serbia and Montenegro", "code": "CS"},
+	  {"name": "Seychelles", "code": "SC"},
+	  {"name": "Sierra Leone", "code": "SL"},
+	  {"name": "Singapore", "code": "SG"},
+	  {"name": "Slovakia", "code": "SK"},
+	  {"name": "Slovenia", "code": "SI"},
+	  {"name": "Solomon Islands", "code": "SB"},
+	  {"name": "Somalia", "code": "SO"},
+	  {"name": "South Africa", "code": "ZA"},
+	  {"name": "South Georgia and the South Sandwich Islands", "code": "GS"},
+	  {"name": "Spain", "code": "ES"},
+	  {"name": "Sri Lanka", "code": "LK"},
+	  {"name": "Sudan", "code": "SD"},
+	  {"name": "Suriname", "code": "SR"},
+	  {"name": "Svalbard and Jan Mayen", "code": "SJ"},
+	  {"name": "Swaziland", "code": "SZ"},
+	  {"name": "Sweden", "code": "SE"},
+	  {"name": "Switzerland", "code": "CH"},
+	  {"name": "Syrian Arab Republic", "code": "SY"},
+	  {"name": "Taiwan", "code": "TW"},
+	  {"name": "Tajikistan", "code": "TJ"},
+	  {"name": "Tanzania, United Republic of", "code": "TZ"},
+	  {"name": "Thailand", "code": "TH"},
+	  {"name": "Timor-Leste", "code": "TL"},
+	  {"name": "Togo", "code": "TG"},
+	  {"name": "Tokelau", "code": "TK"},
+	  {"name": "Tonga", "code": "TO"},
+	  {"name": "Trinidad and Tobago", "code": "TT"},
+	  {"name": "Tunisia", "code": "TN"},
+	  {"name": "Turkey", "code": "TR"},
+	  {"name": "Turkmenistan", "code": "TM"},
+	  {"name": "Turks and Caicos Islands", "code": "TC"},
+	  {"name": "Tuvalu", "code": "TV"},
+	  {"name": "Uganda", "code": "UG"},
+	  {"name": "Ukraine", "code": "UA"},
+	  {"name": "United Arab Emirates", "code": "AE"},
+	  {"name": "United Kingdom", "code": "GB"},
+	  {"name": "United States", "code": "US"},
+	  {"name": "United States Minor Outlying Islands", "code": "UM"},
+	  {"name": "Uruguay", "code": "UY"},
+	  {"name": "Uzbekistan", "code": "UZ"},
+	  {"name": "Vanuatu", "code": "VU"},
+	  {"name": "Venezuela", "code": "VE"},
+	  {"name": "Viet Nam", "code": "VN"},
+	  {"name": "Virgin Islands, British", "code": "VG"},
+	  {"name": "Virgin Islands, U.S.", "code": "VI"},
+	  {"name": "Wallis and Futuna", "code": "WF"},
+	  {"name": "Western Sahara", "code": "EH"},
+	  {"name": "Yemen", "code": "YE"},
+	  {"name": "Zambia", "code": "ZM"},
+	  {"name": "Zimbabwe", "code": "ZW"}
+	];
+
 	/* components\UserDetailsForm.svelte generated by Svelte v4.2.1 */
 
+	function get_each_context(ctx, list, i) {
+		const child_ctx = ctx.slice();
+		child_ctx[26] = list[i];
+		return child_ctx;
+	}
+
+	// (81:8) {#if $formErrors.firstName != ""}
 	function create_if_block_2(ctx) {
 		let span;
-		let t_1_value = /*$formErrors*/ ctx[4].firstName + "";
+		let t_1_value = /*$formErrors*/ ctx[5].firstName + "";
 		let t_1;
 
 		return {
@@ -6801,7 +7114,7 @@
 				append(span, t_1);
 			},
 			p(ctx, dirty) {
-				if (dirty & /*$formErrors*/ 16 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[4].firstName + "")) set_data(t_1, t_1_value);
+				if (dirty & /*$formErrors*/ 32 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[5].firstName + "")) set_data(t_1, t_1_value);
 			},
 			d(detaching) {
 				if (detaching) {
@@ -6814,7 +7127,7 @@
 	// (87:8) {#if $formErrors.lastName != ""}
 	function create_if_block_1$2(ctx) {
 		let span;
-		let t_1_value = /*$formErrors*/ ctx[4].lastName + "";
+		let t_1_value = /*$formErrors*/ ctx[5].lastName + "";
 		let t_1;
 
 		return {
@@ -6829,7 +7142,7 @@
 				append(span, t_1);
 			},
 			p(ctx, dirty) {
-				if (dirty & /*$formErrors*/ 16 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[4].lastName + "")) set_data(t_1, t_1_value);
+				if (dirty & /*$formErrors*/ 32 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[5].lastName + "")) set_data(t_1, t_1_value);
 			},
 			d(detaching) {
 				if (detaching) {
@@ -6842,7 +7155,7 @@
 	// (94:4) {#if $formErrors.email != ""}
 	function create_if_block$2(ctx) {
 		let span;
-		let t_1_value = /*$formErrors*/ ctx[4].email + "";
+		let t_1_value = /*$formErrors*/ ctx[5].email + "";
 		let t_1;
 
 		return {
@@ -6857,11 +7170,34 @@
 				append(span, t_1);
 			},
 			p(ctx, dirty) {
-				if (dirty & /*$formErrors*/ 16 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[4].email + "")) set_data(t_1, t_1_value);
+				if (dirty & /*$formErrors*/ 32 && t_1_value !== (t_1_value = /*$formErrors*/ ctx[5].email + "")) set_data(t_1, t_1_value);
 			},
 			d(detaching) {
 				if (detaching) {
 					detach(span);
+				}
+			}
+		};
+	}
+
+	// (118:16) {#each countries as country}
+	function create_each_block(ctx) {
+		let option;
+
+		return {
+			c() {
+				option = element("option");
+				option.textContent = `${/*country*/ ctx[26].name} `;
+				option.__value = /*country*/ ctx[26];
+				set_input_value(option, option.__value);
+			},
+			m(target, anchor) {
+				insert(target, option, anchor);
+			},
+			p: noop$1,
+			d(detaching) {
+				if (detaching) {
+					detach(option);
 				}
 			}
 		};
@@ -6931,24 +7267,30 @@
 		let updating_value_3;
 		let t23;
 		let t24;
+		let div22;
+		let div20;
 		let inputfield3;
 		let updating_value_4;
 		let t25;
-		let div22;
-		let div20;
+		let div21;
 		let inputfield4;
 		let updating_value_5;
 		let t26;
-		let div21;
+		let div26;
+		let div23;
 		let inputfield5;
 		let updating_value_6;
+		let t27;
+		let div25;
+		let div24;
+		let select;
 		let current;
 		let binding_group;
 		let mounted;
 		let dispose;
 
 		function switch_1_value_binding(value) {
-			/*switch_1_value_binding*/ ctx[6](value);
+			/*switch_1_value_binding*/ ctx[7](value);
 		}
 
 		let switch_1_props = {
@@ -6959,8 +7301,8 @@
 			design: "inner"
 		};
 
-		if (/*$userForm*/ ctx[1].contributionFrequency !== void 0) {
-			switch_1_props.value = /*$userForm*/ ctx[1].contributionFrequency;
+		if (/*$userForm*/ ctx[2].contributionFrequency !== void 0) {
+			switch_1_props.value = /*$userForm*/ ctx[2].contributionFrequency;
 		}
 
 		switch_1 = new Switch({ props: switch_1_props });
@@ -6968,86 +7310,93 @@
 		pricingtips = new PricingTips({});
 
 		function inputfield0_value_binding(value) {
-			/*inputfield0_value_binding*/ ctx[16](value);
+			/*inputfield0_value_binding*/ ctx[17](value);
 		}
 
 		let inputfield0_props = { label: "First Name" };
 
-		if (/*$userForm*/ ctx[1].firstName !== void 0) {
-			inputfield0_props.value = /*$userForm*/ ctx[1].firstName;
+		if (/*$userForm*/ ctx[2].firstName !== void 0) {
+			inputfield0_props.value = /*$userForm*/ ctx[2].firstName;
 		}
 
 		inputfield0 = new InputField({ props: inputfield0_props });
 		binding_callbacks.push(() => bind$1(inputfield0, 'value', inputfield0_value_binding));
-		let if_block0 = /*$formErrors*/ ctx[4].firstName != "" && create_if_block_2(ctx);
+		let if_block0 = /*$formErrors*/ ctx[5].firstName != "" && create_if_block_2(ctx);
 
 		function inputfield1_value_binding(value) {
-			/*inputfield1_value_binding*/ ctx[17](value);
+			/*inputfield1_value_binding*/ ctx[18](value);
 		}
 
 		let inputfield1_props = { label: "Last Name" };
 
-		if (/*$userForm*/ ctx[1].lastName !== void 0) {
-			inputfield1_props.value = /*$userForm*/ ctx[1].lastName;
+		if (/*$userForm*/ ctx[2].lastName !== void 0) {
+			inputfield1_props.value = /*$userForm*/ ctx[2].lastName;
 		}
 
 		inputfield1 = new InputField({ props: inputfield1_props });
 		binding_callbacks.push(() => bind$1(inputfield1, 'value', inputfield1_value_binding));
-		let if_block1 = /*$formErrors*/ ctx[4].lastName != "" && create_if_block_1$2(ctx);
+		let if_block1 = /*$formErrors*/ ctx[5].lastName != "" && create_if_block_1$2(ctx);
 
 		function inputfield2_value_binding(value) {
-			/*inputfield2_value_binding*/ ctx[18](value);
+			/*inputfield2_value_binding*/ ctx[19](value);
 		}
 
 		let inputfield2_props = { label: "Email" };
 
-		if (/*$userForm*/ ctx[1].email !== void 0) {
-			inputfield2_props.value = /*$userForm*/ ctx[1].email;
+		if (/*$userForm*/ ctx[2].email !== void 0) {
+			inputfield2_props.value = /*$userForm*/ ctx[2].email;
 		}
 
 		inputfield2 = new InputField({ props: inputfield2_props });
 		binding_callbacks.push(() => bind$1(inputfield2, 'value', inputfield2_value_binding));
-		let if_block2 = /*$formErrors*/ ctx[4].email != "" && create_if_block$2(ctx);
+		let if_block2 = /*$formErrors*/ ctx[5].email != "" && create_if_block$2(ctx);
 
 		function inputfield3_value_binding(value) {
-			/*inputfield3_value_binding*/ ctx[19](value);
+			/*inputfield3_value_binding*/ ctx[20](value);
 		}
 
 		let inputfield3_props = { label: "Address" };
 
-		if (/*$userForm*/ ctx[1].address !== void 0) {
-			inputfield3_props.value = /*$userForm*/ ctx[1].address;
+		if (/*$userForm*/ ctx[2].address !== void 0) {
+			inputfield3_props.value = /*$userForm*/ ctx[2].address;
 		}
 
 		inputfield3 = new InputField({ props: inputfield3_props });
 		binding_callbacks.push(() => bind$1(inputfield3, 'value', inputfield3_value_binding));
 
 		function inputfield4_value_binding(value) {
-			/*inputfield4_value_binding*/ ctx[20](value);
+			/*inputfield4_value_binding*/ ctx[21](value);
 		}
 
 		let inputfield4_props = { label: "Postal Code" };
 
-		if (/*$userForm*/ ctx[1].postalCode !== void 0) {
-			inputfield4_props.value = /*$userForm*/ ctx[1].postalCode;
+		if (/*$userForm*/ ctx[2].postalCode !== void 0) {
+			inputfield4_props.value = /*$userForm*/ ctx[2].postalCode;
 		}
 
 		inputfield4 = new InputField({ props: inputfield4_props });
 		binding_callbacks.push(() => bind$1(inputfield4, 'value', inputfield4_value_binding));
 
 		function inputfield5_value_binding(value) {
-			/*inputfield5_value_binding*/ ctx[21](value);
+			/*inputfield5_value_binding*/ ctx[22](value);
 		}
 
 		let inputfield5_props = { label: "City" };
 
-		if (/*$userForm*/ ctx[1].city !== void 0) {
-			inputfield5_props.value = /*$userForm*/ ctx[1].city;
+		if (/*$userForm*/ ctx[2].city !== void 0) {
+			inputfield5_props.value = /*$userForm*/ ctx[2].city;
 		}
 
 		inputfield5 = new InputField({ props: inputfield5_props });
 		binding_callbacks.push(() => bind$1(inputfield5, 'value', inputfield5_value_binding));
-		binding_group = init_binding_group(/*$$binding_groups*/ ctx[8][0]);
+		let each_value = ensure_array_like(countries);
+		let each_blocks = [];
+
+		for (let i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+		}
+
+		binding_group = init_binding_group(/*$$binding_groups*/ ctx[9][0]);
 
 		return {
 			c() {
@@ -7096,7 +7445,7 @@
 				div13 = element("div");
 				span = element("span");
 				t16 = text("€ ");
-				t17 = text(/*$totalPrice*/ ctx[3]);
+				t17 = text(/*$totalPrice*/ ctx[4]);
 				t18 = space();
 				div18 = element("div");
 				div16 = element("div");
@@ -7114,14 +7463,25 @@
 				t23 = space();
 				if (if_block2) if_block2.c();
 				t24 = space();
-				create_component(inputfield3.$$.fragment);
-				t25 = space();
 				div22 = element("div");
 				div20 = element("div");
+				create_component(inputfield3.$$.fragment);
+				t25 = space();
+				div21 = element("div");
 				create_component(inputfield4.$$.fragment);
 				t26 = space();
-				div21 = element("div");
+				div26 = element("div");
+				div23 = element("div");
 				create_component(inputfield5.$$.fragment);
+				t27 = space();
+				div25 = element("div");
+				div24 = element("div");
+				select = element("select");
+
+				for (let i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
 				attr(div0, "class", "flex justify-center");
 				attr(div1, "class", "mt-4");
 				attr(div2, "class", "block mb-2 w-full");
@@ -7130,28 +7490,28 @@
 				attr(input0, "class", "form-radio my-1 h-4 w-4 p-1 text-[#5F753D] checked:bg-[#5F753D]");
 				input0.__value = 1;
 				set_input_value(input0, input0.__value);
-				input0.checked = input0_checked_value = /*$contributionValue*/ ctx[2] === 1;
+				input0.checked = input0_checked_value = /*$contributionValue*/ ctx[3] === 1;
 				attr(div3, "class", "text-center text-xs");
 				attr(div4, "class", "");
 				attr(input1, "type", "radio");
 				attr(input1, "class", "form-radio my-1 h-4 w-4 p-1 text-[#5F753D] checked:bg-[#5F753D]");
 				input1.__value = 4;
 				set_input_value(input1, input1.__value);
-				input1.checked = input1_checked_value = /*$contributionValue*/ ctx[2] === 4;
+				input1.checked = input1_checked_value = /*$contributionValue*/ ctx[3] === 4;
 				attr(div5, "class", "text-center text-xs");
 				attr(div6, "class", "");
 				attr(input2, "type", "radio");
 				attr(input2, "class", "form-radio my-1 h-4 w-4 p-1 text-[#5F753D] checked:bg-[#5F753D]");
 				input2.__value = 11;
 				set_input_value(input2, input2.__value);
-				input2.checked = input2_checked_value = /*$contributionValue*/ ctx[2] === 11;
+				input2.checked = input2_checked_value = /*$contributionValue*/ ctx[3] === 11;
 				attr(div7, "class", "text-center text-xs");
 				attr(div8, "class", "");
 				attr(input3, "type", "radio");
 				attr(input3, "class", "form-radio my-1 h-4 w-4 p-1 text-[#5F753D] checked:bg-[#5F753D]");
 				input3.__value = 22;
 				set_input_value(input3, input3.__value);
-				input3.checked = input3_checked_value = /*$contributionValue*/ ctx[2] === 22;
+				input3.checked = input3_checked_value = /*$contributionValue*/ ctx[3] === 22;
 				attr(div9, "class", "text-center text-xs");
 				attr(div10, "class", "");
 				attr(div11, "class", "flex items-center justify-between mr-6");
@@ -7170,6 +7530,12 @@
 				attr(div20, "class", "w-full md:w-1/2 md:mr-2");
 				attr(div21, "class", "w-full md:w-1/2");
 				attr(div22, "class", "flex flex-col md:flex-row justify-between");
+				attr(div23, "class", "w-full md:w-1/2 md:mr-2");
+				attr(select, "class", "w-full px-4 py-2 font-semibold text-sm border border-[#EFE3DE] rounded-md focus:border-[#EFE3DE] focus:outline-none focus:ring-1 focus:ring-[#EFE3DE] placeholder-[#EFE3DE]");
+				if (/*selectedCountry*/ ctx[1] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[23].call(select));
+				attr(div24, "class", "mt-2");
+				attr(div25, "class", "w-full md:w-1/2");
+				attr(div26, "class", "flex flex-col md:flex-row justify-between");
 				binding_group.p(input0, input1, input2, input3);
 			},
 			m(target, anchor) {
@@ -7235,26 +7601,42 @@
 				append(div19, t23);
 				if (if_block2) if_block2.m(div19, null);
 				insert(target, t24, anchor);
-				mount_component(inputfield3, target, anchor);
-				insert(target, t25, anchor);
 				insert(target, div22, anchor);
 				append(div22, div20);
-				mount_component(inputfield4, div20, null);
-				append(div22, t26);
+				mount_component(inputfield3, div20, null);
+				append(div22, t25);
 				append(div22, div21);
-				mount_component(inputfield5, div21, null);
+				mount_component(inputfield4, div21, null);
+				insert(target, t26, anchor);
+				insert(target, div26, anchor);
+				append(div26, div23);
+				mount_component(inputfield5, div23, null);
+				append(div26, t27);
+				append(div26, div25);
+				append(div25, div24);
+				append(div24, select);
+
+				for (let i = 0; i < each_blocks.length; i += 1) {
+					if (each_blocks[i]) {
+						each_blocks[i].m(select, null);
+					}
+				}
+
+				select_option(select, /*selectedCountry*/ ctx[1], true);
 				current = true;
 
 				if (!mounted) {
 					dispose = [
-						listen(input0, "change", /*input0_change_handler*/ ctx[7]),
-						listen(input0, "change", /*change_handler*/ ctx[9]),
-						listen(input1, "change", /*input1_change_handler*/ ctx[10]),
-						listen(input1, "change", /*change_handler_1*/ ctx[11]),
-						listen(input2, "change", /*input2_change_handler*/ ctx[12]),
-						listen(input2, "change", /*change_handler_2*/ ctx[13]),
-						listen(input3, "change", /*input3_change_handler*/ ctx[14]),
-						listen(input3, "change", /*change_handler_3*/ ctx[15])
+						listen(input0, "change", /*input0_change_handler*/ ctx[8]),
+						listen(input0, "change", /*change_handler*/ ctx[10]),
+						listen(input1, "change", /*input1_change_handler*/ ctx[11]),
+						listen(input1, "change", /*change_handler_1*/ ctx[12]),
+						listen(input2, "change", /*input2_change_handler*/ ctx[13]),
+						listen(input2, "change", /*change_handler_2*/ ctx[14]),
+						listen(input3, "change", /*input3_change_handler*/ ctx[15]),
+						listen(input3, "change", /*change_handler_3*/ ctx[16]),
+						listen(select, "change", /*select_change_handler*/ ctx[23]),
+						listen(select, "change", /*change_handler_4*/ ctx[24])
 					];
 
 					mounted = true;
@@ -7263,15 +7645,15 @@
 			p(ctx, [dirty]) {
 				const switch_1_changes = {};
 
-				if (!updating_value && dirty & /*$userForm*/ 2) {
+				if (!updating_value && dirty & /*$userForm*/ 4) {
 					updating_value = true;
-					switch_1_changes.value = /*$userForm*/ ctx[1].contributionFrequency;
+					switch_1_changes.value = /*$userForm*/ ctx[2].contributionFrequency;
 					add_flush_callback(() => updating_value = false);
 				}
 
 				switch_1.$set(switch_1_changes);
 
-				if (!current || dirty & /*$contributionValue*/ 4 && input0_checked_value !== (input0_checked_value = /*$contributionValue*/ ctx[2] === 1)) {
+				if (!current || dirty & /*$contributionValue*/ 8 && input0_checked_value !== (input0_checked_value = /*$contributionValue*/ ctx[3] === 1)) {
 					input0.checked = input0_checked_value;
 				}
 
@@ -7279,7 +7661,7 @@
 					input0.checked = input0.__value === /*group*/ ctx[0];
 				}
 
-				if (!current || dirty & /*$contributionValue*/ 4 && input1_checked_value !== (input1_checked_value = /*$contributionValue*/ ctx[2] === 4)) {
+				if (!current || dirty & /*$contributionValue*/ 8 && input1_checked_value !== (input1_checked_value = /*$contributionValue*/ ctx[3] === 4)) {
 					input1.checked = input1_checked_value;
 				}
 
@@ -7287,7 +7669,7 @@
 					input1.checked = input1.__value === /*group*/ ctx[0];
 				}
 
-				if (!current || dirty & /*$contributionValue*/ 4 && input2_checked_value !== (input2_checked_value = /*$contributionValue*/ ctx[2] === 11)) {
+				if (!current || dirty & /*$contributionValue*/ 8 && input2_checked_value !== (input2_checked_value = /*$contributionValue*/ ctx[3] === 11)) {
 					input2.checked = input2_checked_value;
 				}
 
@@ -7295,7 +7677,7 @@
 					input2.checked = input2.__value === /*group*/ ctx[0];
 				}
 
-				if (!current || dirty & /*$contributionValue*/ 4 && input3_checked_value !== (input3_checked_value = /*$contributionValue*/ ctx[2] === 22)) {
+				if (!current || dirty & /*$contributionValue*/ 8 && input3_checked_value !== (input3_checked_value = /*$contributionValue*/ ctx[3] === 22)) {
 					input3.checked = input3_checked_value;
 				}
 
@@ -7303,18 +7685,18 @@
 					input3.checked = input3.__value === /*group*/ ctx[0];
 				}
 
-				if (!current || dirty & /*$totalPrice*/ 8) set_data(t17, /*$totalPrice*/ ctx[3]);
+				if (!current || dirty & /*$totalPrice*/ 16) set_data(t17, /*$totalPrice*/ ctx[4]);
 				const inputfield0_changes = {};
 
-				if (!updating_value_1 && dirty & /*$userForm*/ 2) {
+				if (!updating_value_1 && dirty & /*$userForm*/ 4) {
 					updating_value_1 = true;
-					inputfield0_changes.value = /*$userForm*/ ctx[1].firstName;
+					inputfield0_changes.value = /*$userForm*/ ctx[2].firstName;
 					add_flush_callback(() => updating_value_1 = false);
 				}
 
 				inputfield0.$set(inputfield0_changes);
 
-				if (/*$formErrors*/ ctx[4].firstName != "") {
+				if (/*$formErrors*/ ctx[5].firstName != "") {
 					if (if_block0) {
 						if_block0.p(ctx, dirty);
 					} else {
@@ -7329,15 +7711,15 @@
 
 				const inputfield1_changes = {};
 
-				if (!updating_value_2 && dirty & /*$userForm*/ 2) {
+				if (!updating_value_2 && dirty & /*$userForm*/ 4) {
 					updating_value_2 = true;
-					inputfield1_changes.value = /*$userForm*/ ctx[1].lastName;
+					inputfield1_changes.value = /*$userForm*/ ctx[2].lastName;
 					add_flush_callback(() => updating_value_2 = false);
 				}
 
 				inputfield1.$set(inputfield1_changes);
 
-				if (/*$formErrors*/ ctx[4].lastName != "") {
+				if (/*$formErrors*/ ctx[5].lastName != "") {
 					if (if_block1) {
 						if_block1.p(ctx, dirty);
 					} else {
@@ -7352,15 +7734,15 @@
 
 				const inputfield2_changes = {};
 
-				if (!updating_value_3 && dirty & /*$userForm*/ 2) {
+				if (!updating_value_3 && dirty & /*$userForm*/ 4) {
 					updating_value_3 = true;
-					inputfield2_changes.value = /*$userForm*/ ctx[1].email;
+					inputfield2_changes.value = /*$userForm*/ ctx[2].email;
 					add_flush_callback(() => updating_value_3 = false);
 				}
 
 				inputfield2.$set(inputfield2_changes);
 
-				if (/*$formErrors*/ ctx[4].email != "") {
+				if (/*$formErrors*/ ctx[5].email != "") {
 					if (if_block2) {
 						if_block2.p(ctx, dirty);
 					} else {
@@ -7375,31 +7757,35 @@
 
 				const inputfield3_changes = {};
 
-				if (!updating_value_4 && dirty & /*$userForm*/ 2) {
+				if (!updating_value_4 && dirty & /*$userForm*/ 4) {
 					updating_value_4 = true;
-					inputfield3_changes.value = /*$userForm*/ ctx[1].address;
+					inputfield3_changes.value = /*$userForm*/ ctx[2].address;
 					add_flush_callback(() => updating_value_4 = false);
 				}
 
 				inputfield3.$set(inputfield3_changes);
 				const inputfield4_changes = {};
 
-				if (!updating_value_5 && dirty & /*$userForm*/ 2) {
+				if (!updating_value_5 && dirty & /*$userForm*/ 4) {
 					updating_value_5 = true;
-					inputfield4_changes.value = /*$userForm*/ ctx[1].postalCode;
+					inputfield4_changes.value = /*$userForm*/ ctx[2].postalCode;
 					add_flush_callback(() => updating_value_5 = false);
 				}
 
 				inputfield4.$set(inputfield4_changes);
 				const inputfield5_changes = {};
 
-				if (!updating_value_6 && dirty & /*$userForm*/ 2) {
+				if (!updating_value_6 && dirty & /*$userForm*/ 4) {
 					updating_value_6 = true;
-					inputfield5_changes.value = /*$userForm*/ ctx[1].city;
+					inputfield5_changes.value = /*$userForm*/ ctx[2].city;
 					add_flush_callback(() => updating_value_6 = false);
 				}
 
 				inputfield5.$set(inputfield5_changes);
+
+				if (dirty & /*selectedCountry*/ 2) {
+					select_option(select, /*selectedCountry*/ ctx[1]);
+				}
 			},
 			i(local) {
 				if (current) return;
@@ -7434,8 +7820,9 @@
 					detach(t22);
 					detach(div19);
 					detach(t24);
-					detach(t25);
 					detach(div22);
+					detach(t26);
+					detach(div26);
 				}
 
 				destroy_component(switch_1);
@@ -7446,9 +7833,10 @@
 				if (if_block1) if_block1.d();
 				destroy_component(inputfield2);
 				if (if_block2) if_block2.d();
-				destroy_component(inputfield3, detaching);
+				destroy_component(inputfield3);
 				destroy_component(inputfield4);
 				destroy_component(inputfield5);
+				destroy_each(each_blocks, detaching);
 				binding_group.r();
 				mounted = false;
 				run_all(dispose);
@@ -7461,11 +7849,12 @@
 		let $contributionValue;
 		let $totalPrice;
 		let $formErrors;
-		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(2, $contributionValue = $$value));
-		component_subscribe($$self, totalPrice, $$value => $$invalidate(3, $totalPrice = $$value));
-		component_subscribe($$self, formErrors, $$value => $$invalidate(4, $formErrors = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(2, $userForm = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(3, $contributionValue = $$value));
+		component_subscribe($$self, totalPrice, $$value => $$invalidate(4, $totalPrice = $$value));
+		component_subscribe($$self, formErrors, $$value => $$invalidate(5, $formErrors = $$value));
 		let group = 1;
+		let selectedCountry = countries.find(country => country.code === "DE");
 
 		const handleChange = (event, value) => {
 			contributionValue.set(Number(value));
@@ -7551,8 +7940,16 @@
 			}
 		}
 
+		function select_change_handler() {
+			selectedCountry = select_value(this);
+			$$invalidate(1, selectedCountry);
+		}
+
+		const change_handler_4 = () => set_store_value(userForm, $userForm.country = selectedCountry.code, $userForm);
+
 		return [
 			group,
+			selectedCountry,
 			$userForm,
 			$contributionValue,
 			$totalPrice,
@@ -7573,7 +7970,9 @@
 			inputfield2_value_binding,
 			inputfield3_value_binding,
 			inputfield4_value_binding,
-			inputfield5_value_binding
+			inputfield5_value_binding,
+			select_change_handler,
+			change_handler_4
 		];
 	}
 
@@ -7847,7 +8246,7 @@
 		};
 	}
 
-	// (156:32) {#if steps[currentActive-1] == "Your Info"}
+	// (158:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8071,12 +8470,12 @@
 	}
 
 	function instance($$self, $$props, $$invalidate) {
-		let $userForm;
 		let $formErrors;
+		let $userForm;
 		let $zohoConfig;
 		let $processingPayment;
-		component_subscribe($$self, userForm, $$value => $$invalidate(9, $userForm = $$value));
-		component_subscribe($$self, formErrors, $$value => $$invalidate(10, $formErrors = $$value));
+		component_subscribe($$self, formErrors, $$value => $$invalidate(9, $formErrors = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(10, $userForm = $$value));
 		component_subscribe($$self, zohoConfig, $$value => $$invalidate(11, $zohoConfig = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(2, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8129,27 +8528,6 @@
 
 			progressBar.handleProgress(stepIncrement);
 		};
-
-		// const getCurrentLanguage = () => {
-		//     currentLanguage = Weglot.getCurrentLang();
-		//     //update locale
-		//     $locale = currentLanguage;
-		// }
-		// Weglot.on("languageChanged", getCurrentLanguage);
-		//Testing, getting user's country
-		axios$1.get('https://www.cloudflare.com/cdn-cgi/trace').then(function (response) {
-			response = response.data.trim().split('\n').reduce(
-				function (obj, pair) {
-					pair = pair.split('=');
-					return (obj[pair[0]] = pair[1], obj);
-				},
-				{}
-			);
-
-			set_store_value(userForm, $userForm.country = response.loc, $userForm);
-		}).catch(function (error) {
-			
-		}); // console.log(error);
 
 		function progressbar_currentActive_binding(value) {
 			currentActive = value;

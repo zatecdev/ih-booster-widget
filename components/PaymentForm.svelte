@@ -36,7 +36,7 @@
         let paymentFrequency        = $userForm.contributionFrequency; //once or monthly
         let userDetails             = $userForm;
         // let userLocale              = $locale;
-        let userLocale              = "de"; //default, testing
+        let userLocale              = $userForm.country == "DE" ? "de" : "en"; //default, testing
         let paymentIntentId         = $stripePaymentIntentId
 
         const axiosConfig = { 

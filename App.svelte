@@ -72,6 +72,8 @@
     // Weglot.on("languageChanged", getCurrentLanguage);
 
     //Testing, getting user's country
+    
+    /*
     axios.get('https://www.cloudflare.com/cdn-cgi/trace')
         .then(function (response) {
             response = response.data.trim().split('\n').reduce(function(obj, pair) {
@@ -84,7 +86,7 @@
         .catch(function (error) {
             // console.log(error);
         })
-
+    */
 </script>
 
 <svelte:head>

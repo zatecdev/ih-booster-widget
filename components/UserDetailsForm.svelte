@@ -14,8 +14,8 @@
 
     let group = 1;
 
-    let selectedCountry;
-    
+    let selectedCountry = countries.find(country => country.code === "DE");
+
     const handleChange = ( event, value ) => {
         contributionValue.set( Number( value ) )
         event.target.checked = true
@@ -95,13 +95,33 @@
         <span id="emailError" class="text-red-500 text-[11px] text-left">{$formErrors.email}</span>
     {/if}
 </div>
-<InputField label="Address"  bind:value={$userForm.address} />
+
 <div class="flex flex-col md:flex-row justify-between">
     <div class="w-full md:w-1/2 md:mr-2">
-        <InputField label="Postal Code"  bind:value={$userForm.postalCode} />
+        <InputField label="Address"  bind:value={$userForm.address} />
     </div>
     <div class="w-full md:w-1/2">
+        <InputField label="Postal Code"  bind:value={$userForm.postalCode} />
+    </div>
+</div>
+
+<div class="flex flex-col md:flex-row justify-between">
+    <div class="w-full md:w-1/2 md:mr-2">
         <InputField label="City"  bind:value={$userForm.city} />
+    </div>
+    <div class="w-full md:w-1/2">
+        <!-- <InputField label={'Country'} bind:value={$userForm.country} /> -->
+        <div class="mt-2">
+            <select 
+                class="w-full px-4 py-2 font-semibold text-sm border border-[#EFE3DE] rounded-md focus:border-[#EFE3DE] focus:outline-none focus:ring-1 focus:ring-[#EFE3DE] placeholder-[#EFE3DE]"
+                bind:value={selectedCountry} on:change={() => ( $userForm.country = selectedCountry.code )}>
+                {#each countries as country}
+                    <option value={country}>
+                        {country.name}
+                    </option>
+                {/each}
+            </select>
+        </div>
     </div>
 </div>
 <!-- <InputField label={'Country'} bind:value={$userForm.country} /> -->

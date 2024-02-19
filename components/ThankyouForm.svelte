@@ -5,6 +5,8 @@
 
     import { t, locale, locales } from '../store/i18n';
 
+    let EU_COUNTRIES_CODES = ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HU', 'HR', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'];
+
     let certificateUrl;
 
     const { API_END_POINT } = __myapp;
@@ -18,10 +20,10 @@
         let numberOfTrees           = $contributionValue;
         let paymentFrequency        = $userForm.contributionFrequency; //once or monthly
         let userDetails             = $userForm;
-        let userLocale              = "de"; //testing
+        let userLocale              = $userForm.country == "DE" ? "de" : "en";
         let paymentIntentId         = $stripePaymentIntentId;
-        let vat_amount              = userLocale == "de" ? $totalPrice * 0.19 : 0.00;
-
+        let vat_amount              = EU_COUNTRIES_CODES.includes( $userForm.country ) ? $totalPrice * 0.19 : 0.00;
+        
         let productsMapping = {
             1: "Tree Friend",
             4: "Tree Lover",
