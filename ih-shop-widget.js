@@ -1579,15 +1579,15 @@
 	    contributionFrequency: 'Monthly', //Once or Monthly [default Once]
 
 	    //personal information
-	    firstName: '',
-	    lastName: '',
-	    email: '',
+	    firstName: 'Maxime',
+	    lastName: 'Doe',
+	    email: 'vomapod693@tospage.com',
 
 	    //address information
-	    address: '',
-	    city: '',
-	    postalCode: '',
-	    country: '',
+	    address: '3 Wilmsstraße',
+	    city: 'Berlin',
+	    postalCode: '10961',
+	    country: 'DE',
 	});
 
 	// export const totalPrice = derived(contributionValue, $contributionValue => ( Number($contributionValue ) * 4.80).toFixed(2) )
@@ -6093,7 +6093,7 @@
 		component_subscribe($$self, userForm, $$value => $$invalidate(8, $userForm = $$value));
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(12, $contributionValue = $$value));
 		let { handleStepProgress } = $$props;
-		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
+		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_VXoQJmBLMv0CclMqMPZNrFfD00LfLJdFf6","STRIPE_SECRET_KEY":"sk_test_TVrZFbJfe80QWwAoXPOqoAw700MykExjMe","API_END_POINT":"https://growmytree.test"};
 		let stripe = null;
 
 		// Stripe Elements instance
@@ -6332,15 +6332,13 @@
 	function instance$6($$self, $$props, $$invalidate) {
 		let $totalPrice;
 		let $price;
-		let $userForm;
 		let $contributionValue;
-		let $locale;
+		let $userForm;
 		component_subscribe($$self, totalPrice, $$value => $$invalidate(2, $totalPrice = $$value));
 		component_subscribe($$self, price, $$value => $$invalidate(3, $price = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(4, $contributionValue = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
 		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(5, $$value));
-		component_subscribe($$self, locale, $$value => $$invalidate(6, $locale = $$value));
 		let certificateUrl;
 
 		onMount(() => {
@@ -6350,14 +6348,14 @@
 		const getCertificate = () => {
 			let numberOfTrees = $contributionValue;
 			$userForm.contributionFrequency; //once or monthly
-			let userLocale = $locale;
-			let vat_amount = userLocale == "de" ? totalPrice * 0.19 : 0.00;
+			let userLocale = "de"; //testing
+			let vat_amount = $totalPrice * 0.19 ;
 
 			let productsMapping = {
-				one: "Tree Friend",
-				four: "Tree Lover",
-				elevent: "Climate Supporters",
-				twentyTwo: "Climate Hero"
+				1: "Tree Friend",
+				4: "Tree Lover",
+				11: "Climate Supporters",
+				22: "Climate Hero"
 			};
 
 			const certificateRequest = {
@@ -6371,7 +6369,7 @@
 				order_number: "2024-02-14", //TO CHANGE
 				lang: userLocale,
 				number_trees: numberOfTrees,
-				product_name: productsMapping.$contributionValue,
+				product_name: productsMapping[$contributionValue],
 				price: Number($price).toFixed(2),
 				total_price: Number($totalPrice).toFixed(2),
 				discount_amount: Number(Number($price) - Number($totalPrice)).toFixed(2),
@@ -6392,12 +6390,35 @@
 			//     .catch(function (error) {
 			//         console.log(error);
 			//     });
-			axios$1.post('https://automate.impacthero.com/webhook/impact/booster/certificate/generation', certificateRequest).then(function (response) {
-				console.log(response);
-				$$invalidate(0, certificateUrl = response.de_certificate);
-			}).catch(function (error) {
-				console.log(error);
-			});
+			/*
+	axios.post('https://automate.impacthero.com/webhook/impact/booster/certificate/generation', certificateRequest)
+	    .then(function (response) {
+	        console.log(response);
+	        certificateUrl = response.de_certificate;
+	    })
+	    .catch(function (error) {
+	        console.log(error);
+	    });
+	*/
+			let request = new XMLHttpRequest();
+
+			request.open("POST", 'https://automate.impacthero.com/webhook/impact/booster/certificate/generation', true);
+
+			// Create a state change callback
+			request.onreadystatechange = function () {
+				if (request.readyState === 4 && request.status === 200) {
+					const data = JSON.parse(this.responseText);
+
+					if (userLocale.toLocaleLowerCase() === 'de') {
+						$$invalidate(0, certificateUrl = data.response.de_certificate);
+					} else {
+						$$invalidate(0, certificateUrl = data.response.en_certificate);
+					}
+				}
+			};
+
+			// Sending data with the request
+			request.send(JSON.stringify(certificateRequest));
 		};
 
 		return [certificateUrl, $userForm];

@@ -12,15 +12,15 @@ export const userForm = writable({
     contributionFrequency: 'Monthly', //Once or Monthly [default Once]
 
     //personal information
-    firstName: '',
-    lastName: '',
-    email: '',
+    firstName: 'Maxime',
+    lastName: 'Doe',
+    email: 'vomapod693@tospage.com',
 
     //address information
-    address: '',
-    city: '',
-    postalCode: '',
-    country: '',
+    address: '3 Wilmsstraße',
+    city: 'Berlin',
+    postalCode: '10961',
+    country: 'DE',
 })
 
 // export const totalPrice = derived(contributionValue, $contributionValue => ( Number($contributionValue ) * 4.80).toFixed(2) )
