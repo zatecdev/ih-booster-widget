@@ -94,7 +94,10 @@
             elements,
             // specify redirect: 'if_required' or a `return_url` //if redirect to home page, can some info be passed there
             redirect: 'if_required',
-            return_url: `${window.location.origin}`
+            confirmParams: {
+                // Return URL where the customer should be redirected after the PaymentIntent is confirmed.
+                return_url: `${window.location.origin}`
+            },
         })
 
         if (result.error) {
