@@ -5690,7 +5690,7 @@
 		};
 	}
 
-	// (142:4) {:then data}
+	// (143:4) {:then data}
 	function create_then_block(ctx) {
 		let current_block_type_index;
 		let if_block;
@@ -5763,7 +5763,7 @@
 		};
 	}
 
-	// (173:8) {:else}
+	// (174:8) {:else}
 	function create_else_block$2(ctx) {
 		let spinner;
 		let current;
@@ -5798,7 +5798,7 @@
 		};
 	}
 
-	// (143:8) {#if stripe && clientSecret}
+	// (144:8) {#if stripe && clientSecret}
 	function create_if_block_1$3(ctx) {
 		let div;
 		let elements_1;
@@ -5877,7 +5877,7 @@
 		};
 	}
 
-	// (147:16) <Elements                       {stripe}                       {clientSecret}                      locale={$userForm.country.toLocaleLowerCase() == "de" ? "de" : "en"}                      bind:elements                  >
+	// (148:16) <Elements                       {stripe}                       {clientSecret}                      locale={$userForm.country.toLocaleLowerCase() == "de" ? "de" : "en"}                      bind:elements                  >
 	function create_default_slot(ctx) {
 		let paymentelement;
 		let t0;
@@ -5957,7 +5957,7 @@
 		};
 	}
 
-	// (138:32)           {#if hasError == false}
+	// (139:32)           {#if hasError == false}
 	function create_pending_block(ctx) {
 		let if_block_anchor;
 		let current;
@@ -6014,7 +6014,7 @@
 		};
 	}
 
-	// (139:8) {#if hasError == false}
+	// (140:8) {#if hasError == false}
 	function create_if_block$4(ctx) {
 		let spinner;
 		let current;
@@ -6201,8 +6201,9 @@
 
 			const result = await stripe.confirmPayment({
 				elements,
-				// specify redirect: 'if_required' or a `return_url`
-				redirect: 'if_required'
+				// specify redirect: 'if_required' or a `return_url` //if redirect to home page, can some info be passed there
+				redirect: 'if_required',
+				return_url: `${window.location.origin}`
 			});
 
 			if (result.error) {
@@ -8264,7 +8265,7 @@
 		};
 	}
 
-	// (151:32) {#if steps[currentActive-1] == "Your Info"}
+	// (158:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8510,7 +8511,10 @@
 			set_store_value(zohoConfig, $zohoConfig.zohoDealId = zohoDealId, $zohoConfig);
 			set_store_value(zohoConfig, $zohoConfig.zohoAccountId = zohoAccountId, $zohoConfig);
 			console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId);
-		});
+			console.log(urlParams);
+		}); //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
+		//fetch info about payment intent and try to build certificate configuration from there.
+		//do I have access to store data??
 
 		const handleProgress = stepIncrement => {
 			//Form validationn (basic)

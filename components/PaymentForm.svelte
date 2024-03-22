@@ -92,12 +92,13 @@
         isProcessing = true;
         const result = await stripe.confirmPayment({
             elements,
-            // specify redirect: 'if_required' or a `return_url`
-            redirect: 'if_required'
+            // specify redirect: 'if_required' or a `return_url` //if redirect to home page, can some info be passed there
+            redirect: 'if_required',
+            return_url: `${window.location.origin}`
         })
 
         if (result.error) {
-            isProcessing = false; 
+            isProcessing = false;
             Swal.fire({
                 icon: 'error',
                 title: 'Oh no, we have an error processing your payment',

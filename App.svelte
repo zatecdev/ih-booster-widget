@@ -23,6 +23,13 @@
 
         console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId )
 
+        console.log ( urlParams );
+
+
+        //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
+        //fetch info about payment intent and try to build certificate configuration from there.
+        //do I have access to store data??
+
     });
 
     const handleProgress = (stepIncrement) => {
