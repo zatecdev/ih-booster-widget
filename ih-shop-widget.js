@@ -6205,7 +6205,7 @@
 				redirect: 'if_required',
 				confirmParams: {
 					// Return URL where the customer should be redirected after the PaymentIntent is confirmed.
-					return_url: `${window.location.origin}`
+					return_url: `${window.location.href}`
 				}
 			});
 
@@ -8268,7 +8268,7 @@
 		};
 	}
 
-	// (158:32) {#if steps[currentActive-1] == "Your Info"}
+	// (163:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8515,9 +8515,16 @@
 			set_store_value(zohoConfig, $zohoConfig.zohoAccountId = zohoAccountId, $zohoConfig);
 			console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId);
 			console.log(urlParams);
-		}); //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
-		//fetch info about payment intent and try to build certificate configuration from there.
-		//do I have access to store data??
+
+			//Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
+			//fetch info about payment intent and try to build certificate configuration from there.
+			//do I have access to store data??
+			const paymentIntent = urlParams.get('payment_intent');
+
+			const paymentStatus = urlParams.get('redirect_status');
+			console.log(`Payment intent: ${paymentIntent} | Statut: ${paymentStatus}`);
+			console.log($userForm); //store data exist
+		});
 
 		const handleProgress = stepIncrement => {
 			//Form validationn (basic)

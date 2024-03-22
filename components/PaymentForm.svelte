@@ -96,7 +96,7 @@
             redirect: 'if_required',
             confirmParams: {
                 // Return URL where the customer should be redirected after the PaymentIntent is confirmed.
-                return_url: `${window.location.origin}`
+                return_url: `${window.location.href}`
             },
         })
 

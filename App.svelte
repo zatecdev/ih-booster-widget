@@ -30,6 +30,11 @@
         //fetch info about payment intent and try to build certificate configuration from there.
         //do I have access to store data??
 
+        const paymentIntent = urlParams.get('payment_intent');
+        const paymentStatus = urlParams.get('redirect_status');
+        console.log(`Payment intent: ${paymentIntent} | Statut: ${paymentStatus}`)
+        console.log( $userForm ); //store data exist
+
     });
 
     const handleProgress = (stepIncrement) => {
