@@ -3,7 +3,7 @@
     import { loadStripe } from '@stripe/stripe-js'
     import { Elements, PaymentElement } from 'svelte-stripe'
     import { onMount } from 'svelte'
-    import { userForm, contributionValue, processingPayment, successPayment, stripeClientSecret, stripePaymentIntentId } from '../store/store.js';
+    import { userForm, contributionValue, processingPayment, successPayment, stripeClientSecret, stripePaymentIntentId, receiptUrl, zohoConfig } from '../store/store.js';
     import { t, locale, locales } from '../store/i18n';
 
     import Spinner from './ui/Spinner.svelte';
@@ -39,6 +39,19 @@
         let userLocale              = $userForm.country == "DE" ? "de" : "en"; //default, testing
         let paymentIntentId         = $stripePaymentIntentId
 
+        //add zoho deal/cust id to userDetails
+        userDetails.zoho_account_id = $zohoConfig.zohoAccountId;
+        userDetails.zoho_deal_id = $zohoConfig.zohoDealId;
+
+        let productsMapping = {
+            1: "Tree Friend",
+            4: "Tree Lover",
+            11: "Climate Supporters",
+            22: "Climate Hero"
+        }
+
+        let paymentDescription = productsMapping[$contributionValue]
+
         const axiosConfig = { 
             headers: {
                 'Content-Type': 'application/json',
@@ -50,9 +63,11 @@
                 frequency: paymentFrequency,
                 customer: userDetails,
                 locale: userLocale,
-                paymentIntentId: paymentIntentId
+                paymentIntentId: paymentIntentId,
+                description: paymentDescription,
             }, axiosConfig)
             .then(function (response) {
+                console.log( response )
                 if ( response.data.client_secret ) {
                     clientSecret = response.data.client_secret; //set it to the store so that back navigation will work or so
                     stripeClientSecret.set( response.data.client_secret )
@@ -106,7 +121,6 @@
                 width: 600,
                 padding: '3em',
                 color: '#000',
-                background: '#fff url(/images/trees.png)',
                 backdrop: `
                     rgba(0,0,0,0.4)
                     left top

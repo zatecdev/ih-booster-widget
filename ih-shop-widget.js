@@ -5674,7 +5674,7 @@
 		return {
 			c() {
 				p = element("p");
-				p.textContent = `Error: ${/*error*/ ctx[16].message}`;
+				p.textContent = `Error: ${/*error*/ ctx[17].message}`;
 			},
 			m(target, anchor) {
 				insert(target, p, anchor);
@@ -5690,7 +5690,7 @@
 		};
 	}
 
-	// (128:4) {:then data}
+	// (142:4) {:then data}
 	function create_then_block(ctx) {
 		let current_block_type_index;
 		let if_block;
@@ -5763,7 +5763,7 @@
 		};
 	}
 
-	// (159:8) {:else}
+	// (173:8) {:else}
 	function create_else_block$2(ctx) {
 		let spinner;
 		let current;
@@ -5798,7 +5798,7 @@
 		};
 	}
 
-	// (129:8) {#if stripe && clientSecret}
+	// (143:8) {#if stripe && clientSecret}
 	function create_if_block_1$3(ctx) {
 		let div;
 		let elements_1;
@@ -5846,7 +5846,7 @@
 				? "de"
 				: "en";
 
-				if (dirty & /*$$scope, isProcessing, handleStepProgress*/ 131137) {
+				if (dirty & /*$$scope, isProcessing, handleStepProgress*/ 262209) {
 					elements_1_changes.$$scope = { dirty, ctx };
 				}
 
@@ -5877,7 +5877,7 @@
 		};
 	}
 
-	// (133:16) <Elements                       {stripe}                       {clientSecret}                      locale={$userForm.country.toLocaleLowerCase() == "de" ? "de" : "en"}                      bind:elements                  >
+	// (147:16) <Elements                       {stripe}                       {clientSecret}                      locale={$userForm.country.toLocaleLowerCase() == "de" ? "de" : "en"}                      bind:elements                  >
 	function create_default_slot(ctx) {
 		let paymentelement;
 		let t0;
@@ -5957,7 +5957,7 @@
 		};
 	}
 
-	// (124:32)           {#if hasError == false}
+	// (138:32)           {#if hasError == false}
 	function create_pending_block(ctx) {
 		let if_block_anchor;
 		let current;
@@ -6014,7 +6014,7 @@
 		};
 	}
 
-	// (125:8) {#if hasError == false}
+	// (139:8) {#if hasError == false}
 	function create_if_block$4(ctx) {
 		let spinner;
 		let current;
@@ -6055,8 +6055,8 @@
 			pending: create_pending_block,
 			then: create_then_block,
 			catch: create_catch_block,
-			value: 15,
-			error: 16,
+			value: 16,
+			error: 17,
 			blocks: [,,,]
 		};
 
@@ -6106,12 +6106,14 @@
 	}
 
 	function instance$7($$self, $$props, $$invalidate) {
+		let $contributionValue;
+		let $zohoConfig;
 		let $stripePaymentIntentId;
 		let $userForm;
-		let $contributionValue;
-		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(11, $stripePaymentIntentId = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(11, $contributionValue = $$value));
+		component_subscribe($$self, zohoConfig, $$value => $$invalidate(12, $zohoConfig = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(13, $stripePaymentIntentId = $$value));
 		component_subscribe($$self, userForm, $$value => $$invalidate(8, $userForm = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(12, $contributionValue = $$value));
 		let { handleStepProgress } = $$props;
 		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 		let stripe = null;
@@ -6143,6 +6145,20 @@
 
 			let paymentIntentId = $stripePaymentIntentId;
 
+			//add zoho deal/cust id to userDetails
+			userDetails.zoho_account_id = $zohoConfig.zohoAccountId;
+
+			userDetails.zoho_deal_id = $zohoConfig.zohoDealId;
+
+			let productsMapping = {
+				1: "Tree Friend",
+				4: "Tree Lover",
+				11: "Climate Supporters",
+				22: "Climate Hero"
+			};
+
+			let paymentDescription = productsMapping[$contributionValue];
+
 			const axiosConfig = {
 				headers: { 'Content-Type': 'application/json' }
 			};
@@ -6154,10 +6170,13 @@
 					frequency: paymentFrequency,
 					customer: userDetails,
 					locale: userLocale,
-					paymentIntentId
+					paymentIntentId,
+					description: paymentDescription
 				},
 				axiosConfig
 			).then(function (response) {
+				console.log(response);
+
 				if (response.data.client_secret) {
 					$$invalidate(5, clientSecret = response.data.client_secret); //set it to the store so that back navigation will work or so
 					stripeClientSecret.set(response.data.client_secret);
@@ -6211,7 +6230,6 @@
 					width: 600,
 					padding: '3em',
 					color: '#000',
-					background: '#fff url(/images/trees.png)',
 					backdrop: `
                     rgba(0,0,0,0.4)
                     left top
@@ -6350,15 +6368,18 @@
 	}
 
 	function instance$6($$self, $$props, $$invalidate) {
+		let $zohoConfig;
 		let $totalPrice;
 		let $price;
 		let $contributionValue;
 		let $userForm;
-		component_subscribe($$self, totalPrice, $$value => $$invalidate(2, $totalPrice = $$value));
-		component_subscribe($$self, price, $$value => $$invalidate(3, $price = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(4, $contributionValue = $$value));
+		let $stripePaymentIntentId;
+		component_subscribe($$self, zohoConfig, $$value => $$invalidate(2, $zohoConfig = $$value));
+		component_subscribe($$self, totalPrice, $$value => $$invalidate(3, $totalPrice = $$value));
+		component_subscribe($$self, price, $$value => $$invalidate(4, $price = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(5, $contributionValue = $$value));
 		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
-		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(5, $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(6, $stripePaymentIntentId = $$value));
 
 		let EU_COUNTRIES_CODES = [
 			'AT',
@@ -6392,6 +6413,7 @@
 		];
 
 		let certificateUrl;
+		const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 
 		onMount(() => {
 			getCertificate();
@@ -6401,10 +6423,13 @@
 			let numberOfTrees = $contributionValue;
 			$userForm.contributionFrequency; //once or monthly
 			let userLocale = $userForm.country == "DE" ? "de" : "en";
+			let paymentIntentId = $stripePaymentIntentId;
 
 			let vat_amount = EU_COUNTRIES_CODES.includes($userForm.country)
 			? $totalPrice * 0.19
 			: 0.00;
+
+			let receipt_url = "";
 
 			let productsMapping = {
 				1: "Tree Friend",
@@ -6413,67 +6438,60 @@
 				22: "Climate Hero"
 			};
 
-			const certificateRequest = {
-				customer_email: 'marcel.spitzner@growmytree.com', //testing
-				customer_alias: "IH-Booster Customer",
-				product_units: $contributionValue,
-				first_name: $userForm.firstName,
-				last_name: $userForm.lastName,
-				recipient_email: $userForm.email,
-				template: "tree-ih-v1",
-				order_number: "2024-02-14", //TO CHANGE
-				lang: userLocale,
-				number_trees: numberOfTrees,
-				product_name: productsMapping[$contributionValue],
-				price: Number($price).toFixed(2),
-				total_price: Number($totalPrice).toFixed(2),
-				discount_amount: Number(Number($price) - Number($totalPrice)).toFixed(2),
-				vat_amount: Number(vat_amount).toFixed(2),
-				sub_total: Number(Number($totalPrice) - Number(vat_amount)).toFixed(2)
+			//
+			const axiosConfig = {
+				headers: { 'Content-Type': 'application/json' }
 			};
 
-			// const axiosConfig = { 
-			//     headers: {
-			//         'Content-Type': 'application/json',
-			//     } 
-			// }
-			// axios.post( API_END_POINT + '/api/redeem-certificate', certificateRequest, axiosConfig)
-			//     .then(function (response) {
-			//         console.log(response);
-			//         certificateUrl = response.data.de_certificate;
-			//     })
-			//     .catch(function (error) {
-			//         console.log(error);
-			//     });
-			/*
-	axios.post('https://automate.impacthero.com/webhook/impact/booster/certificate/generation', certificateRequest)
-	    .then(function (response) {
-	        console.log(response);
-	        certificateUrl = response.de_certificate;
-	    })
-	    .catch(function (error) {
-	        console.log(error);
-	    });
-	*/
-			let request = new XMLHttpRequest();
+			//get receipt url from php
+			axios$1.post(API_END_POINT + '/api/get-payment-intent', { paymentIntentId }, axiosConfig).then(function (response) {
+				receipt_url = response.data.latest_charge.receipt_url;
 
-			request.open("POST", 'https://automate.impacthero.com/webhook/impact/booster/certificate/generation', true);
+				//generate certificate
+				const certificateRequest = {
+					customer_email: 'marcel.spitzner@growmytree.com', //testing
+					customer_alias: "IH-Booster Customer",
+					product_units: $contributionValue,
+					first_name: $userForm.firstName,
+					last_name: $userForm.lastName,
+					recipient_email: $userForm.email,
+					template: "tree-gmt-v2",
+					order_number: "2024-02-14", //TO CHANGE
+					lang: userLocale,
+					number_trees: numberOfTrees,
+					product_name: productsMapping[$contributionValue],
+					price: Number($price).toFixed(2),
+					total_price: Number($totalPrice).toFixed(2),
+					discount_amount: Number(Number($price) - Number($totalPrice)).toFixed(2),
+					vat_amount: Number(vat_amount).toFixed(2),
+					sub_total: Number(Number($totalPrice) - Number(vat_amount)).toFixed(2),
+					receipt_url,
+					zoho_acc_id: $zohoConfig.zohoAccountId,
+					zoho_deal_id: $zohoConfig.zohoDealId
+				};
 
-			// Create a state change callback
-			request.onreadystatechange = function () {
-				if (request.readyState === 4 && request.status === 200) {
-					const data = JSON.parse(this.responseText);
+				let request = new XMLHttpRequest();
+				request.open("POST", 'https://automate.impacthero.com/webhook/impact/booster/certificate/generation', true);
 
-					if (userLocale.toLocaleLowerCase() === 'de') {
-						$$invalidate(0, certificateUrl = data.response.de_certificate);
-					} else {
-						$$invalidate(0, certificateUrl = data.response.en_certificate);
+				// Create a state change callback
+				request.onreadystatechange = function () {
+					if (request.readyState === 4 && request.status === 200) {
+						const data = JSON.parse(this.responseText);
+
+						if (userLocale.toLocaleLowerCase() === 'de') {
+							$$invalidate(0, certificateUrl = data.response.de_certificate);
+						} else {
+							$$invalidate(0, certificateUrl = data.response.en_certificate);
+						}
 					}
-				}
-			};
+				};
 
-			// Sending data with the request
-			request.send(JSON.stringify(certificateRequest));
+				// Sending data with the request
+				request.send(JSON.stringify(certificateRequest));
+			}).catch(function (error) {
+				console.log('Error occurred');
+				return false;
+			});
 		};
 
 		return [certificateUrl, $userForm];
@@ -8246,7 +8264,7 @@
 		};
 	}
 
-	// (158:32) {#if steps[currentActive-1] == "Your Info"}
+	// (151:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8485,15 +8503,10 @@
 			currentActive = 1,
 			progressBar;
 
-		//let currentLanguage = ""; //default
-		// onMount(() => {
-		// 	currentLanguage = Weglot.getCurrentLang();
-		//     $locale = currentLanguage;
-		// });
 		onMount(() => {
 			const urlParams = new URLSearchParams(window.location.search);
-			const zohoDealId = urlParams.get('zoho_deal_id');
-			const zohoAccountId = urlParams.get('zoho_account_id');
+			const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
+			const zohoAccountId = urlParams.get('zoho_account_id') ?? 336589000010271178; //for testing
 			set_store_value(zohoConfig, $zohoConfig.zohoDealId = zohoDealId, $zohoConfig);
 			set_store_value(zohoConfig, $zohoConfig.zohoAccountId = zohoAccountId, $zohoConfig);
 			console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId);

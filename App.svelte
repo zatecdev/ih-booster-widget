@@ -12,18 +12,11 @@
 
     let steps = ['Your Info', 'Payment', 'Certificate'], currentActive = 1, progressBar;
 
-    //let currentLanguage = ""; //default
-
-    // onMount(() => {
-	// 	currentLanguage = Weglot.getCurrentLang();
-    //     $locale = currentLanguage;
-	// });
-
     onMount(() => {
     
         const urlParams = new URLSearchParams(window.location.search);
-        const zohoDealId = urlParams.get('zoho_deal_id');
-        const zohoAccountId = urlParams.get('zoho_account_id');
+        const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
+        const zohoAccountId = urlParams.get('zoho_account_id') ?? 336589000010271178; //for testing
 
         $zohoConfig.zohoDealId = zohoDealId;
         $zohoConfig.zohoAccountId = zohoAccountId;
