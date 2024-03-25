@@ -8274,7 +8274,7 @@
 		};
 	}
 
-	// (187:32) {#if steps[currentActive-1] == "Your Info"}
+	// (193:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8515,6 +8515,11 @@
 
 		onMount(() => {
 			const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
+
+			const axiosConfig = {
+				headers: { 'Content-Type': 'application/json' }
+			};
+
 			const urlParams = new URLSearchParams(window.location.search);
 			const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
 			const zohoAccountId = urlParams.get('zoho_account_id') ?? 336589000010271178; //for testing

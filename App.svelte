@@ -15,6 +15,12 @@
     onMount(() => {
 
         const { API_END_POINT } = __myapp;
+
+        const axiosConfig = { 
+            headers: {
+                'Content-Type': 'application/json',
+            } 
+        }
     
         const urlParams = new URLSearchParams(window.location.search);
         const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
