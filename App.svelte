@@ -33,8 +33,30 @@
         const paymentIntent = urlParams.get('payment_intent');
         const paymentStatus = urlParams.get('redirect_status');
         console.log(`Payment intent: ${paymentIntent} | Statut: ${paymentStatus}`)
-        console.log( $userForm ); //store data exist
+        console.log( $userForm ); //store data exist[NO, DOES NOT]
 
+        //TODO:
+        //IF stripe was successfull, get payment intent, retrieve payment intent from stripe
+        //Grab customer details such as name, email and co
+        //Build request to build certificate
+        //NB: When creating a payment intent, pass as meta data, an object containing data that you will need to build certificate so that when paying with paypal you already have it.
+        //See thank you page.
+
+        if ( paymentIntent != null && paymentStatus === "success") {
+            //retrieve payment intent
+            //get receipt url from php
+            axios.post( API_END_POINT + '/api/get-payment-intent', {
+                    paymentIntentId: paymentIntent,
+                }, axiosConfig)
+                .then(function (response) {
+                    //update store here or go to step of thank you...
+                    console.log( response )
+                })
+                .catch(function (error) {
+                    console.log('Error occurred')
+                    return false;
+                });
+        }
     });
 
     const handleProgress = (stepIncrement) => {

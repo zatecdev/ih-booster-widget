@@ -5674,7 +5674,7 @@
 		return {
 			c() {
 				p = element("p");
-				p.textContent = `Error: ${/*error*/ ctx[17].message}`;
+				p.textContent = `Error: ${/*error*/ ctx[19].message}`;
 			},
 			m(target, anchor) {
 				insert(target, p, anchor);
@@ -5690,7 +5690,7 @@
 		};
 	}
 
-	// (146:4) {:then data}
+	// (148:4) {:then data}
 	function create_then_block(ctx) {
 		let current_block_type_index;
 		let if_block;
@@ -5763,7 +5763,7 @@
 		};
 	}
 
-	// (177:8) {:else}
+	// (179:8) {:else}
 	function create_else_block$2(ctx) {
 		let spinner;
 		let current;
@@ -5798,7 +5798,7 @@
 		};
 	}
 
-	// (147:8) {#if stripe && clientSecret}
+	// (149:8) {#if stripe && clientSecret}
 	function create_if_block_1$3(ctx) {
 		let div;
 		let elements_1;
@@ -5846,7 +5846,7 @@
 				? "de"
 				: "en";
 
-				if (dirty & /*$$scope, isProcessing, handleStepProgress*/ 262209) {
+				if (dirty & /*$$scope, isProcessing, handleStepProgress*/ 1048641) {
 					elements_1_changes.$$scope = { dirty, ctx };
 				}
 
@@ -5877,7 +5877,7 @@
 		};
 	}
 
-	// (151:16) <Elements                       {stripe}                       {clientSecret}                      locale={$userForm.country.toLocaleLowerCase() == "de" ? "de" : "en"}                      bind:elements                  >
+	// (153:16) <Elements                       {stripe}                       {clientSecret}                      locale={$userForm.country.toLocaleLowerCase() == "de" ? "de" : "en"}                      bind:elements                  >
 	function create_default_slot(ctx) {
 		let paymentelement;
 		let t0;
@@ -5957,7 +5957,7 @@
 		};
 	}
 
-	// (142:32)           {#if hasError == false}
+	// (144:32)           {#if hasError == false}
 	function create_pending_block(ctx) {
 		let if_block_anchor;
 		let current;
@@ -6014,7 +6014,7 @@
 		};
 	}
 
-	// (143:8) {#if hasError == false}
+	// (145:8) {#if hasError == false}
 	function create_if_block$4(ctx) {
 		let spinner;
 		let current;
@@ -6055,8 +6055,8 @@
 			pending: create_pending_block,
 			then: create_then_block,
 			catch: create_catch_block,
-			value: 16,
-			error: 17,
+			value: 18,
+			error: 19,
 			blocks: [,,,]
 		};
 
@@ -6107,12 +6107,16 @@
 
 	function instance$7($$self, $$props, $$invalidate) {
 		let $contributionValue;
+		let $totalPrice;
+		let $price;
 		let $zohoConfig;
 		let $stripePaymentIntentId;
 		let $userForm;
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(11, $contributionValue = $$value));
-		component_subscribe($$self, zohoConfig, $$value => $$invalidate(12, $zohoConfig = $$value));
-		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(13, $stripePaymentIntentId = $$value));
+		component_subscribe($$self, totalPrice, $$value => $$invalidate(12, $totalPrice = $$value));
+		component_subscribe($$self, price, $$value => $$invalidate(13, $price = $$value));
+		component_subscribe($$self, zohoConfig, $$value => $$invalidate(14, $zohoConfig = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(15, $stripePaymentIntentId = $$value));
 		component_subscribe($$self, userForm, $$value => $$invalidate(8, $userForm = $$value));
 		let { handleStepProgress } = $$props;
 		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
@@ -6149,6 +6153,8 @@
 			userDetails.zoho_account_id = $zohoConfig.zohoAccountId;
 
 			userDetails.zoho_deal_id = $zohoConfig.zohoDealId;
+			userDetails.item_price = $price;
+			userDetails.total_price = $totalPrice;
 
 			let productsMapping = {
 				1: "Tree Friend",
@@ -8268,7 +8274,7 @@
 		};
 	}
 
-	// (163:32) {#if steps[currentActive-1] == "Your Info"}
+	// (185:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8523,7 +8529,25 @@
 
 			const paymentStatus = urlParams.get('redirect_status');
 			console.log(`Payment intent: ${paymentIntent} | Statut: ${paymentStatus}`);
-			console.log($userForm); //store data exist
+			console.log($userForm); //store data exist[NO, DOES NOT]
+
+			//TODO:
+			//IF stripe was successfull, get payment intent, retrieve payment intent from stripe
+			//Grab customer details such as name, email and co
+			//Build request to build certificate
+			//NB: When creating a payment intent, pass as meta data, an object containing data that you will need to build certificate so that when paying with paypal you already have it.
+			//See thank you page.
+			if (paymentIntent != null && paymentStatus === "success") {
+				//retrieve payment intent
+				//get receipt url from php
+				axios$1.post(API_END_POINT + '/api/get-payment-intent', { paymentIntentId: paymentIntent }, axiosConfig).then(function (response) {
+					//update store here or go to step of thank you...
+					console.log(response);
+				}).catch(function (error) {
+					console.log('Error occurred');
+					return false;
+				});
+			}
 		});
 
 		const handleProgress = stepIncrement => {

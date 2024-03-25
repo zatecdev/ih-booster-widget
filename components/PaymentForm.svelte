@@ -3,7 +3,7 @@
     import { loadStripe } from '@stripe/stripe-js'
     import { Elements, PaymentElement } from 'svelte-stripe'
     import { onMount } from 'svelte'
-    import { userForm, contributionValue, processingPayment, successPayment, stripeClientSecret, stripePaymentIntentId, receiptUrl, zohoConfig } from '../store/store.js';
+    import { userForm, contributionValue, processingPayment, successPayment, stripeClientSecret, stripePaymentIntentId, price, totalPrice, receiptUrl, zohoConfig } from '../store/store.js';
     import { t, locale, locales } from '../store/i18n';
 
     import Spinner from './ui/Spinner.svelte';
@@ -42,6 +42,8 @@
         //add zoho deal/cust id to userDetails
         userDetails.zoho_account_id = $zohoConfig.zohoAccountId;
         userDetails.zoho_deal_id = $zohoConfig.zohoDealId;
+        userDetails.item_price  = $price;
+        userDetails.total_price = $totalPrice;
 
         let productsMapping = {
             1: "Tree Friend",
