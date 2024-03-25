@@ -8276,7 +8276,7 @@
 		};
 	}
 
-	// (217:32) {#if steps[currentActive-1] == "Your Info"}
+	// (220:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8575,7 +8575,8 @@
 					set_store_value(zohoConfig, $zohoConfig.zohoAccountId = userDetails.zoho_acc_id, $zohoConfig);
 
 					//send to thank you page
-					handleProgress(+2);
+					//handleProgress(+2); //not working why? Simulate clicking on next button?
+					progressBar.handleProgress(+2);
 				}).catch(function (error) {
 					console.log(error);
 					console.log('Error occurred');

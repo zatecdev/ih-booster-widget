@@ -81,7 +81,10 @@
                     $zohoConfig.zohoAccountId = userDetails.zoho_acc_id;
 
                     //send to thank you page
-                    handleProgress(+2);
+                    //handleProgress(+2); //not working why? Simulate clicking on next button?
+
+                    progressBar.handleProgress(+2);
+                    
                 })
                 .catch(function (error) {
                     console.log( error )
