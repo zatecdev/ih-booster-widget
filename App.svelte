@@ -12,9 +12,9 @@
 
     let steps = ['Your Info', 'Payment', 'Certificate'], currentActive = 1, progressBar;
 
-    const { API_END_POINT } = __myapp;
-
     onMount(() => {
+
+        const { API_END_POINT } = __myapp;
     
         const urlParams = new URLSearchParams(window.location.search);
         const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
