@@ -8274,7 +8274,7 @@
 		};
 	}
 
-	// (185:32) {#if steps[currentActive-1] == "Your Info"}
+	// (187:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8512,6 +8512,8 @@
 		let steps = ['Your Info', 'Payment', 'Certificate'],
 			currentActive = 1,
 			progressBar;
+
+		const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 
 		onMount(() => {
 			const urlParams = new URLSearchParams(window.location.search);

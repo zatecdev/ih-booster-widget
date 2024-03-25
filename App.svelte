@@ -12,6 +12,8 @@
 
     let steps = ['Your Info', 'Payment', 'Certificate'], currentActive = 1, progressBar;
 
+    const { API_END_POINT } = __myapp;
+
     onMount(() => {
     
         const urlParams = new URLSearchParams(window.location.search);
