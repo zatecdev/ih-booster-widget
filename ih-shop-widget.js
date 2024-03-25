@@ -8554,7 +8554,7 @@
 				axios$1.post(API_END_POINT + '/api/get-payment-intent', { paymentIntentId: paymentIntent }, axiosConfig).then(function (response) {
 					//update store here or go to step of thank you...
 					//price and total price are derived from contributionValue and frequency
-					const userDetails = reponse.data.metadata;
+					const userDetails = response.data.metadata;
 
 					stripePaymentIntentId.set(response.data.id);
 					contributionValue.set(Number(userDetails.tree_bundle));

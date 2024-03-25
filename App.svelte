@@ -61,7 +61,7 @@
                     //update store here or go to step of thank you...
                     //price and total price are derived from contributionValue and frequency
 
-                    const userDetails = reponse.data.metadata;
+                    const userDetails = response.data.metadata;
 
                     stripePaymentIntentId.set( response.data.id );
 
