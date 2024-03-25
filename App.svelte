@@ -21,9 +21,9 @@
         $zohoConfig.zohoDealId = zohoDealId;
         $zohoConfig.zohoAccountId = zohoAccountId;
 
-        console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId )
+        //console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId )
 
-        console.log ( urlParams );
+        //console.log ( urlParams );
 
 
         //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
@@ -33,7 +33,7 @@
         const paymentIntent = urlParams.get('payment_intent');
         const paymentStatus = urlParams.get('redirect_status');
         console.log(`Payment intent: ${paymentIntent} | Statut: ${paymentStatus}`)
-        console.log( $userForm ); //store data exist[NO, DOES NOT]
+        // console.log( $userForm ); //store data exist[NO, DOES NOT]
 
         //TODO:
         //IF stripe was successfull, get payment intent, retrieve payment intent from stripe
@@ -42,7 +42,7 @@
         //NB: When creating a payment intent, pass as meta data, an object containing data that you will need to build certificate so that when paying with paypal you already have it.
         //See thank you page.
 
-        if ( paymentIntent != null && paymentStatus === "success") {
+        if ( paymentIntent != null && paymentStatus === "succeeded") {
             //retrieve payment intent
             //get receipt url from php
             axios.post( API_END_POINT + '/api/get-payment-intent', {
