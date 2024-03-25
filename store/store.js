@@ -22,6 +22,7 @@ export const userForm = writable({
     city: 'Berlin',
     postalCode: '10961',
     country: 'DE',
+    locale: 'de',
 })
 
 // export const totalPrice = derived(contributionValue, $contributionValue => ( Number($contributionValue ) * 4.80).toFixed(2) )

@@ -1,5 +1,5 @@
 <script>
-    import { processingPayment, userForm, formErrors, zohoConfig } from './store/store';
+    import { processingPayment, userForm, contributionValue, stripePaymentIntentId, formErrors, zohoConfig } from './store/store';
     import { t, locale, locales } from './store/i18n';
     import ProgressBar from './components/ui/ProgressBar.svelte';
     import CheckoutForm from './components/CheckoutForm.svelte';
@@ -26,6 +26,7 @@
         const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
         const zohoAccountId = urlParams.get('zoho_account_id') ?? 336589000010271178; //for testing
 
+        //can be conflicting with payment form on paypal return url [to test]
         $zohoConfig.zohoDealId = zohoDealId;
         $zohoConfig.zohoAccountId = zohoAccountId;
 
@@ -58,7 +59,29 @@
                 }, axiosConfig)
                 .then(function (response) {
                     //update store here or go to step of thank you...
-                    console.log( response )
+                    //price and total price are derived from contributionValue and frequency
+
+                    const userDetails = reponse.data.metadata;
+
+                    $stripePaymentIntentId = response.data.id;
+
+                    $contributionValue = userDetails.tree_bundle;
+
+                    $userForm.contributionFrequency = userDetails.contributionFrequency;
+                    $userForm.firstName = userDetails.firstName;
+                    $userForm.lastName = userDetails.lastName;
+                    $userForm.email = userDetails.email;
+                    $userForm.address =  userDetails.address;
+                    $userForm.city = userDetails.city;
+                    $userForm.postalCode = userDetails.postalCode;
+                    $userForm.country = userDetails.country;
+                    $userForm.locale = userDetails.lang;
+
+                    $zohoConfig.zohoDealId = userDetails.zoho_deal_id;
+                    $zohoConfig.zohoAccountId = userDetails.zoho_acc_id;
+
+                    //send to thank you page
+                    handleStepProgress(+2)  
                 })
                 .catch(function (error) {
                     console.log('Error occurred')

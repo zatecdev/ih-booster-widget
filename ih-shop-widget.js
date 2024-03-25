@@ -1608,6 +1608,7 @@
 	    city: 'Berlin',
 	    postalCode: '10961',
 	    country: 'DE',
+	    locale: 'de',
 	});
 
 	// export const totalPrice = derived(contributionValue, $contributionValue => ( Number($contributionValue ) * 4.80).toFixed(2) )
@@ -6430,6 +6431,7 @@
 		});
 
 		const getCertificate = () => {
+			console.log($userForm, $contributionValue, $price, $totalPrice);
 			let numberOfTrees = $contributionValue;
 			$userForm.contributionFrequency; //once or monthly
 			let userLocale = $userForm.country == "DE" ? "de" : "en";
@@ -8274,7 +8276,7 @@
 		};
 	}
 
-	// (193:32) {#if steps[currentActive-1] == "Your Info"}
+	// (216:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8501,10 +8503,14 @@
 		let $formErrors;
 		let $userForm;
 		let $zohoConfig;
+		let $contributionValue;
+		let $stripePaymentIntentId;
 		let $processingPayment;
 		component_subscribe($$self, formErrors, $$value => $$invalidate(9, $formErrors = $$value));
 		component_subscribe($$self, userForm, $$value => $$invalidate(10, $userForm = $$value));
 		component_subscribe($$self, zohoConfig, $$value => $$invalidate(11, $zohoConfig = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(12, $contributionValue = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(13, $stripePaymentIntentId = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(2, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8523,7 +8529,10 @@
 			const urlParams = new URLSearchParams(window.location.search);
 			const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
 			const zohoAccountId = urlParams.get('zoho_account_id') ?? 336589000010271178; //for testing
+
+			//can be conflicting with payment form on paypal return url [to test]
 			set_store_value(zohoConfig, $zohoConfig.zohoDealId = zohoDealId, $zohoConfig);
+
 			set_store_value(zohoConfig, $zohoConfig.zohoAccountId = zohoAccountId, $zohoConfig);
 
 			//console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId )
@@ -8548,7 +8557,25 @@
 				//get receipt url from php
 				axios$1.post(API_END_POINT + '/api/get-payment-intent', { paymentIntentId: paymentIntent }, axiosConfig).then(function (response) {
 					//update store here or go to step of thank you...
-					console.log(response);
+					//price and total price are derived from contributionValue and frequency
+					const userDetails = reponse.data.metadata;
+
+					set_store_value(stripePaymentIntentId, $stripePaymentIntentId = response.data.id, $stripePaymentIntentId);
+					set_store_value(contributionValue, $contributionValue = userDetails.tree_bundle, $contributionValue);
+					set_store_value(userForm, $userForm.contributionFrequency = userDetails.contributionFrequency, $userForm);
+					set_store_value(userForm, $userForm.firstName = userDetails.firstName, $userForm);
+					set_store_value(userForm, $userForm.lastName = userDetails.lastName, $userForm);
+					set_store_value(userForm, $userForm.email = userDetails.email, $userForm);
+					set_store_value(userForm, $userForm.address = userDetails.address, $userForm);
+					set_store_value(userForm, $userForm.city = userDetails.city, $userForm);
+					set_store_value(userForm, $userForm.postalCode = userDetails.postalCode, $userForm);
+					set_store_value(userForm, $userForm.country = userDetails.country, $userForm);
+					set_store_value(userForm, $userForm.locale = userDetails.lang, $userForm);
+					set_store_value(zohoConfig, $zohoConfig.zohoDealId = userDetails.zoho_deal_id, $zohoConfig);
+					set_store_value(zohoConfig, $zohoConfig.zohoAccountId = userDetails.zoho_acc_id, $zohoConfig);
+
+					//send to thank you page
+					handleStepProgress(+2);
 				}).catch(function (error) {
 					console.log('Error occurred');
 					return false;

@@ -17,6 +17,8 @@
 
     const getCertificate = () => {
 
+        console.log( $userForm, $contributionValue, $price, $totalPrice )
+
         let numberOfTrees           = $contributionValue;
         let paymentFrequency        = $userForm.contributionFrequency; //once or monthly
         let userDetails             = $userForm;
