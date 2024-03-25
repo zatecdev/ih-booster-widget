@@ -63,25 +63,25 @@
 
                     const userDetails = response.data.metadata;
 
-                    stripePaymentIntentId.set( response.data.id );
+                    $stripePaymentIntentId = response.data.id;
 
-                    contributionValue.set( Number( userDetails.tree_bundle ) );
+                    $contributionValue =  Number( userDetails.tree_bundle );
 
-                    userForm.contributionFrequency.set( userDetails.contributionFrequency );
-                    userForm.firstName.set( userDetails.firstName );
-                    userForm.lastName.set( userDetails.lastName );
-                    userForm.email.set( userDetails.email );
-                    userForm.address.set(  userDetails.address );
-                    userForm.city.set( userDetails.city );
-                    userForm.postalCode.set( userDetails.postalCode );
-                    userForm.country.set( userDetails.country );
-                    userForm.locale.set( userDetails.lang );
+                    $userForm.contributionFrequency = userDetails.contributionFrequency;
+                    $userForm.firstName = userDetails.firstName;
+                    $userForm.lastName = userDetails.lastName;
+                    $userForm.email = userDetails.email;
+                    $userForm.address =  userDetails.address;
+                    $userForm.city = userDetails.city;
+                    $userForm.postalCode = userDetails.postalCode;
+                    $userForm.country = userDetails.country;
+                    $userForm.locale = userDetails.lang;
 
-                    zohoConfig.zohoDealId.set( Number(userDetails.zoho_deal_id) );
-                    zohoConfig.zohoAccountId.set( Number( userDetails.zoho_acc_id ) );
+                    $zohoConfig.zohoDealId = userDetails.zoho_deal_id;
+                    $zohoConfig.zohoAccountId = userDetails.zoho_acc_id;
 
                     //send to thank you page
-                    handleStepProgress(+2)  
+                    handleProgress(+2);
                 })
                 .catch(function (error) {
                     console.log( error )
