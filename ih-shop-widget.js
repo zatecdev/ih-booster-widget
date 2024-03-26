@@ -8619,10 +8619,14 @@
 		let $formErrors;
 		let $userForm;
 		let $zohoConfig;
+		let $contributionValue;
+		let $stripePaymentIntentId;
 		let $processingPayment;
 		component_subscribe($$self, formErrors, $$value => $$invalidate(11, $formErrors = $$value));
 		component_subscribe($$self, userForm, $$value => $$invalidate(12, $userForm = $$value));
 		component_subscribe($$self, zohoConfig, $$value => $$invalidate(13, $zohoConfig = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(14, $contributionValue = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(15, $stripePaymentIntentId = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(4, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8637,6 +8641,11 @@
 		let paymentStatus = "";
 
 		onMount(() => {
+			const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
+
+			const axiosConfig = {
+				headers: { 'Content-Type': 'application/json' }
+			};
 
 			const urlParams = new URLSearchParams(window.location.search);
 			const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
@@ -8655,37 +8664,47 @@
 			$$invalidate(2, paymentIntent = urlParams.get('payment_intent'));
 
 			$$invalidate(3, paymentStatus = urlParams.get('redirect_status'));
-			//get receipt url from php
-		}); // axios.post( API_END_POINT + '/api/get-payment-intent', {
-		//         paymentIntentId: paymentIntent,
-		//     }, axiosConfig)
-		//     .then(function (response) {
 
-		//         //update store here or go to step of thank you...
-		//         //price and total price are derived from contributionValue and frequency
-		//         const userDetails = response.data.metadata;
-		//         $stripePaymentIntentId = paymentIntent;
-		//         $contributionValue =  Number( userDetails.tree_bundle );
-		//         $userForm.contributionFrequency = userDetails.contributionFrequency;
-		//         $userForm.firstName = userDetails.firstName;
-		//         $userForm.lastName = userDetails.lastName;
-		//         $userForm.email = userDetails.email;
-		//         $userForm.address =  userDetails.address;
-		//         $userForm.city = userDetails.city;
-		//         $userForm.postalCode = userDetails.postalCode;
-		//         $userForm.country = userDetails.country;
-		//         $userForm.locale = userDetails.lang;
-		//         $zohoConfig.zohoDealId = userDetails.zoho_deal_id;
-		//         $zohoConfig.zohoAccountId = userDetails.zoho_acc_id;
-		//         //send to thank you page
-		//         //handleProgress(+2); //not working why? Simulate clicking on next button? then next next based on some flag like paypalPayment in store
-		//         //progressBar.handleProgress(+2);
-		//     })
-		//     .catch(function (error) {
-		//         console.log( error )
-		//         console.log('Error occurred')
-		//         return false;
-		//     });
+			//TODO:
+			//IF stripe was successfull, get payment intent, retrieve payment intent from stripe
+			//Grab customer details such as name, email and co
+			//Build request to build certificate
+			//NB: When creating a payment intent, pass as meta data, an object containing data that you will need to build certificate so that when paying with paypal you already have it.
+			//See thank you page.
+			if (paymentIntent != null && paymentStatus != null) {
+				//retrieve payment intent
+				//get receipt url from php
+				axios$1.post(API_END_POINT + '/api/get-payment-intent', { paymentIntentId: paymentIntent }, axiosConfig).then(function (response) {
+					//update store here or go to step of thank you...
+					//price and total price are derived from contributionValue and frequency
+					const userDetails = response.data.metadata;
+
+					set_store_value(stripePaymentIntentId, $stripePaymentIntentId = paymentIntent, $stripePaymentIntentId);
+					set_store_value(contributionValue, $contributionValue = Number(userDetails.tree_bundle), $contributionValue);
+					set_store_value(userForm, $userForm.contributionFrequency = userDetails.contributionFrequency, $userForm);
+					set_store_value(userForm, $userForm.firstName = userDetails.firstName, $userForm);
+					set_store_value(userForm, $userForm.lastName = userDetails.lastName, $userForm);
+					set_store_value(userForm, $userForm.email = userDetails.email, $userForm);
+					set_store_value(userForm, $userForm.address = userDetails.address, $userForm);
+					set_store_value(userForm, $userForm.city = userDetails.city, $userForm);
+					set_store_value(userForm, $userForm.postalCode = userDetails.postalCode, $userForm);
+					set_store_value(userForm, $userForm.country = userDetails.country, $userForm);
+					set_store_value(userForm, $userForm.locale = userDetails.lang, $userForm);
+					set_store_value(zohoConfig, $zohoConfig.zohoDealId = userDetails.zoho_deal_id, $zohoConfig);
+					set_store_value(zohoConfig, $zohoConfig.zohoAccountId = userDetails.zoho_acc_id, $zohoConfig);
+				}).catch(
+					function (error) {
+						console.log(
+							error //progressBar.handleProgress(+2);
+						);
+
+						console.log('Error occurred');
+						return false;
+					}
+				);
+			}
+		});
+
 		const handleProgress = stepIncrement => {
 			//Form validationn (basic)
 			//let emailValidationRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;

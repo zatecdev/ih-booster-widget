@@ -57,41 +57,41 @@
             //retrieve payment intent
             //get receipt url from php
 
-            // axios.post( API_END_POINT + '/api/get-payment-intent', {
-            //         paymentIntentId: paymentIntent,
-            //     }, axiosConfig)
-            //     .then(function (response) {
-            //         //update store here or go to step of thank you...
-            //         //price and total price are derived from contributionValue and frequency
+            axios.post( API_END_POINT + '/api/get-payment-intent', {
+                    paymentIntentId: paymentIntent,
+                }, axiosConfig)
+                .then(function (response) {
+                    //update store here or go to step of thank you...
+                    //price and total price are derived from contributionValue and frequency
 
-            //         const userDetails = response.data.metadata;
+                    const userDetails = response.data.metadata;
 
-            //         $stripePaymentIntentId = paymentIntent;
+                    $stripePaymentIntentId = paymentIntent;
 
-            //         $contributionValue =  Number( userDetails.tree_bundle );
+                    $contributionValue =  Number( userDetails.tree_bundle );
 
-            //         $userForm.contributionFrequency = userDetails.contributionFrequency;
-            //         $userForm.firstName = userDetails.firstName;
-            //         $userForm.lastName = userDetails.lastName;
-            //         $userForm.email = userDetails.email;
-            //         $userForm.address =  userDetails.address;
-            //         $userForm.city = userDetails.city;
-            //         $userForm.postalCode = userDetails.postalCode;
-            //         $userForm.country = userDetails.country;
-            //         $userForm.locale = userDetails.lang;
+                    $userForm.contributionFrequency = userDetails.contributionFrequency;
+                    $userForm.firstName = userDetails.firstName;
+                    $userForm.lastName = userDetails.lastName;
+                    $userForm.email = userDetails.email;
+                    $userForm.address =  userDetails.address;
+                    $userForm.city = userDetails.city;
+                    $userForm.postalCode = userDetails.postalCode;
+                    $userForm.country = userDetails.country;
+                    $userForm.locale = userDetails.lang;
 
-            //         $zohoConfig.zohoDealId = userDetails.zoho_deal_id;
-            //         $zohoConfig.zohoAccountId = userDetails.zoho_acc_id;
+                    $zohoConfig.zohoDealId = userDetails.zoho_deal_id;
+                    $zohoConfig.zohoAccountId = userDetails.zoho_acc_id;
 
-            //         //send to thank you page
-            //         //handleProgress(+2); //not working why? Simulate clicking on next button? then next next based on some flag like paypalPayment in store
-            //         //progressBar.handleProgress(+2);
-            //     })
-            //     .catch(function (error) {
-            //         console.log( error )
-            //         console.log('Error occurred')
-            //         return false;
-            //     });
+                    //send to thank you page
+                    //handleProgress(+2); //not working why? Simulate clicking on next button? then next next based on some flag like paypalPayment in store
+                    //progressBar.handleProgress(+2);
+                })
+                .catch(function (error) {
+                    console.log( error )
+                    console.log('Error occurred')
+                    return false;
+                });
         }
     });
 
