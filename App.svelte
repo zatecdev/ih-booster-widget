@@ -6,11 +6,16 @@
     import Tailwind from './Tailwind.svelte';
     import { onMount } from 'svelte';
     import axios from 'axios';
+    import ThankyouForm from './components/ThankyouForm.svelte';
     
     const bgImageUrl = new URL('./images/background.jpg', import.meta.url).href
     const logo = new URL('./images/logo.png', import.meta.url).href
 
     let steps = ['Your Info', 'Payment', 'Certificate'], currentActive = 1, progressBar;
+
+    //define paymentIntent and success
+    let paymentIntent = null;
+    let paymentStatus = "";
 
     onMount(() => {
 
@@ -39,8 +44,8 @@
         //fetch info about payment intent and try to build certificate configuration from there.
         //do I have access to store data??
 
-        const paymentIntent = urlParams.get('payment_intent');
-        const paymentStatus = urlParams.get('redirect_status');
+        paymentIntent = urlParams.get('payment_intent');
+        paymentStatus = urlParams.get('redirect_status');
         console.log(`Payment intent: ${paymentIntent} | Statut: ${paymentStatus}`)
         // console.log( $userForm ); //store data exist[NO, DOES NOT]
 
@@ -54,6 +59,9 @@
         if ( paymentIntent != null && paymentStatus === "succeeded") {
             //retrieve payment intent
             //get receipt url from php
+
+            console.log(  "P_id: " + paymentIntent )
+
             axios.post( API_END_POINT + '/api/get-payment-intent', {
                     paymentIntentId: paymentIntent,
                 }, axiosConfig)
@@ -81,10 +89,11 @@
                     $zohoConfig.zohoAccountId = userDetails.zoho_acc_id;
 
                     //send to thank you page
-                    //handleProgress(+2); //not working why? Simulate clicking on next button?
+                    //handleProgress(+2); //not working why? Simulate clicking on next button? then next next based on some flag like paypalPayment in store
+                    //progressBar.handleProgress(+2);
 
-                    progressBar.handleProgress(+2);
-                    
+                    console.log( 'Update stripe PID ' + $stripePaymentIntentId);
+
                 })
                 .catch(function (error) {
                     console.log( error )
@@ -204,13 +213,27 @@
                 
                     <!-- payment form here -->
                     <div class="block">
+
+                        <!--
                         <CheckoutForm 
-                            handleStepProgress={handleProgress} 
-                            activeStep={steps[currentActive-1]}
-                        />
+                                handleStepProgress={handleProgress} 
+                                activeStep={steps[currentActive-1]}
+                            />
+                        -->
+                  
+                        {#if paymentIntent == null && paymentStatus == ""}
+                            <CheckoutForm 
+                                handleStepProgress={handleProgress} 
+                                activeStep={steps[currentActive-1]}
+                            />
+                        {:else}
+                            <CheckoutForm 
+                                activeStep={steps[2]}
+                            />
+                        {/if}
                     </div>
                 
-                    {#if $processingPayment == false }
+                    {#if $processingPayment == false && paymentStatus == "" }
                         <div class="block text-right px-8 pt-2 pb-2">
                             <div class="step-button">
                                 <!-- {#if steps[currentActive-1] != "Your Info"}

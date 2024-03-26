@@ -17,7 +17,7 @@
 
     const getCertificate = () => {
 
-        console.log( $userForm, $contributionValue, $price, $totalPrice )
+        console.log($stripePaymentIntentId )
 
         let numberOfTrees           = $contributionValue;
         let paymentFrequency        = $userForm.contributionFrequency; //once or monthly
