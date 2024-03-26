@@ -6385,12 +6385,12 @@
 		let $contributionValue;
 		let $userForm;
 		let $stripePaymentIntentId;
-		component_subscribe($$self, zohoConfig, $$value => $$invalidate(2, $zohoConfig = $$value));
-		component_subscribe($$self, totalPrice, $$value => $$invalidate(3, $totalPrice = $$value));
-		component_subscribe($$self, price, $$value => $$invalidate(4, $price = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(5, $contributionValue = $$value));
+		component_subscribe($$self, zohoConfig, $$value => $$invalidate(4, $zohoConfig = $$value));
+		component_subscribe($$self, totalPrice, $$value => $$invalidate(5, $totalPrice = $$value));
+		component_subscribe($$self, price, $$value => $$invalidate(6, $price = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(7, $contributionValue = $$value));
 		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
-		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(6, $stripePaymentIntentId = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(8, $stripePaymentIntentId = $$value));
 
 		let EU_COUNTRIES_CODES = [
 			'AT',
@@ -6424,6 +6424,8 @@
 		];
 
 		let certificateUrl;
+		let { paypalPaymentIntentId } = $$props;
+		let { source = "stripe" } = $$props;
 		const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 
 		onMount(() => {
@@ -6431,11 +6433,13 @@
 		});
 
 		const getCertificate = () => {
-			console.log($stripePaymentIntentId);
 			let numberOfTrees = $contributionValue;
 			$userForm.contributionFrequency; //once or monthly
 			let userLocale = $userForm.country == "DE" ? "de" : "en";
-			let paymentIntentId = $stripePaymentIntentId;
+
+			let paymentIntentId = source == "stripe"
+			? $stripePaymentIntentId
+			: paypalPaymentIntentId;
 
 			let vat_amount = EU_COUNTRIES_CODES.includes($userForm.country)
 			? $totalPrice * 0.19
@@ -6456,63 +6460,71 @@
 			};
 
 			//get receipt url from php
-			axios$1.post(API_END_POINT + '/api/get-payment-intent', { paymentIntentId }, axiosConfig).then(function (response) {
-				receipt_url = response.data.latest_charge.receipt_url;
+			if (paymentIntentId) {
+				axios$1.post(API_END_POINT + '/api/get-payment-intent', { paymentIntentId }, axiosConfig).then(function (response) {
+					receipt_url = response.data.latest_charge.receipt_url;
 
-				//generate certificate
-				const certificateRequest = {
-					customer_email: 'marcel.spitzner@growmytree.com', //testing
-					customer_alias: "IH-Booster Customer",
-					product_units: $contributionValue,
-					first_name: $userForm.firstName,
-					last_name: $userForm.lastName,
-					recipient_email: $userForm.email,
-					template: "tree-gmt-v2",
-					order_number: "2024-02-14", //TO CHANGE
-					lang: userLocale,
-					number_trees: numberOfTrees,
-					product_name: productsMapping[$contributionValue],
-					price: Number($price).toFixed(2),
-					total_price: Number($totalPrice).toFixed(2),
-					discount_amount: Number(Number($price) - Number($totalPrice)).toFixed(2),
-					vat_amount: Number(vat_amount).toFixed(2),
-					sub_total: Number(Number($totalPrice) - Number(vat_amount)).toFixed(2),
-					receipt_url,
-					zoho_acc_id: $zohoConfig.zohoAccountId,
-					zoho_deal_id: $zohoConfig.zohoDealId
-				};
+					//generate certificate
+					const certificateRequest = {
+						customer_email: 'marcel.spitzner@growmytree.com', //testing
+						customer_alias: "IH-Booster Customer",
+						product_units: $contributionValue,
+						first_name: $userForm.firstName,
+						last_name: $userForm.lastName,
+						recipient_email: $userForm.email,
+						template: "tree-gmt-v2",
+						order_number: "2024-02-14", //TO CHANGE
+						lang: userLocale,
+						number_trees: numberOfTrees,
+						product_name: productsMapping[$contributionValue],
+						price: Number($price).toFixed(2),
+						total_price: Number($totalPrice).toFixed(2),
+						discount_amount: Number(Number($price) - Number($totalPrice)).toFixed(2),
+						vat_amount: Number(vat_amount).toFixed(2),
+						sub_total: Number(Number($totalPrice) - Number(vat_amount)).toFixed(2),
+						receipt_url,
+						zoho_acc_id: $zohoConfig.zohoAccountId,
+						zoho_deal_id: $zohoConfig.zohoDealId
+					};
 
-				let request = new XMLHttpRequest();
-				request.open("POST", 'https://automate.impacthero.com/webhook/impact/booster/certificate/generation', true);
+					let request = new XMLHttpRequest();
+					request.open("POST", 'https://automate.impacthero.com/webhook/impact/booster/certificate/generation', true);
 
-				// Create a state change callback
-				request.onreadystatechange = function () {
-					if (request.readyState === 4 && request.status === 200) {
-						const data = JSON.parse(this.responseText);
+					// Create a state change callback
+					request.onreadystatechange = function () {
+						if (request.readyState === 4 && request.status === 200) {
+							const data = JSON.parse(this.responseText);
 
-						if (userLocale.toLocaleLowerCase() === 'de') {
-							$$invalidate(0, certificateUrl = data.response.de_certificate);
-						} else {
-							$$invalidate(0, certificateUrl = data.response.en_certificate);
+							if (userLocale.toLocaleLowerCase() === 'de') {
+								$$invalidate(0, certificateUrl = data.response.de_certificate);
+							} else {
+								$$invalidate(0, certificateUrl = data.response.en_certificate);
+							}
 						}
-					}
-				};
+					};
 
-				// Sending data with the request
-				request.send(JSON.stringify(certificateRequest));
-			}).catch(function (error) {
-				console.log('Error occurred');
-				return false;
-			});
+					// Sending data with the request
+					request.send(JSON.stringify(certificateRequest));
+				}).catch(function (error) {
+					console.log(error);
+					console.log('Error occurred');
+					return false;
+				});
+			}
 		};
 
-		return [certificateUrl, $userForm];
+		$$self.$$set = $$props => {
+			if ('paypalPaymentIntentId' in $$props) $$invalidate(2, paypalPaymentIntentId = $$props.paypalPaymentIntentId);
+			if ('source' in $$props) $$invalidate(3, source = $$props.source);
+		};
+
+		return [certificateUrl, $userForm, paypalPaymentIntentId, source];
 	}
 
 	class ThankyouForm extends SvelteComponent {
 		constructor(options) {
 			super();
-			init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
+			init(this, options, instance$6, create_fragment$6, safe_not_equal, { paypalPaymentIntentId: 2, source: 3 });
 		}
 	}
 
@@ -8235,38 +8247,46 @@
 	/* App.svelte generated by Svelte v4.2.1 */
 
 	function create_else_block(ctx) {
-		let checkoutform;
+		let thankyouform;
 		let current;
 
-		checkoutform = new CheckoutForm({
-				props: { activeStep: /*steps*/ ctx[6][2] }
+		thankyouform = new ThankyouForm({
+				props: {
+					paypalPaymentIntentId: /*paymentIntent*/ ctx[2],
+					source: "paypal",
+					activeStep: /*steps*/ ctx[6][2]
+				}
 			});
 
 		return {
 			c() {
-				create_component(checkoutform.$$.fragment);
+				create_component(thankyouform.$$.fragment);
 			},
 			m(target, anchor) {
-				mount_component(checkoutform, target, anchor);
+				mount_component(thankyouform, target, anchor);
 				current = true;
 			},
-			p: noop$1,
+			p(ctx, dirty) {
+				const thankyouform_changes = {};
+				if (dirty & /*paymentIntent*/ 4) thankyouform_changes.paypalPaymentIntentId = /*paymentIntent*/ ctx[2];
+				thankyouform.$set(thankyouform_changes);
+			},
 			i(local) {
 				if (current) return;
-				transition_in(checkoutform.$$.fragment, local);
+				transition_in(thankyouform.$$.fragment, local);
 				current = true;
 			},
 			o(local) {
-				transition_out(checkoutform.$$.fragment, local);
+				transition_out(thankyouform.$$.fragment, local);
 				current = false;
 			},
 			d(detaching) {
-				destroy_component(checkoutform, detaching);
+				destroy_component(thankyouform, detaching);
 			}
 		};
 	}
 
-	// (224:24) {#if paymentIntent == null && paymentStatus == ""}
+	// (216:24) {#if paymentIntent == null && paymentStatus == null}
 	function create_if_block_2(ctx) {
 		let checkoutform;
 		let current;
@@ -8306,7 +8326,7 @@
 		};
 	}
 
-	// (236:20) {#if $processingPayment == false && paymentStatus == "" }
+	// (230:20) {#if $processingPayment == false && paymentIntent == null }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8349,7 +8369,7 @@
 		};
 	}
 
-	// (243:32) {#if steps[currentActive-1] == "Your Info"}
+	// (237:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8436,13 +8456,13 @@
 		const if_blocks = [];
 
 		function select_block_type(ctx, dirty) {
-			if (/*paymentIntent*/ ctx[2] == null && /*paymentStatus*/ ctx[3] == "") return 0;
+			if (/*paymentIntent*/ ctx[2] == null && /*paymentStatus*/ ctx[3] == null) return 0;
 			return 1;
 		}
 
 		current_block_type_index = select_block_type(ctx);
 		if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-		let if_block1 = /*$processingPayment*/ ctx[4] == false && /*paymentStatus*/ ctx[3] == "" && create_if_block(ctx);
+		let if_block1 = /*$processingPayment*/ ctx[4] == false && /*paymentIntent*/ ctx[2] == null && create_if_block(ctx);
 
 		return {
 			c() {
@@ -8553,7 +8573,7 @@
 					if_block0.m(div5, null);
 				}
 
-				if (/*$processingPayment*/ ctx[4] == false && /*paymentStatus*/ ctx[3] == "") {
+				if (/*$processingPayment*/ ctx[4] == false && /*paymentIntent*/ ctx[2] == null) {
 					if (if_block1) {
 						if_block1.p(ctx, dirty);
 					} else {
@@ -8600,15 +8620,11 @@
 	function instance($$self, $$props, $$invalidate) {
 		let $formErrors;
 		let $userForm;
-		let $stripePaymentIntentId;
 		let $zohoConfig;
-		let $contributionValue;
 		let $processingPayment;
 		component_subscribe($$self, formErrors, $$value => $$invalidate(11, $formErrors = $$value));
 		component_subscribe($$self, userForm, $$value => $$invalidate(12, $userForm = $$value));
-		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(13, $stripePaymentIntentId = $$value));
-		component_subscribe($$self, zohoConfig, $$value => $$invalidate(14, $zohoConfig = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(15, $contributionValue = $$value));
+		component_subscribe($$self, zohoConfig, $$value => $$invalidate(13, $zohoConfig = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(4, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8623,11 +8639,6 @@
 		let paymentStatus = "";
 
 		onMount(() => {
-			const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
-
-			const axiosConfig = {
-				headers: { 'Content-Type': 'application/json' }
-			};
 
 			const urlParams = new URLSearchParams(window.location.search);
 			const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
@@ -8646,51 +8657,37 @@
 			$$invalidate(2, paymentIntent = urlParams.get('payment_intent'));
 
 			$$invalidate(3, paymentStatus = urlParams.get('redirect_status'));
-			console.log(`Payment intent: ${paymentIntent} | Statut: ${paymentStatus}`);
+			//get receipt url from php
+		}); // axios.post( API_END_POINT + '/api/get-payment-intent', {
+		//         paymentIntentId: paymentIntent,
+		//     }, axiosConfig)
+		//     .then(function (response) {
 
-			// console.log( $userForm ); //store data exist[NO, DOES NOT]
-			//TODO:
-			//IF stripe was successfull, get payment intent, retrieve payment intent from stripe
-			//Grab customer details such as name, email and co
-			//Build request to build certificate
-			//NB: When creating a payment intent, pass as meta data, an object containing data that you will need to build certificate so that when paying with paypal you already have it.
-			//See thank you page.
-			if (paymentIntent != null && paymentStatus === "succeeded") {
-				//retrieve payment intent
-				//get receipt url from php
-				console.log("P_id: " + paymentIntent);
-
-				axios$1.post(API_END_POINT + '/api/get-payment-intent', { paymentIntentId: paymentIntent }, axiosConfig).then(function (response) {
-					//update store here or go to step of thank you...
-					//price and total price are derived from contributionValue and frequency
-					const userDetails = response.data.metadata;
-
-					set_store_value(stripePaymentIntentId, $stripePaymentIntentId = response.data.id, $stripePaymentIntentId);
-					set_store_value(contributionValue, $contributionValue = Number(userDetails.tree_bundle), $contributionValue);
-					set_store_value(userForm, $userForm.contributionFrequency = userDetails.contributionFrequency, $userForm);
-					set_store_value(userForm, $userForm.firstName = userDetails.firstName, $userForm);
-					set_store_value(userForm, $userForm.lastName = userDetails.lastName, $userForm);
-					set_store_value(userForm, $userForm.email = userDetails.email, $userForm);
-					set_store_value(userForm, $userForm.address = userDetails.address, $userForm);
-					set_store_value(userForm, $userForm.city = userDetails.city, $userForm);
-					set_store_value(userForm, $userForm.postalCode = userDetails.postalCode, $userForm);
-					set_store_value(userForm, $userForm.country = userDetails.country, $userForm);
-					set_store_value(userForm, $userForm.locale = userDetails.lang, $userForm);
-					set_store_value(zohoConfig, $zohoConfig.zohoDealId = userDetails.zoho_deal_id, $zohoConfig);
-					set_store_value(zohoConfig, $zohoConfig.zohoAccountId = userDetails.zoho_acc_id, $zohoConfig);
-
-					//send to thank you page
-					//handleProgress(+2); //not working why? Simulate clicking on next button? then next next based on some flag like paypalPayment in store
-					//progressBar.handleProgress(+2);
-					console.log('Update stripe PID ' + $stripePaymentIntentId);
-				}).catch(function (error) {
-					console.log(error);
-					console.log('Error occurred');
-					return false;
-				});
-			}
-		});
-
+		//         //update store here or go to step of thank you...
+		//         //price and total price are derived from contributionValue and frequency
+		//         const userDetails = response.data.metadata;
+		//         $stripePaymentIntentId = paymentIntent;
+		//         $contributionValue =  Number( userDetails.tree_bundle );
+		//         $userForm.contributionFrequency = userDetails.contributionFrequency;
+		//         $userForm.firstName = userDetails.firstName;
+		//         $userForm.lastName = userDetails.lastName;
+		//         $userForm.email = userDetails.email;
+		//         $userForm.address =  userDetails.address;
+		//         $userForm.city = userDetails.city;
+		//         $userForm.postalCode = userDetails.postalCode;
+		//         $userForm.country = userDetails.country;
+		//         $userForm.locale = userDetails.lang;
+		//         $zohoConfig.zohoDealId = userDetails.zoho_deal_id;
+		//         $zohoConfig.zohoAccountId = userDetails.zoho_acc_id;
+		//         //send to thank you page
+		//         //handleProgress(+2); //not working why? Simulate clicking on next button? then next next based on some flag like paypalPayment in store
+		//         //progressBar.handleProgress(+2);
+		//     })
+		//     .catch(function (error) {
+		//         console.log( error )
+		//         console.log('Error occurred')
+		//         return false;
+		//     });
 		const handleProgress = stepIncrement => {
 			//Form validationn (basic)
 			//let emailValidationRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;

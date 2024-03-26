@@ -1,5 +1,5 @@
 <script>
-    import { processingPayment, userForm, contributionValue, stripePaymentIntentId, formErrors, zohoConfig } from './store/store';
+    import { processingPayment, userForm, contributionValue, stripePaymentIntentId, formErrors, zohoConfig } from './store/store.js';
     import { t, locale, locales } from './store/i18n';
     import ProgressBar from './components/ui/ProgressBar.svelte';
     import CheckoutForm from './components/CheckoutForm.svelte';
@@ -39,15 +39,12 @@
 
         //console.log ( urlParams );
 
-
         //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
         //fetch info about payment intent and try to build certificate configuration from there.
         //do I have access to store data??
 
         paymentIntent = urlParams.get('payment_intent');
         paymentStatus = urlParams.get('redirect_status');
-        console.log(`Payment intent: ${paymentIntent} | Statut: ${paymentStatus}`)
-        // console.log( $userForm ); //store data exist[NO, DOES NOT]
 
         //TODO:
         //IF stripe was successfull, get payment intent, retrieve payment intent from stripe
@@ -56,50 +53,45 @@
         //NB: When creating a payment intent, pass as meta data, an object containing data that you will need to build certificate so that when paying with paypal you already have it.
         //See thank you page.
 
-        if ( paymentIntent != null && paymentStatus === "succeeded") {
+        if ( paymentIntent != null && paymentStatus != null ) {
             //retrieve payment intent
             //get receipt url from php
 
-            console.log(  "P_id: " + paymentIntent )
+            // axios.post( API_END_POINT + '/api/get-payment-intent', {
+            //         paymentIntentId: paymentIntent,
+            //     }, axiosConfig)
+            //     .then(function (response) {
+            //         //update store here or go to step of thank you...
+            //         //price and total price are derived from contributionValue and frequency
 
-            axios.post( API_END_POINT + '/api/get-payment-intent', {
-                    paymentIntentId: paymentIntent,
-                }, axiosConfig)
-                .then(function (response) {
-                    //update store here or go to step of thank you...
-                    //price and total price are derived from contributionValue and frequency
+            //         const userDetails = response.data.metadata;
 
-                    const userDetails = response.data.metadata;
+            //         $stripePaymentIntentId = paymentIntent;
 
-                    $stripePaymentIntentId = response.data.id;
+            //         $contributionValue =  Number( userDetails.tree_bundle );
 
-                    $contributionValue =  Number( userDetails.tree_bundle );
+            //         $userForm.contributionFrequency = userDetails.contributionFrequency;
+            //         $userForm.firstName = userDetails.firstName;
+            //         $userForm.lastName = userDetails.lastName;
+            //         $userForm.email = userDetails.email;
+            //         $userForm.address =  userDetails.address;
+            //         $userForm.city = userDetails.city;
+            //         $userForm.postalCode = userDetails.postalCode;
+            //         $userForm.country = userDetails.country;
+            //         $userForm.locale = userDetails.lang;
 
-                    $userForm.contributionFrequency = userDetails.contributionFrequency;
-                    $userForm.firstName = userDetails.firstName;
-                    $userForm.lastName = userDetails.lastName;
-                    $userForm.email = userDetails.email;
-                    $userForm.address =  userDetails.address;
-                    $userForm.city = userDetails.city;
-                    $userForm.postalCode = userDetails.postalCode;
-                    $userForm.country = userDetails.country;
-                    $userForm.locale = userDetails.lang;
+            //         $zohoConfig.zohoDealId = userDetails.zoho_deal_id;
+            //         $zohoConfig.zohoAccountId = userDetails.zoho_acc_id;
 
-                    $zohoConfig.zohoDealId = userDetails.zoho_deal_id;
-                    $zohoConfig.zohoAccountId = userDetails.zoho_acc_id;
-
-                    //send to thank you page
-                    //handleProgress(+2); //not working why? Simulate clicking on next button? then next next based on some flag like paypalPayment in store
-                    //progressBar.handleProgress(+2);
-
-                    console.log( 'Update stripe PID ' + $stripePaymentIntentId);
-
-                })
-                .catch(function (error) {
-                    console.log( error )
-                    console.log('Error occurred')
-                    return false;
-                });
+            //         //send to thank you page
+            //         //handleProgress(+2); //not working why? Simulate clicking on next button? then next next based on some flag like paypalPayment in store
+            //         //progressBar.handleProgress(+2);
+            //     })
+            //     .catch(function (error) {
+            //         console.log( error )
+            //         console.log('Error occurred')
+            //         return false;
+            //     });
         }
     });
 
@@ -221,19 +213,21 @@
                             />
                         -->
                   
-                        {#if paymentIntent == null && paymentStatus == ""}
+                        {#if paymentIntent == null && paymentStatus == null}
                             <CheckoutForm 
                                 handleStepProgress={handleProgress} 
                                 activeStep={steps[currentActive-1]}
                             />
                         {:else}
-                            <CheckoutForm 
+                            <ThankyouForm
+                                paypalPaymentIntentId={paymentIntent}
+                                source="paypal"
                                 activeStep={steps[2]}
                             />
                         {/if}
                     </div>
                 
-                    {#if $processingPayment == false && paymentStatus == "" }
+                    {#if $processingPayment == false && paymentIntent == null }
                         <div class="block text-right px-8 pt-2 pb-2">
                             <div class="step-button">
                                 <!-- {#if steps[currentActive-1] != "Your Info"}
