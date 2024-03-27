@@ -1,7 +1,7 @@
 <script>
     import axios from 'axios';
     import { onMount } from 'svelte';
-    import { userForm, contributionValue, processingPayment, successPayment, stripeClientSecret, stripePaymentIntentId, price, totalPrice, receiptUrl, zohoConfig} from '../store/store.js';
+    import { userForm, contributionValue, processingPayment, successPayment, stripeClientSecret, stripePaymentIntentId, price, totalPrice, receiptUrl, zohoConfig, userLanguage} from '../store/store.js';
 
     import { t, locale, locales } from '../store/i18n';
     import { expoInOut } from 'svelte/easing';
@@ -24,7 +24,7 @@
         let numberOfTrees           = $contributionValue;
         let paymentFrequency        = $userForm.contributionFrequency; //once or monthly
         let userDetails             = $userForm;
-        let userLocale              = $userForm.country == "DE" ? "de" : "en";
+        let userLocale              = $userLanguage;
         let paymentIntentId         = source == "stripe" ? $stripePaymentIntentId : paypalPaymentIntentId;
         let vat_amount              = EU_COUNTRIES_CODES.includes( $userForm.country ) ? $totalPrice * 0.19 : 0.00;
         let receipt_url             = "";
@@ -53,12 +53,12 @@
                 //generate certificate
                 const certificateRequest = {
                     customer_email: 'marcel.spitzner@growmytree.com', //testing
-                    customer_alias: "IH-Booster Customer",
+                    customer_alias: $userForm.firstName + " " + $userForm.lastName,
                     product_units: $contributionValue,
                     first_name: $userForm.firstName,
                     last_name: $userForm.lastName,
                     recipient_email: $userForm.email,
-                    template: "tree-gmt-v2",
+                    template: "tree-ih-v1",
                     order_number: "2024-02-14", //TO CHANGE
                     lang: userLocale,
                     number_trees: numberOfTrees,

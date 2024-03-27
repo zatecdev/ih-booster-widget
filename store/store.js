@@ -6,6 +6,7 @@ export const successPayment = writable(false);
 export const stripeClientSecret = writable("");
 export const stripePaymentIntentId = writable("");
 export const receiptUrl = writable("");
+export const userLanguage = writable("de");
 
 export const formErrors = writable({ firstName: "", lastName: "", email: ""});
 

@@ -8638,7 +8638,7 @@
 		//define paymentIntent and success
 		let paymentIntent = null;
 
-		let paymentStatus = "";
+		let paymentStatus = null;
 
 		onMount(() => {
 			const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
@@ -8648,8 +8648,8 @@
 			};
 
 			const urlParams = new URLSearchParams(window.location.search);
-			const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
-			const zohoAccountId = urlParams.get('zoho_account_id') ?? 336589000010271178; //for testing
+			const zohoDealId = urlParams.get('z_xid') ?? 336589000010914621; //for testing
+			const zohoAccountId = urlParams.get('z_aid') ?? 336589000010271178; //for testing
 
 			//can be conflicting with payment form on paypal return url [to test]
 			set_store_value(zohoConfig, $zohoConfig.zohoDealId = zohoDealId, $zohoConfig);

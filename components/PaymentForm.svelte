@@ -3,7 +3,7 @@
     import { loadStripe } from '@stripe/stripe-js'
     import { Elements, PaymentElement } from 'svelte-stripe'
     import { onMount } from 'svelte'
-    import { userForm, contributionValue, processingPayment, successPayment, stripeClientSecret, stripePaymentIntentId, price, totalPrice, receiptUrl, zohoConfig } from '../store/store.js';
+    import { userForm, contributionValue, processingPayment, successPayment, stripeClientSecret, stripePaymentIntentId, price, totalPrice, receiptUrl, zohoConfig, userLanguage } from '../store/store.js';
     import { t, locale, locales } from '../store/i18n';
 
     import Spinner from './ui/Spinner.svelte';
@@ -36,7 +36,8 @@
         let paymentFrequency        = $userForm.contributionFrequency; //once or monthly
         let userDetails             = $userForm;
         // let userLocale              = $locale;
-        let userLocale              = $userForm.country == "DE" ? "de" : "en"; //default, testing
+        // let userLocale              = $userForm.country == "DE" ? "de" : "en"; //default, testing
+        let userLocale              = $userLanguage; // set in the app on mount based on weglot
         let paymentIntentId         = $stripePaymentIntentId
 
         //add zoho deal/cust id to userDetails
@@ -153,7 +154,7 @@
                 <Elements 
                     {stripe} 
                     {clientSecret}
-                    locale={$userForm.country.toLocaleLowerCase() == "de" ? "de" : "en"}
+                    locale={$userLanguage}
                     bind:elements
                 >
 

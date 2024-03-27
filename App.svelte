@@ -1,5 +1,5 @@
 <script>
-    import { processingPayment, userForm, contributionValue, stripePaymentIntentId, formErrors, zohoConfig } from './store/store.js';
+    import { processingPayment, userForm, contributionValue, stripePaymentIntentId, formErrors, zohoConfig, userLanguage } from './store/store.js';
     import { t, locale, locales } from './store/i18n';
     import ProgressBar from './components/ui/ProgressBar.svelte';
     import CheckoutForm from './components/CheckoutForm.svelte';
@@ -15,7 +15,8 @@
 
     //define paymentIntent and success
     let paymentIntent = null;
-    let paymentStatus = "";
+    let paymentStatus = null;
+    let userLanguage = "";
 
     onMount(() => {
 
@@ -28,8 +29,8 @@
         }
     
         const urlParams = new URLSearchParams(window.location.search);
-        const zohoDealId = urlParams.get('zoho_deal_id') ?? 336589000010914621; //for testing
-        const zohoAccountId = urlParams.get('zoho_account_id') ?? 336589000010271178; //for testing
+        const zohoDealId = urlParams.get('z_xid') ?? 336589000010914621; //for testing
+        const zohoAccountId = urlParams.get('z_aid') ?? 336589000010271178; //for testing
 
         //can be conflicting with payment form on paypal return url [to test]
         $zohoConfig.zohoDealId = zohoDealId;
@@ -38,6 +39,12 @@
         //console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId )
 
         //console.log ( urlParams );
+
+        //get language based on text
+        const containerElement = document.getElementById("widget-container");
+        userLanguage = containerElement.includes("pflanzen") ? "de" : "en";
+        $userLanguage = userLanguage;
+
 
         //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
         //fetch info about payment intent and try to build certificate configuration from there.
