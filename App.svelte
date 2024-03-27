@@ -41,9 +41,17 @@
         //console.log ( urlParams );
 
         //get language based on text
-        const containerElement = document.getElementById("widget-container");
-        domLanguage = containerElement.includes("pflanzen") ? "de" : "en";
-        $userLanguage = userLanguage;
+        const headerElement = document.getElementById("headerText");
+        // domLanguage = headerElement.includes("pflanzen") ? "de" : "en";
+        // $userLanguage = userLanguage;
+
+        if (headerElement.innerHTML.indexOf("pflanzen") != -1) {
+            $userLanguage = "de";
+            console.log( $userLanguage )
+        } else {
+            $userLanguage = "en";
+            console.log( $userLanguage )
+        }
 
         console.log($userLanguage);
 
@@ -183,7 +191,7 @@
             <div class="relative block md:flex items-center p-2 md:p-8">
                 <div class="hidden md:block md:w-1/2 relative z-1 bg-white pt-8 rounded-l-2xl overflow-hidden md:h-[650px]" style="background-image: url('{bgImageUrl}') ;">
                     <div class="text-gray-900 text-left px-8 w-5/6">
-                        <h1 class="text-4xl font-medium mb-4">Plant more trees</h1>
+                        <h1 class="text-4xl font-medium mb-4" id="headerText">Plant more trees</h1>
                         <p class="text-base font-semibold">
                             Now it's your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!
                         </p>

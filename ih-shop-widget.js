@@ -8296,7 +8296,7 @@
 		};
 	}
 
-	// (224:24) {#if paymentIntent == null && paymentStatus == null}
+	// (232:24) {#if paymentIntent == null && paymentStatus == null}
 	function create_if_block_2(ctx) {
 		let checkoutform;
 		let current;
@@ -8336,7 +8336,7 @@
 		};
 	}
 
-	// (238:20) {#if $processingPayment == false && paymentIntent == null }
+	// (246:20) {#if $processingPayment == false && paymentIntent == null }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8379,7 +8379,7 @@
 		};
 	}
 
-	// (245:32) {#if steps[currentActive-1] == "Your Info"}
+	// (253:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8489,7 +8489,7 @@
 				div7 = element("div");
 				div1 = element("div");
 				div0 = element("div");
-				div0.innerHTML = `<h1 class="text-4xl font-medium mb-4">Plant more trees</h1> <p class="text-base font-semibold">Now it&#39;s your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!</p>`;
+				div0.innerHTML = `<h1 class="text-4xl font-medium mb-4" id="headerText">Plant more trees</h1> <p class="text-base font-semibold">Now it&#39;s your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!</p>`;
 				t5 = space();
 				div3 = element("div");
 				div2 = element("div");
@@ -8635,12 +8635,12 @@
 		let $stripePaymentIntentId;
 		let $userLanguage;
 		let $processingPayment;
-		component_subscribe($$self, formErrors, $$value => $$invalidate(12, $formErrors = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(13, $userForm = $$value));
-		component_subscribe($$self, zohoConfig, $$value => $$invalidate(14, $zohoConfig = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(15, $contributionValue = $$value));
-		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(16, $stripePaymentIntentId = $$value));
-		component_subscribe($$self, userLanguage, $$value => $$invalidate(17, $userLanguage = $$value));
+		component_subscribe($$self, formErrors, $$value => $$invalidate(11, $formErrors = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(12, $userForm = $$value));
+		component_subscribe($$self, zohoConfig, $$value => $$invalidate(13, $zohoConfig = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(14, $contributionValue = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(15, $stripePaymentIntentId = $$value));
+		component_subscribe($$self, userLanguage, $$value => $$invalidate(16, $userLanguage = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(4, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8673,10 +8673,18 @@
 			//console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId )
 			//console.log ( urlParams );
 			//get language based on text
-			const containerElement = document.getElementById("widget-container");
+			const headerElement = document.getElementById("headerText");
 
-			containerElement.includes("pflanzen") ? "de" : "en";
-			set_store_value(userLanguage, $userLanguage = userLanguage, $userLanguage);
+			// domLanguage = headerElement.includes("pflanzen") ? "de" : "en";
+			// $userLanguage = userLanguage;
+			if (headerElement.innerHTML.indexOf("pflanzen") != -1) {
+				set_store_value(userLanguage, $userLanguage = "de", $userLanguage);
+				console.log($userLanguage);
+			} else {
+				set_store_value(userLanguage, $userLanguage = "en", $userLanguage);
+				console.log($userLanguage);
+			}
+
 			console.log($userLanguage);
 
 			//Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
