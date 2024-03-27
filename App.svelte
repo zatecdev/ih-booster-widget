@@ -42,11 +42,10 @@
 
         //get language based on text
         //listen to change event...
-        console.log( document.documentElement);
 
-        console.log ( document.getElementById("headerText"));
+        console.log ( document.getElementById("headerText").innerText.indexOf("trees") != 1 ? "en" : "de");
 
-        $userLanguage = document.documentElement.lang ?? "de"; //from lang attribute html
+        $userLanguage = document.getElementById("headerText").innerText.indexOf("trees") != 1 ? "en" : "de";
 
         console.log($userLanguage);
 
