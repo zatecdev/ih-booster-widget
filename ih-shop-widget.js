@@ -8296,7 +8296,7 @@
 		};
 	}
 
-	// (232:24) {#if paymentIntent == null && paymentStatus == null}
+	// (222:24) {#if paymentIntent == null && paymentStatus == null}
 	function create_if_block_2(ctx) {
 		let checkoutform;
 		let current;
@@ -8336,7 +8336,7 @@
 		};
 	}
 
-	// (246:20) {#if $processingPayment == false && paymentIntent == null }
+	// (236:20) {#if $processingPayment == false && paymentIntent == null }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8379,7 +8379,7 @@
 		};
 	}
 
-	// (253:32) {#if steps[currentActive-1] == "Your Info"}
+	// (243:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8673,17 +8673,7 @@
 			//console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId )
 			//console.log ( urlParams );
 			//get language based on text
-			const headerElement = document.getElementById("headerText");
-
-			// domLanguage = headerElement.includes("pflanzen") ? "de" : "en";
-			// $userLanguage = userLanguage;
-			if (headerElement.innerHTML.indexOf("pflanzen") != -1) {
-				set_store_value(userLanguage, $userLanguage = "de", $userLanguage);
-				console.log($userLanguage);
-			} else {
-				set_store_value(userLanguage, $userLanguage = "en", $userLanguage);
-				console.log($userLanguage);
-			}
+			set_store_value(userLanguage, $userLanguage = document.documentElement.lang ?? "de", $userLanguage); //from lang attribute html
 
 			console.log($userLanguage);
 

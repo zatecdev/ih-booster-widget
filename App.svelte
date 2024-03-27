@@ -41,17 +41,7 @@
         //console.log ( urlParams );
 
         //get language based on text
-        const headerElement = document.getElementById("headerText");
-        // domLanguage = headerElement.includes("pflanzen") ? "de" : "en";
-        // $userLanguage = userLanguage;
-
-        if (headerElement.innerHTML.indexOf("pflanzen") != -1) {
-            $userLanguage = "de";
-            console.log( $userLanguage )
-        } else {
-            $userLanguage = "en";
-            console.log( $userLanguage )
-        }
+        $userLanguage = document.documentElement.lang ?? "de"; //from lang attribute html
 
         console.log($userLanguage);
 
