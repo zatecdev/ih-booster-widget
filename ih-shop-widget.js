@@ -8296,7 +8296,7 @@
 		};
 	}
 
-	// (222:24) {#if paymentIntent == null && paymentStatus == null}
+	// (227:24) {#if paymentIntent == null && paymentStatus == null}
 	function create_if_block_2(ctx) {
 		let checkoutform;
 		let current;
@@ -8336,7 +8336,7 @@
 		};
 	}
 
-	// (236:20) {#if $processingPayment == false && paymentIntent == null }
+	// (241:20) {#if $processingPayment == false && paymentIntent == null }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8379,7 +8379,7 @@
 		};
 	}
 
-	// (243:32) {#if steps[currentActive-1] == "Your Info"}
+	// (248:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8673,8 +8673,11 @@
 			//console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId )
 			//console.log ( urlParams );
 			//get language based on text
-			set_store_value(userLanguage, $userLanguage = document.documentElement.lang ?? "de", $userLanguage); //from lang attribute html
+			//listen to change event...
+			console.log(document.documentElement);
 
+			console.log(document.getElementById("headerText"));
+			set_store_value(userLanguage, $userLanguage = document.documentElement.lang ?? "de", $userLanguage); //from lang attribute html
 			console.log($userLanguage);
 
 			//Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3

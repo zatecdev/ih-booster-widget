@@ -41,6 +41,11 @@
         //console.log ( urlParams );
 
         //get language based on text
+        //listen to change event...
+        console.log( document.documentElement);
+
+        console.log ( document.getElementById("headerText"));
+
         $userLanguage = document.documentElement.lang ?? "de"; //from lang attribute html
 
         console.log($userLanguage);
