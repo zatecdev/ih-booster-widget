@@ -4,7 +4,7 @@
     import ProgressBar from './components/ui/ProgressBar.svelte';
     import CheckoutForm from './components/CheckoutForm.svelte';
     import Tailwind from './Tailwind.svelte';
-    import { onMount } from 'svelte';
+    import { onMount, afterUpdate } from 'svelte';
     import axios from 'axios';
     import ThankyouForm from './components/ThankyouForm.svelte';
     
@@ -17,6 +17,16 @@
     let paymentIntent = null;
     let paymentStatus = null;
     let domLanguage = "";
+    let elementHeader = null;
+
+    afterUpdate(() => {
+        console.log('after update')
+        console.log ( document.getElementById("headerText").innerText.indexOf("trees") != 1 ? "en" : "de");
+
+        $userLanguage = document.getElementById("headerText").innerText.indexOf("trees") != 1 ? "en" : "de";
+
+        console.log($userLanguage);
+    })
 
     onMount(() => {
 
@@ -48,6 +58,9 @@
         $userLanguage = document.getElementById("headerText").innerText.indexOf("trees") != 1 ? "en" : "de";
 
         console.log($userLanguage);
+
+
+        elementHeader = document.getElementById("headerText");
 
 
         //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
@@ -161,29 +174,6 @@
             // console.log(error);
         })
     */
-
-
-
-    // Create your observer
-    const observer = new MutationObserver(function(mutationList, observer) {
-        // Your handling code here
-        console.log(mutationList)
-        console.log(observer)
-    });
-
-    // Select the element you want to watch
-    const elementNode = document.querySelector('#headerText');
-
-    // Call the observe function by passing the node you want to watch with configuration options
-    observer.observe(elementNode, { 
-        attributes: false, 
-        childList: true, 
-        subtree: false }
-    );
-
-    // When ready to diconnect
-    //observer.disconnect();
-
 </script>
 
 <svelte:head>

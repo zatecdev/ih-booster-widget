@@ -616,6 +616,19 @@
 	}
 
 	/**
+	 * Schedules a callback to run immediately after the component has been updated.
+	 *
+	 * The first time the callback runs will be after the initial `onMount`
+	 *
+	 * https://svelte.dev/docs/svelte#afterupdate
+	 * @param {() => any} fn
+	 * @returns {void}
+	 */
+	function afterUpdate(fn) {
+		get_current_component().$$.after_update.push(fn);
+	}
+
+	/**
 	 * Creates an event dispatcher that can be used to dispatch [component events](/docs#template-syntax-component-directives-on-eventname).
 	 * Event dispatchers are functions that can take two arguments: `name` and `detail`.
 	 *
@@ -8296,7 +8309,7 @@
 		};
 	}
 
-	// (250:24) {#if paymentIntent == null && paymentStatus == null}
+	// (240:24) {#if paymentIntent == null && paymentStatus == null}
 	function create_if_block_2(ctx) {
 		let checkoutform;
 		let current;
@@ -8336,7 +8349,7 @@
 		};
 	}
 
-	// (264:20) {#if $processingPayment == false && paymentIntent == null }
+	// (254:20) {#if $processingPayment == false && paymentIntent == null }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8379,7 +8392,7 @@
 		};
 	}
 
-	// (271:32) {#if steps[currentActive-1] == "Your Info"}
+	// (261:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8635,12 +8648,12 @@
 		let $stripePaymentIntentId;
 		let $userLanguage;
 		let $processingPayment;
-		component_subscribe($$self, formErrors, $$value => $$invalidate(11, $formErrors = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(12, $userForm = $$value));
-		component_subscribe($$self, zohoConfig, $$value => $$invalidate(13, $zohoConfig = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(14, $contributionValue = $$value));
-		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(15, $stripePaymentIntentId = $$value));
-		component_subscribe($$self, userLanguage, $$value => $$invalidate(16, $userLanguage = $$value));
+		component_subscribe($$self, formErrors, $$value => $$invalidate(12, $formErrors = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(13, $userForm = $$value));
+		component_subscribe($$self, zohoConfig, $$value => $$invalidate(14, $zohoConfig = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(15, $contributionValue = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(16, $stripePaymentIntentId = $$value));
+		component_subscribe($$self, userLanguage, $$value => $$invalidate(17, $userLanguage = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(4, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8653,6 +8666,24 @@
 		let paymentIntent = null;
 
 		let paymentStatus = null;
+
+		afterUpdate(() => {
+			console.log('after update');
+
+			console.log(document.getElementById("headerText").innerText.indexOf("trees") != 1
+			? "en"
+			: "de");
+
+			set_store_value(
+				userLanguage,
+				$userLanguage = document.getElementById("headerText").innerText.indexOf("trees") != 1
+				? "en"
+				: "de",
+				$userLanguage
+			);
+
+			console.log($userLanguage);
+		});
 
 		onMount(() => {
 			const { API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
@@ -8687,6 +8718,7 @@
 			);
 
 			console.log($userLanguage);
+			document.getElementById("headerText");
 
 			//Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
 			//fetch info about payment intent and try to build certificate configuration from there.
@@ -8764,45 +8796,6 @@
 
 			progressBar.handleProgress(stepIncrement);
 		};
-
-		// const getCurrentLanguage = () => {
-		//     currentLanguage = Weglot.getCurrentLang();
-		//     //update locale
-		//     $locale = currentLanguage;
-		// }
-		// Weglot.on("languageChanged", getCurrentLanguage);
-		//Testing, getting user's country
-		/*
-	axios.get('https://www.cloudflare.com/cdn-cgi/trace')
-	    .then(function (response) {
-	        response = response.data.trim().split('\n').reduce(function(obj, pair) {
-	            pair = pair.split('=');
-	            return obj[pair[0]] = pair[1], obj;
-	        }, {});
-
-	        $userForm.country = response.loc;
-	    })
-	    .catch(function (error) {
-	        // console.log(error);
-	    })
-	*/
-		// Create your observer
-		const observer = new MutationObserver(function (mutationList, observer) {
-				// Your handling code here
-				console.log(mutationList);
-
-				console.log(observer);
-			});
-
-		// Select the element you want to watch
-		const elementNode = document.querySelector('#headerText');
-
-		// Call the observe function by passing the node you want to watch with configuration options
-		observer.observe(elementNode, {
-			attributes: false,
-			childList: true,
-			subtree: false
-		});
 
 		function progressbar_currentActive_binding(value) {
 			currentActive = value;
