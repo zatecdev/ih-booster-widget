@@ -211,6 +211,15 @@
 		};
 	}
 
+	/** @type {typeof globalThis} */
+	const globals =
+		typeof window !== 'undefined'
+			? window
+			: typeof globalThis !== 'undefined'
+			? globalThis
+			: // @ts-ignore Node typings have this
+			  global;
+
 	/**
 	 * @param {Node} target
 	 * @param {Node} node
@@ -1592,6 +1601,7 @@
 	const successPayment = writable(false);
 	const stripeClientSecret = writable("");
 	const stripePaymentIntentId = writable("");
+	const userLanguage = writable("de");
 
 	const formErrors = writable({ firstName: "", lastName: "", email: ""});
 
@@ -5675,7 +5685,7 @@
 		return {
 			c() {
 				p = element("p");
-				p.textContent = `Error: ${/*error*/ ctx[19].message}`;
+				p.textContent = `Error: ${/*error*/ ctx[20].message}`;
 			},
 			m(target, anchor) {
 				insert(target, p, anchor);
@@ -5691,7 +5701,7 @@
 		};
 	}
 
-	// (148:4) {:then data}
+	// (149:4) {:then data}
 	function create_then_block(ctx) {
 		let current_block_type_index;
 		let if_block;
@@ -5764,7 +5774,7 @@
 		};
 	}
 
-	// (179:8) {:else}
+	// (180:8) {:else}
 	function create_else_block$3(ctx) {
 		let spinner;
 		let current;
@@ -5799,7 +5809,7 @@
 		};
 	}
 
-	// (149:8) {#if stripe && clientSecret}
+	// (150:8) {#if stripe && clientSecret}
 	function create_if_block_1$3(ctx) {
 		let div;
 		let elements_1;
@@ -5813,9 +5823,7 @@
 		let elements_1_props = {
 			stripe: /*stripe*/ ctx[3],
 			clientSecret: /*clientSecret*/ ctx[5],
-			locale: /*$userForm*/ ctx[8].country.toLocaleLowerCase() == "de"
-			? "de"
-			: "en",
+			locale: /*$userLanguage*/ ctx[8],
 			$$slots: { default: [create_default_slot] },
 			$$scope: { ctx }
 		};
@@ -5842,12 +5850,9 @@
 				const elements_1_changes = {};
 				if (dirty & /*stripe*/ 8) elements_1_changes.stripe = /*stripe*/ ctx[3];
 				if (dirty & /*clientSecret*/ 32) elements_1_changes.clientSecret = /*clientSecret*/ ctx[5];
+				if (dirty & /*$userLanguage*/ 256) elements_1_changes.locale = /*$userLanguage*/ ctx[8];
 
-				if (dirty & /*$userForm*/ 256) elements_1_changes.locale = /*$userForm*/ ctx[8].country.toLocaleLowerCase() == "de"
-				? "de"
-				: "en";
-
-				if (dirty & /*$$scope, isProcessing, handleStepProgress*/ 1048641) {
+				if (dirty & /*$$scope, isProcessing, handleStepProgress*/ 2097217) {
 					elements_1_changes.$$scope = { dirty, ctx };
 				}
 
@@ -5878,7 +5883,7 @@
 		};
 	}
 
-	// (153:16) <Elements                       {stripe}                       {clientSecret}                      locale={$userForm.country.toLocaleLowerCase() == "de" ? "de" : "en"}                      bind:elements                  >
+	// (154:16) <Elements                       {stripe}                       {clientSecret}                      locale={$userLanguage}                      bind:elements                  >
 	function create_default_slot(ctx) {
 		let paymentelement;
 		let t0;
@@ -5958,7 +5963,7 @@
 		};
 	}
 
-	// (144:32)           {#if hasError == false}
+	// (145:32)           {#if hasError == false}
 	function create_pending_block(ctx) {
 		let if_block_anchor;
 		let current;
@@ -6015,7 +6020,7 @@
 		};
 	}
 
-	// (145:8) {#if hasError == false}
+	// (146:8) {#if hasError == false}
 	function create_if_block$4(ctx) {
 		let spinner;
 		let current;
@@ -6056,8 +6061,8 @@
 			pending: create_pending_block,
 			then: create_then_block,
 			catch: create_catch_block,
-			value: 18,
-			error: 19,
+			value: 19,
+			error: 20,
 			blocks: [,,,]
 		};
 
@@ -6112,13 +6117,15 @@
 		let $price;
 		let $zohoConfig;
 		let $stripePaymentIntentId;
+		let $userLanguage;
 		let $userForm;
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(11, $contributionValue = $$value));
 		component_subscribe($$self, totalPrice, $$value => $$invalidate(12, $totalPrice = $$value));
 		component_subscribe($$self, price, $$value => $$invalidate(13, $price = $$value));
 		component_subscribe($$self, zohoConfig, $$value => $$invalidate(14, $zohoConfig = $$value));
 		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(15, $stripePaymentIntentId = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(8, $userForm = $$value));
+		component_subscribe($$self, userLanguage, $$value => $$invalidate(8, $userLanguage = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(16, $userForm = $$value));
 		let { handleStepProgress } = $$props;
 		const { STRIPE_PUBLIC_KEY, API_END_POINT } = {"STRIPE_PUBLIC_KEY":"pk_test_51NmaK6GDeLz4avmcGmICWbBO8bmfhU0sVwzkapUunLTwvb9PkwHjtvOEt3huaAihJKsgvaO4kn8PBWCLC4kVeCl500bQHd3HET","STRIPE_SECRET_KEY":"sk_test_51NmaK6GDeLz4avmc0JwGbxMQ0BReyGLQSbmtPEqnpRT3mMyCvYnPp1Jk0DXuWeOGHj6BvxUg1HgJUFS8670I16d2007ddRrKBm","API_END_POINT":"https://certificate.growmytree.com"};
 		let stripe = null;
@@ -6146,7 +6153,8 @@
 			let userDetails = $userForm;
 
 			// let userLocale              = $locale;
-			let userLocale = $userForm.country == "DE" ? "de" : "en"; //default, testing
+			// let userLocale              = $userForm.country == "DE" ? "de" : "en"; //default, testing
+			let userLocale = $userLanguage; // set in the app on mount based on weglot
 
 			let paymentIntentId = $stripePaymentIntentId;
 
@@ -6272,7 +6280,7 @@
 			clientSecret,
 			isProcessing,
 			hasError,
-			$userForm,
+			$userLanguage,
 			click_handler,
 			elements_1_elements_binding
 		];
@@ -6385,12 +6393,14 @@
 		let $contributionValue;
 		let $userForm;
 		let $stripePaymentIntentId;
+		let $userLanguage;
 		component_subscribe($$self, zohoConfig, $$value => $$invalidate(4, $zohoConfig = $$value));
 		component_subscribe($$self, totalPrice, $$value => $$invalidate(5, $totalPrice = $$value));
 		component_subscribe($$self, price, $$value => $$invalidate(6, $price = $$value));
 		component_subscribe($$self, contributionValue, $$value => $$invalidate(7, $contributionValue = $$value));
 		component_subscribe($$self, userForm, $$value => $$invalidate(1, $userForm = $$value));
 		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(8, $stripePaymentIntentId = $$value));
+		component_subscribe($$self, userLanguage, $$value => $$invalidate(9, $userLanguage = $$value));
 
 		let EU_COUNTRIES_CODES = [
 			'AT',
@@ -6435,7 +6445,7 @@
 		const getCertificate = () => {
 			let numberOfTrees = $contributionValue;
 			$userForm.contributionFrequency; //once or monthly
-			let userLocale = $userForm.country == "DE" ? "de" : "en";
+			let userLocale = $userLanguage;
 
 			let paymentIntentId = source == "stripe"
 			? $stripePaymentIntentId
@@ -6466,12 +6476,12 @@
 				//generate certificate
 				const certificateRequest = {
 					customer_email: 'marcel.spitzner@growmytree.com', //testing
-					customer_alias: "IH-Booster Customer",
+					customer_alias: $userForm.firstName + " " + $userForm.lastName,
 					product_units: $contributionValue,
 					first_name: $userForm.firstName,
 					last_name: $userForm.lastName,
 					recipient_email: $userForm.email,
-					template: "tree-gmt-v2",
+					template: "tree-ih-v1",
 					order_number: "2024-02-14", //TO CHANGE
 					lang: userLocale,
 					number_trees: numberOfTrees,
@@ -8244,6 +8254,8 @@
 
 	/* App.svelte generated by Svelte v4.2.1 */
 
+	const { document: document_1 } = globals;
+
 	function create_else_block(ctx) {
 		let thankyouform;
 		let current;
@@ -8284,7 +8296,7 @@
 		};
 	}
 
-	// (216:24) {#if paymentIntent == null && paymentStatus == null}
+	// (224:24) {#if paymentIntent == null && paymentStatus == null}
 	function create_if_block_2(ctx) {
 		let checkoutform;
 		let current;
@@ -8324,7 +8336,7 @@
 		};
 	}
 
-	// (230:20) {#if $processingPayment == false && paymentIntent == null }
+	// (238:20) {#if $processingPayment == false && paymentIntent == null }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8367,7 +8379,7 @@
 		};
 	}
 
-	// (237:32) {#if steps[currentActive-1] == "Your Info"}
+	// (245:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8510,8 +8522,8 @@
 				attr(div10, "class", "h-full block md:flex items-center justify-center");
 			},
 			m(target, anchor) {
-				append(document.head, script0);
-				append(document.head, script1);
+				append(document_1.head, script0);
+				append(document_1.head, script1);
 				insert(target, t0, anchor);
 				mount_component(tailwind, target, anchor);
 				insert(target, t1, anchor);
@@ -8621,12 +8633,14 @@
 		let $zohoConfig;
 		let $contributionValue;
 		let $stripePaymentIntentId;
+		let $userLanguage;
 		let $processingPayment;
-		component_subscribe($$self, formErrors, $$value => $$invalidate(11, $formErrors = $$value));
-		component_subscribe($$self, userForm, $$value => $$invalidate(12, $userForm = $$value));
-		component_subscribe($$self, zohoConfig, $$value => $$invalidate(13, $zohoConfig = $$value));
-		component_subscribe($$self, contributionValue, $$value => $$invalidate(14, $contributionValue = $$value));
-		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(15, $stripePaymentIntentId = $$value));
+		component_subscribe($$self, formErrors, $$value => $$invalidate(12, $formErrors = $$value));
+		component_subscribe($$self, userForm, $$value => $$invalidate(13, $userForm = $$value));
+		component_subscribe($$self, zohoConfig, $$value => $$invalidate(14, $zohoConfig = $$value));
+		component_subscribe($$self, contributionValue, $$value => $$invalidate(15, $contributionValue = $$value));
+		component_subscribe($$self, stripePaymentIntentId, $$value => $$invalidate(16, $stripePaymentIntentId = $$value));
+		component_subscribe($$self, userLanguage, $$value => $$invalidate(17, $userLanguage = $$value));
 		component_subscribe($$self, processingPayment, $$value => $$invalidate(4, $processingPayment = $$value));
 		const bgImageUrl = new URL('./images/background.jpg', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
 		new URL('./images/logo.png', (_documentCurrentScript && _documentCurrentScript.src || new URL('ih-shop-widget.js', document.baseURI).href)).href;
@@ -8658,6 +8672,13 @@
 
 			//console.log($zohoConfig.zohoDealId, $zohoConfig.zohoAccountId )
 			//console.log ( urlParams );
+			//get language based on text
+			const containerElement = document.getElementById("widget-container");
+
+			containerElement.includes("pflanzen") ? "de" : "en";
+			set_store_value(userLanguage, $userLanguage = userLanguage, $userLanguage);
+			console.log($userLanguage);
+
 			//Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
 			//fetch info about payment intent and try to build certificate configuration from there.
 			//do I have access to store data??

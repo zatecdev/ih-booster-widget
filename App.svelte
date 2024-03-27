@@ -16,7 +16,7 @@
     //define paymentIntent and success
     let paymentIntent = null;
     let paymentStatus = null;
-    let userLanguage = "";
+    let domLanguage = "";
 
     onMount(() => {
 
@@ -42,9 +42,10 @@
 
         //get language based on text
         const containerElement = document.getElementById("widget-container");
-        userLanguage = containerElement.includes("pflanzen") ? "de" : "en";
+        domLanguage = containerElement.includes("pflanzen") ? "de" : "en";
         $userLanguage = userLanguage;
 
+        console.log($userLanguage);
 
         //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
         //fetch info about payment intent and try to build certificate configuration from there.

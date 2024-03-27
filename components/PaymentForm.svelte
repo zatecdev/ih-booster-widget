@@ -21,7 +21,7 @@
     let hasError = false;
 
     onMount(async () => {
-        stripe = await loadStripe(STRIPE_PUBLIC_KEY)
+        stripe = await loadStripe(STRIPE_PUBLIC_KEY);
     })
 
     export const getPaymentIntent = async () => {
