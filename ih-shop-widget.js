@@ -8296,7 +8296,7 @@
 		};
 	}
 
-	// (226:24) {#if paymentIntent == null && paymentStatus == null}
+	// (250:24) {#if paymentIntent == null && paymentStatus == null}
 	function create_if_block_2(ctx) {
 		let checkoutform;
 		let current;
@@ -8336,7 +8336,7 @@
 		};
 	}
 
-	// (240:20) {#if $processingPayment == false && paymentIntent == null }
+	// (264:20) {#if $processingPayment == false && paymentIntent == null }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8379,7 +8379,7 @@
 		};
 	}
 
-	// (247:32) {#if steps[currentActive-1] == "Your Info"}
+	// (271:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8764,6 +8764,45 @@
 
 			progressBar.handleProgress(stepIncrement);
 		};
+
+		// const getCurrentLanguage = () => {
+		//     currentLanguage = Weglot.getCurrentLang();
+		//     //update locale
+		//     $locale = currentLanguage;
+		// }
+		// Weglot.on("languageChanged", getCurrentLanguage);
+		//Testing, getting user's country
+		/*
+	axios.get('https://www.cloudflare.com/cdn-cgi/trace')
+	    .then(function (response) {
+	        response = response.data.trim().split('\n').reduce(function(obj, pair) {
+	            pair = pair.split('=');
+	            return obj[pair[0]] = pair[1], obj;
+	        }, {});
+
+	        $userForm.country = response.loc;
+	    })
+	    .catch(function (error) {
+	        // console.log(error);
+	    })
+	*/
+		// Create your observer
+		const observer = new MutationObserver(function (mutationList, observer) {
+				// Your handling code here
+				console.log(mutationList);
+
+				console.log(observer);
+			});
+
+		// Select the element you want to watch
+		const elementNode = document.querySelector('#headerText');
+
+		// Call the observe function by passing the node you want to watch with configuration options
+		observer.observe(elementNode, {
+			attributes: false,
+			childList: true,
+			subtree: false
+		});
 
 		function progressbar_currentActive_binding(value) {
 			currentActive = value;

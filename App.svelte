@@ -49,6 +49,7 @@
 
         console.log($userLanguage);
 
+
         //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
         //fetch info about payment intent and try to build certificate configuration from there.
         //do I have access to store data??
@@ -160,6 +161,29 @@
             // console.log(error);
         })
     */
+
+
+
+    // Create your observer
+    const observer = new MutationObserver(function(mutationList, observer) {
+        // Your handling code here
+        console.log(mutationList)
+        console.log(observer)
+    });
+
+    // Select the element you want to watch
+    const elementNode = document.querySelector('#headerText');
+
+    // Call the observe function by passing the node you want to watch with configuration options
+    observer.observe(elementNode, { 
+        attributes: false, 
+        childList: true, 
+        subtree: false }
+    );
+
+    // When ready to diconnect
+    //observer.disconnect();
+
 </script>
 
 <svelte:head>
