@@ -20,10 +20,7 @@
     let h1_node; //
 
     afterUpdate(() => {
-        console.log('after update')
         $userLanguage = h1_node.innerText.includes("trees") ? "en" : "de";
-        console.log($userLanguage);
-        console.log( h1_node.innerText)
     })
 
     onMount(() => {
@@ -49,11 +46,7 @@
 
         //get language based on text
         //listen to change event...
-
-        console.log( h1_node )
         $userLanguage = h1_node.innerText.includes("trees") ? "en" : "de";
-        console.log($userLanguage);
-
 
         //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
         //fetch info about payment intent and try to build certificate configuration from there.

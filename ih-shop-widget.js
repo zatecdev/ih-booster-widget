@@ -8298,7 +8298,7 @@
 		};
 	}
 
-	// (232:24) {#if paymentIntent == null && paymentStatus == null}
+	// (225:24) {#if paymentIntent == null && paymentStatus == null}
 	function create_if_block_2(ctx) {
 		let checkoutform;
 		let current;
@@ -8338,7 +8338,7 @@
 		};
 	}
 
-	// (246:20) {#if $processingPayment == false && paymentIntent == null }
+	// (239:20) {#if $processingPayment == false && paymentIntent == null }
 	function create_if_block(ctx) {
 		let div1;
 		let div0;
@@ -8381,7 +8381,7 @@
 		};
 	}
 
-	// (253:32) {#if steps[currentActive-1] == "Your Info"}
+	// (246:32) {#if steps[currentActive-1] == "Your Info"}
 	function create_if_block_1(ctx) {
 		let button;
 		let t_1;
@@ -8678,10 +8678,7 @@
 		let h1_node; //
 
 		afterUpdate(() => {
-			console.log('after update');
 			set_store_value(userLanguage, $userLanguage = h1_node.innerText.includes("trees") ? "en" : "de", $userLanguage);
-			console.log($userLanguage);
-			console.log(h1_node.innerText);
 		});
 
 		onMount(() => {
@@ -8704,10 +8701,7 @@
 			//console.log ( urlParams );
 			//get language based on text
 			//listen to change event...
-			console.log(h1_node);
-
 			set_store_value(userLanguage, $userLanguage = h1_node.innerText.includes("trees") ? "en" : "de", $userLanguage);
-			console.log($userLanguage);
 
 			//Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
 			//fetch info about payment intent and try to build certificate configuration from there.
