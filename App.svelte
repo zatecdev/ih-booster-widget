@@ -21,7 +21,7 @@
 
     afterUpdate(() => {
         console.log('after update')
-        $userLanguage = h1_node.innerText.indexOf("trees") != 1 ? "en" : "de";
+        $userLanguage = h1_node.innerText.includes("trees") ? "en" : "de";
         console.log($userLanguage);
         console.log( h1_node.innerText)
     })
@@ -51,7 +51,7 @@
         //listen to change event...
 
         console.log( h1_node )
-        $userLanguage = h1_node.innerText.indexOf("trees") != 1 ? "en" : "de";
+        $userLanguage = h1_node.innerText.includes("trees") ? "en" : "de";
         console.log($userLanguage);
 
 

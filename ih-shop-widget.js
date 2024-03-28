@@ -8679,7 +8679,7 @@
 
 		afterUpdate(() => {
 			console.log('after update');
-			set_store_value(userLanguage, $userLanguage = h1_node.innerText.indexOf("trees") != 1 ? "en" : "de", $userLanguage);
+			set_store_value(userLanguage, $userLanguage = h1_node.innerText.includes("trees") ? "en" : "de", $userLanguage);
 			console.log($userLanguage);
 			console.log(h1_node.innerText);
 		});
@@ -8706,7 +8706,7 @@
 			//listen to change event...
 			console.log(h1_node);
 
-			set_store_value(userLanguage, $userLanguage = h1_node.innerText.indexOf("trees") != 1 ? "en" : "de", $userLanguage);
+			set_store_value(userLanguage, $userLanguage = h1_node.innerText.includes("trees") ? "en" : "de", $userLanguage);
 			console.log($userLanguage);
 
 			//Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
