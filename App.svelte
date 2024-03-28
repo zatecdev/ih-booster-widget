@@ -16,20 +16,17 @@
     //define paymentIntent and success
     let paymentIntent = null;
     let paymentStatus = null;
-    let domLanguage = "";
-    let elementHeader = null;
+
+    let h1_node; //
 
     afterUpdate(() => {
         console.log('after update')
-        console.log ( document.getElementById("headerText").innerText.indexOf("trees") != 1 ? "en" : "de");
-
-        $userLanguage = document.getElementById("headerText").innerText.indexOf("trees") != 1 ? "en" : "de";
-
+        $userLanguage = h1_node.innerText.indexOf("trees") != 1 ? "en" : "de";
         console.log($userLanguage);
+        console.log( h1_node.innerText)
     })
 
     onMount(() => {
-
         const { API_END_POINT } = __myapp;
 
         const axiosConfig = { 
@@ -53,14 +50,9 @@
         //get language based on text
         //listen to change event...
 
-        console.log ( document.getElementById("headerText").innerText.indexOf("trees") != 1 ? "en" : "de");
-
-        $userLanguage = document.getElementById("headerText").innerText.indexOf("trees") != 1 ? "en" : "de";
-
+        console.log( h1_node )
+        $userLanguage = h1_node.innerText.indexOf("trees") != 1 ? "en" : "de";
         console.log($userLanguage);
-
-
-        elementHeader = document.getElementById("headerText");
 
 
         //Paypal return url: check if payment intent ID is present in the url, then redirect User to step 3
@@ -211,7 +203,7 @@
                     style="background-image: linear-gradient(to bottom, transparent 0%, black 100%), url('{bgImageUrl}'); background-position: center;"
                 >
                     <div class="text-gray-900 text-left px-8 w-full">
-                        <h1 class="text-2xl font-medium mb-4 text-white">Plant more trees</h1>
+                        <h1 class="text-2xl font-medium mb-4 text-white" bind:this={h1_node}>Plant more trees</h1>
                         <p class="text-sm font-semibold text-white">
                             Now it's your turn! Planting trees is a direct path to environmental and social sustainability. They cleanse our air, store carbon, and foster biodiversity. Join us in this vital mission for a greener, harmonious future!
                         </p>
